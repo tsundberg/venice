@@ -1,0 +1,54 @@
+import java.text.SimpleDateFormat
+
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '1.2.3'
+}
+
+version = '1.0-SNAPSHOT'
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+dependencies {
+    compile 'com.sparkjava:spark-core:2.5'
+    compile 'com.sparkjava:spark-template-mustache:2.3'
+    compile 'org.slf4j:slf4j-simple:1.7.21'
+    compile 'com.google.code.gson:gson:2.8.0'
+
+    testCompile 'junit:junit:4.12'
+}
+
+test {
+    testLogging.showStandardStreams = true
+    systemProperties System.getProperties()
+}
+
+shadowJar {
+    it.dependsOn build
+    mergeServiceFiles()
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/*.RSA'
+    manifest {
+        attributes 'Main-Class': 'se.arbetsformedlingen.venice.Main',
+                'Build-Date': new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date())
+    }
+}
+
+task stage() {
+    it.dependsOn check, shadowJar
+}
+
+repositories {
+    maven {
+        url "http://nexus.ws.ams.se:8081/nexus/content/groups/public"
+    }
+
+    jcenter()
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.10'
+}
