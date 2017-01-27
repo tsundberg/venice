@@ -12,4 +12,4 @@ Monitoring of selected applications
 
 ## Watch
 
-The application is now running at [http://localhost:4567/hello](http://localhost:4567/hello)
+The application is now running at [http://localhost:4567](http://localhost:4567)
