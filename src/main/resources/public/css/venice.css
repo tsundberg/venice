@@ -1,0 +1,11 @@
+.server {
+    color: #eee;
+}
+
+.server.server-online {
+    background-color: green;
+}
+
+.server.server-offline {
+    background-color: red;
+}
