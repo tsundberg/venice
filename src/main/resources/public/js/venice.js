@@ -64,73 +64,10 @@ function createApplicationContainer(app) {
 }
 
 $(window).load(function () {
-    var applications = [];
-
-    var gfr = {};
-    gfr.name = "GFR";
-    gfr.environments = [];
-    gfr.environments.push({
-        "name": "production",
-        "servers": {
-            "L7700746": {
-                "status": "online",
-                "version": "4.6.401"
-            },
-            "L7700747": {
-                "status": "online",
-                "version": "4.6.401"
-            },
-            "L7700770": {
-                "status": "offline",
-                "version": "4.6.401"
-            }
-        }
-    });
-    gfr.environments.push({
-        "name": "t2",
-        "servers": {
-            "L7700746": {
-                "status": "online",
-                "version": "4.6.401"
-            },
-            "L7700747": {
-                "status": "online",
-                "version": "4.6.401"
-            }
-        }
-    });
-    gfr.environments.push({
-        "name": "t1",
-        "servers": {
-            "L7700746": {
-                "status": "online",
-                "version": "4.6.401"
-            }
-        }
-    });
-    gfr.environments.push({
-        "name": "i1",
-        "servers": {
-            "L7700746": {
-                "status": "online",
-                "version": "4.6.401"
-            }
-        }
-    });
-    gfr.environments.push({
-        "name": "u1",
-        "servers": {
-            "L7700746": {
-                "status": "online",
-                "version": "4.6.401"
-            }
-        }
-    });
-
-    applications.push(gfr);
-
-    var appContainer = $("#app-container");
-    applications.forEach(function (app) {
-        appContainer.append(createApplicationContainer(app));
+    $.getJSON("/probes", function (applications) {
+        var appContainer = $("#app-container");
+        applications.forEach(function (app) {
+            appContainer.append(createApplicationContainer(app));
+        });
     });
 });
