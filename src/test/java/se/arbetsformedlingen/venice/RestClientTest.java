@@ -18,8 +18,9 @@ public class RestClientTest {
     public void rest_client() throws Exception {
         String uri = "http://gfr.u1/wildfly05/jolokia/read/af-probe:probe=UgkForetagProbe/";
 
-        String user = "unset";
-        String password = "secret";
+        String user = System.getenv("PROBE_USER");
+        String password = System.getenv("PROBE_PASSWORD");
+
         Executor executor = Executor.newInstance()
                 .auth(user, password);
 
