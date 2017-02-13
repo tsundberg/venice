@@ -1,6 +1,10 @@
 package se.arbetsformedlingen.venice.probe;
 
 import org.json.JSONObject;
+import se.arbetsformedlingen.venice.common.Application;
+import se.arbetsformedlingen.venice.common.Host;
+import se.arbetsformedlingen.venice.common.Status;
+import se.arbetsformedlingen.venice.common.Version;
 
 class ProbeResponseParser {
     private ProbeResponseParser() {

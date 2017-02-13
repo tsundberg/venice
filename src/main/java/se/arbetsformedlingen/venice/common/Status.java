@@ -1,11 +1,11 @@
-package se.arbetsformedlingen.venice.probe;
+package se.arbetsformedlingen.venice.common;
 
 import java.util.Objects;
 
 public class Status {
     private String status;
 
-    Status(String status) {
+    public Status(String status) {
         this.status = status;
     }
 

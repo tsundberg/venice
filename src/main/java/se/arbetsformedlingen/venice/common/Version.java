@@ -1,11 +1,11 @@
-package se.arbetsformedlingen.venice.probe;
+package se.arbetsformedlingen.venice.common;
 
 import java.util.Objects;
 
 public class Version {
     private String version;
 
-    Version(String version) {
+    public Version(String version) {
         this.version = version;
     }
 

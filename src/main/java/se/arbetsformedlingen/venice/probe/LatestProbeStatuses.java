@@ -1,5 +1,8 @@
 package se.arbetsformedlingen.venice.probe;
 
+import se.arbetsformedlingen.venice.common.Application;
+import se.arbetsformedlingen.venice.common.Host;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 

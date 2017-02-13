@@ -1,6 +1,10 @@
 package se.arbetsformedlingen.venice.probe;
 
 import org.junit.Test;
+import se.arbetsformedlingen.venice.common.Application;
+import se.arbetsformedlingen.venice.common.Host;
+import se.arbetsformedlingen.venice.common.Status;
+import se.arbetsformedlingen.venice.common.Version;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 

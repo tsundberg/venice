@@ -2,6 +2,10 @@ package se.arbetsformedlingen.venice.probe;
 
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
+import se.arbetsformedlingen.venice.common.Application;
+import se.arbetsformedlingen.venice.common.Host;
+import se.arbetsformedlingen.venice.common.Status;
+import se.arbetsformedlingen.venice.common.Version;
 
 import java.util.HashMap;
 import java.util.Map;

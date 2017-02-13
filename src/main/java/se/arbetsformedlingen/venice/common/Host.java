@@ -1,15 +1,15 @@
-package se.arbetsformedlingen.venice.probe;
+package se.arbetsformedlingen.venice.common;
 
 import java.util.Objects;
 
 public class Host {
     private String host;
 
-    Host(String host) {
+    public Host(String host) {
         this.host = host;
     }
 
-    String getName() {
+    public String getName() {
         return host;
     }
 

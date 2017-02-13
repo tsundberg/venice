@@ -1,5 +1,11 @@
 package se.arbetsformedlingen.venice.probe;
 
+import se.arbetsformedlingen.venice.common.Application;
+import se.arbetsformedlingen.venice.common.Host;
+import se.arbetsformedlingen.venice.common.Status;
+import se.arbetsformedlingen.venice.common.Version;
+
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class ProbeResponse {

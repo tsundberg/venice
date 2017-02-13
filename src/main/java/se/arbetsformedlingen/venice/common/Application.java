@@ -1,15 +1,15 @@
-package se.arbetsformedlingen.venice.probe;
+package se.arbetsformedlingen.venice.common;
 
 import java.util.Objects;
 
 public class Application {
     private String application;
 
-    Application(String application) {
+    public Application(String application) {
         this.application = application;
     }
 
-    String getApplicationName() {
+    public String getApplicationName() {
         return application;
     }
 

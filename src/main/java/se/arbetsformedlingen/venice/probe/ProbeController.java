@@ -1,5 +1,7 @@
 package se.arbetsformedlingen.venice.probe;
 
+import se.arbetsformedlingen.venice.common.Application;
+import se.arbetsformedlingen.venice.common.Host;
 import se.arbetsformedlingen.venice.common.Hosts;
 import spark.Request;
 import spark.Response;
