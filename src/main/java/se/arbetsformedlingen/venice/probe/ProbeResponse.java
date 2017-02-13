@@ -8,12 +8,19 @@ public class ProbeResponse {
     private Version version;
     private Status status;
 
-
     ProbeResponse(Application application, Host host, Status status, Version version) {
         this.application = application;
         this.host = host;
         this.status = status;
         this.version = version;
+    }
+
+    Host getHost() {
+        return host;
+    }
+
+    Application getApplication() {
+        return application;
     }
 
     @Override
@@ -30,5 +37,15 @@ public class ProbeResponse {
     @Override
     public int hashCode() {
         return Objects.hash(host, application, version, status);
+    }
+
+    @Override
+    public String toString() {
+        return "ProbeResponse{" +
+                "host=" + host +
+                ", application=" + application +
+                ", version=" + version +
+                ", status=" + status +
+                '}';
     }
 }
