@@ -3,7 +3,10 @@ package se.arbetsformedlingen.venice.probe;
 import org.json.JSONObject;
 
 class ProbeResponseParser {
-    ProbeResponse parse(String json) {
+    private ProbeResponseParser() {
+    }
+
+    static ProbeResponse parse(String json) {
         JSONObject jsonObject = new JSONObject(json);
 
         JSONObject probeStatus = jsonObject.getJSONObject("value").getJSONObject("ProbeStatus");
