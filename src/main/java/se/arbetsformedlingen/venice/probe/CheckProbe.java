@@ -27,10 +27,12 @@ public class CheckProbe implements java.util.function.Supplier<ProbeResponse> {
 
     private void addPorts() {
         ports.put(new Application("gfr"), "/wildfly05");
+        ports.put(new Application("geo"), "/wildfly01");
     }
 
     private void addProbeNames() {
         probeNames.put(new Application("gfr"), "UgkForetagProbe");
+        probeNames.put(new Application("geo"), "UgkGeoProbe");
     }
 
     @Override

@@ -21,6 +21,9 @@ public class ProbeCheckScheduler {
     private void addProbes() {
         CheckProbe gfr_U1 = new CheckProbe(new Host(Hosts.GFR_U1), new Application("gfr"));
         probes.add(new ProbeChecker(gfr_U1, latestProbeStatuses));
+
+        CheckProbe geo_U1 = new CheckProbe(new Host(Hosts.GEO_U1), new Application("geo"));
+        probes.add(new ProbeChecker(geo_U1, latestProbeStatuses));
     }
 
     public void startChecking(int period, TimeUnit unit) {
