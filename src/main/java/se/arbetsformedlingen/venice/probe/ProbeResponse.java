@@ -13,6 +13,7 @@ public class ProbeResponse {
     private Application application;
     private Version version;
     private Status status;
+    private LocalDateTime checkTimestamp = LocalDateTime.now();
 
     ProbeResponse(Application application, Host host, Status status, Version version) {
         this.application = application;
@@ -52,6 +53,7 @@ public class ProbeResponse {
                 ", application=" + application +
                 ", version=" + version +
                 ", status=" + status +
+                ", checkTimestamp=" + checkTimestamp +
                 '}';
     }
 }
