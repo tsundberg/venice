@@ -12,6 +12,22 @@ compileJava {
     targetCompatibility = 1.8
 }
 
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integration-test/java')
+        }
+        resources.srcDir file('src/integration-test/resources')
+    }
+}
+
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
 dependencies {
     compile 'com.sparkjava:spark-core:2.5'
     compile 'com.sparkjava:spark-template-mustache:2.3'
@@ -31,6 +47,17 @@ test {
     systemProperties System.getProperties()
 }
 
+task integrationTest(type: Test) {
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath = sourceSets.integrationTest.runtimeClasspath
+}
+
+integrationTest.mustRunAfter test
+
+tasks.withType(Test) {
+    reports.html.destination = file("${reporting.baseDir}/${name}")
+}
+
 shadowJar {
     it.dependsOn build
     mergeServiceFiles()
@@ -43,7 +70,7 @@ shadowJar {
 }
 
 task stage() {
-    it.dependsOn check, shadowJar
+    it.dependsOn check, integrationTest, shadowJar
 }
 
 repositories {
