@@ -7,7 +7,7 @@ import se.arbetsformedlingen.venice.probe.ProbeController;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-public class ProbeTest {
+public class ProbeControllerTest {
 
     @Test
     public void probe_status_for_gfr() {
