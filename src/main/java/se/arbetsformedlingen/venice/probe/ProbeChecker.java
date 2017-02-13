@@ -3,19 +3,19 @@ package se.arbetsformedlingen.venice.probe;
 import java.util.concurrent.CompletableFuture;
 
 public class ProbeChecker implements Runnable {
-    private ProbeStatus probeStatus;
+    private LatestsProbeStatuses latestsProbeStatuses;
     private CompletableFuture<Void> worker;
     private CheckProbe checkProbe;
 
-    ProbeChecker(CheckProbe checkProbe, ProbeStatus probeStatus) {
+    ProbeChecker(CheckProbe checkProbe, LatestsProbeStatuses latestsProbeStatuses) {
         this.checkProbe = checkProbe;
-        this.probeStatus = probeStatus;
+        this.latestsProbeStatuses = latestsProbeStatuses;
     }
 
     @Override
     public void run() {
         worker = CompletableFuture.supplyAsync(checkProbe)
-                .thenAccept(result -> probeStatus.addStatus(result));
+                .thenAccept(result -> latestsProbeStatuses.addStatus(result));
     }
 
     boolean isWorking() {

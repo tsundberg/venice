@@ -10,24 +10,24 @@ public class ProbeCheckerTest {
 
     @Test
     public void check_probe() throws Exception {
-        Application application = new Application("gfr");
         Host host = new Host("L7700770");
+        Application application = new Application("gfr");
         Status status = new Status("OK");
         Version version = new Version("4.6.470");
         ProbeResponse expected = new ProbeResponse(application, host, status, version);
 
-        ProbeStatus probeStatus = new ProbeStatus();
+        LatestsProbeStatuses latestsProbeStatuses = new LatestsProbeStatuses();
 
         CheckProbe probe = prepareMock();
 
-        ProbeChecker checker = new ProbeChecker(probe, probeStatus);
+        ProbeChecker checker = new ProbeChecker(probe, latestsProbeStatuses);
         checker.run();
 
         while (checker.isWorking()) {
             Thread.sleep(5);
         }
 
-        ProbeResponse actual = probeStatus.getStatus(new Host("L7700770"));
+        ProbeResponse actual = latestsProbeStatuses.getStatus(host, application);
 
         assertThat(actual).isEqualTo(expected);
     }
