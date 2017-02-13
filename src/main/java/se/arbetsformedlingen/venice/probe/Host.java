@@ -9,6 +9,10 @@ public class Host {
         this.host = host;
     }
 
+    String getName() {
+        return host;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
