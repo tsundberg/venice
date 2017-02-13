@@ -1,6 +1,7 @@
 package se.arbetsformedlingen.venice;
 
 import se.arbetsformedlingen.venice.index.IndexController;
+import se.arbetsformedlingen.venice.probe.ProbeCheckScheduler;
 import se.arbetsformedlingen.venice.probe.ProbeController;
 import spark.ModelAndView;
 import spark.Request;
@@ -8,6 +9,7 @@ import spark.Response;
 import spark.Spark;
 import spark.template.mustache.MustacheTemplateEngine;
 
+import java.util.concurrent.TimeUnit;
 import java.util.function.BiFunction;
 
 import static spark.Spark.staticFileLocation;
@@ -18,6 +20,8 @@ public class Main {
 
         getView("/", IndexController::getView);
         getString("/probes", ProbeController::getStatus);
+
+        scheduleProbes();
     }
 
     private static void getView(String route, BiFunction<Request, Response, ModelAndView> controller) {
@@ -26,5 +30,10 @@ public class Main {
 
     private static void getString(String route, BiFunction<Request, Response, String> transformer) {
         Spark.get(route, transformer::apply);
+    }
+
+    private static void scheduleProbes() {
+        ProbeCheckScheduler scheduler = new ProbeCheckScheduler();
+        scheduler.startChecking(30, TimeUnit.SECONDS);
     }
 }
