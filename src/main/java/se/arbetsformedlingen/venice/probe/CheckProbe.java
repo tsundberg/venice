@@ -3,7 +3,6 @@ package se.arbetsformedlingen.venice.probe;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,11 +39,11 @@ public class CheckProbe implements java.util.function.Supplier<ProbeResponse> {
             result = executor.execute(Request.Get(uri))
                     .returnContent()
                     .asString();
-        } catch (IOException e) {
-            throw new CheckProbeException(e.getMessage(), e);
-        }
 
-        return ProbeResponseParser.parse(result);
+            return ProbeResponseParser.parse(result);
+        } catch (Exception e) {
+            return errorResponse(e);
+        }
     }
 
     private String getUri() {
@@ -61,5 +60,11 @@ public class CheckProbe implements java.util.function.Supplier<ProbeResponse> {
 
         return Executor.newInstance()
                 .auth(user, password);
+    }
+
+    private ProbeResponse errorResponse(Exception e) {
+        Status status = new Status(e.getMessage());
+        Version version = new Version("Unknown");
+        return new ProbeResponse(application, host, status, version);
     }
 }
