@@ -3,7 +3,7 @@ package se.arbetsformedlingen.venice.probe;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-class LatestsProbeStatuses {
+class LatestProbeStatuses {
     private static ConcurrentMap<String, ProbeResponse> probeStatuses = new ConcurrentHashMap<>();
 
     void addStatus(ProbeResponse value) {

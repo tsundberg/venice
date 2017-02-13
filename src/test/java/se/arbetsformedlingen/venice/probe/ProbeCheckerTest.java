@@ -16,18 +16,18 @@ public class ProbeCheckerTest {
         Version version = new Version("4.6.470");
         ProbeResponse expected = new ProbeResponse(application, host, status, version);
 
-        LatestsProbeStatuses latestsProbeStatuses = new LatestsProbeStatuses();
+        LatestProbeStatuses latestProbeStatuses = new LatestProbeStatuses();
 
         CheckProbe probe = prepareMock();
 
-        ProbeChecker checker = new ProbeChecker(probe, latestsProbeStatuses);
+        ProbeChecker checker = new ProbeChecker(probe, latestProbeStatuses);
         checker.run();
 
         while (checker.isWorking()) {
             Thread.sleep(5);
         }
 
-        ProbeResponse actual = latestsProbeStatuses.getStatus(host, application);
+        ProbeResponse actual = latestProbeStatuses.getStatus(host, application);
 
         assertThat(actual).isEqualTo(expected);
     }
