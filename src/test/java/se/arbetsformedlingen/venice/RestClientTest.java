@@ -7,8 +7,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Set;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -67,103 +68,7 @@ public class RestClientTest {
         System.out.println("Done");
     }
 
-    @Test
-    @Ignore
-    public void schedule_many_executions() throws Exception {
-        ProbeStatus probeStatus = new ProbeStatus();
-
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        String[] hostNames = {"foo", "bar", "foobar"};
-
-        for (String hostName : hostNames) {
-            ProbeChecker probeChecker = new ProbeChecker(hostName, probeStatus);
-            scheduler.scheduleAtFixedRate(probeChecker, 0, 1, SECONDS);
-        }
-
-        pause();
-
-        for (String host : probeStatus.getHosts()) {
-            System.out.println("Status for " + host + " is " + probeStatus.getStatus(host));
-        }
-
-        System.out.println("Done - updated statuses " + probeStatus.calledTimes());
-
-    }
-
     private void pause() throws InterruptedException {
         Thread.sleep(6 * 1000);
-    }
-}
-
-class ProbeChecker implements Runnable {
-    private String hostName;
-    private ProbeStatus probeStatus;
-
-    ProbeChecker(String hostName, ProbeStatus probeStatus) {
-        this.hostName = hostName;
-        this.probeStatus = probeStatus;
-    }
-
-    @Override
-    public void run() {
-        CheckProbeFor checkProbeFor = new CheckProbeFor(hostName);
-        CompletableFuture.supplyAsync(checkProbeFor)
-                .thenAccept(result -> {
-                    probeStatus.addStatus(hostName, result);
-                    System.out.println(result);
-                });
-        System.out.println("submitted check");
-    }
-}
-
-class CheckProbeFor implements java.util.function.Supplier<String> {
-    private String hostname;
-
-    CheckProbeFor(String hostname) {
-        this.hostname = hostname;
-    }
-
-    @Override
-    public String get() {
-        long time = 0;
-        try {
-            time = randomPause();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        System.out.println("Checking " + hostname + " took " + time + " ms");
-        return "Online";
-    }
-
-    private long randomPause() throws InterruptedException {
-        long time = (long) (Math.random() * 6000);
-        Thread.sleep(time);
-        return time;
-    }
-
-}
-
-class ProbeStatus {
-    private static ConcurrentMap<String, String> probeStatuses = new ConcurrentHashMap<>();
-    private static int times = 0;
-
-    void addStatus(String host, String status) {
-        synchronized (this) {
-            times++;
-        }
-
-        probeStatuses.put(host, status);
-    }
-
-    Set<String> getHosts() {
-        return probeStatuses.keySet();
-    }
-
-    String getStatus(String host) {
-        return probeStatuses.get(host);
-    }
-
-    int calledTimes() {
-        return times;
     }
 }
