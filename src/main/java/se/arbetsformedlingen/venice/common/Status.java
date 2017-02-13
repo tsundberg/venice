@@ -9,6 +9,10 @@ public class Status {
         this.status = status;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
