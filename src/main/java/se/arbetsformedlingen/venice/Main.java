@@ -1,5 +1,7 @@
 package se.arbetsformedlingen.venice;
 
+import se.arbetsformedlingen.venice.index.IndexController;
+import se.arbetsformedlingen.venice.probe.ProbeController;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -14,7 +16,7 @@ public class Main {
     public static void main(String[] args) {
         staticFileLocation("/public");
 
-        getView("/", MainViewController::getView);
+        getView("/", IndexController::getView);
         getString("/probes", ProbeController::getStatus);
     }
 

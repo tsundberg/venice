@@ -1,4 +1,4 @@
-package se.arbetsformedlingen.venice;
+package se.arbetsformedlingen.venice.probe;
 
 import spark.Request;
 import spark.Response;

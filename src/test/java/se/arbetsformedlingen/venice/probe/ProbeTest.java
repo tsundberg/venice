@@ -1,9 +1,9 @@
-package se.arbetsformedlingen.venice;
+package se.arbetsformedlingen.venice.probe;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import org.json.JSONObject;
 import org.junit.Test;
+import se.arbetsformedlingen.venice.probe.ProbeController;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
