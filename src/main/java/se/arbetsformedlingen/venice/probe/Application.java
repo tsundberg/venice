@@ -9,6 +9,10 @@ public class Application {
         this.application = application;
     }
 
+    String getApplicationName() {
+        return application;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
