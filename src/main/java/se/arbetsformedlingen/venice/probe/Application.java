@@ -21,4 +21,11 @@ public class Application {
     public int hashCode() {
         return Objects.hash(application);
     }
+
+    @Override
+    public String toString() {
+        return "Application{" +
+                "application='" + application + '\'' +
+                '}';
+    }
 }

@@ -21,4 +21,11 @@ public class Host {
     public int hashCode() {
         return Objects.hash(host);
     }
+
+    @Override
+    public String toString() {
+        return "Host{" +
+                "host='" + host + '\'' +
+                '}';
+    }
 }

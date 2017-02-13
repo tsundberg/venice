@@ -21,4 +21,11 @@ public class Status {
     public int hashCode() {
         return Objects.hash(status);
     }
+
+    @Override
+    public String toString() {
+        return "Status{" +
+                "status='" + status + '\'' +
+                '}';
+    }
 }

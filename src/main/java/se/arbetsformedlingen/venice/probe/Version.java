@@ -21,4 +21,11 @@ public class Version {
     public int hashCode() {
         return Objects.hash(version);
     }
+
+    @Override
+    public String toString() {
+        return "Version{" +
+                "version='" + version + '\'' +
+                '}';
+    }
 }
