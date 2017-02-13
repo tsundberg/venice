@@ -19,11 +19,17 @@ public class ProbeCheckScheduler {
     }
 
     private void addProbes() {
-        CheckProbe gfr_U1 = new CheckProbe(new Host(Hosts.GFR_U1), new Application("gfr"));
-        probes.add(new ProbeChecker(gfr_U1, latestProbeStatuses));
+        Application gfr = new Application("gfr");
+        for (String hostName : Hosts.getGFRHosts()) {
+            CheckProbe probe = new CheckProbe(new Host(hostName), gfr);
+            probes.add(new ProbeChecker(probe, latestProbeStatuses));
+        }
 
-        CheckProbe geo_U1 = new CheckProbe(new Host(Hosts.GEO_U1), new Application("geo"));
-        probes.add(new ProbeChecker(geo_U1, latestProbeStatuses));
+        Application geo = new Application("geo");
+        for (String hostName : Hosts.getGFRHosts()) {
+            CheckProbe probe = new CheckProbe(new Host(hostName), geo);
+            probes.add(new ProbeChecker(probe, latestProbeStatuses));
+        }
     }
 
     public void startChecking(int period, TimeUnit unit) {
