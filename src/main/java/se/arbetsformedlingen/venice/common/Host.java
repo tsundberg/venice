@@ -9,10 +9,6 @@ public class Host {
         this.host = host;
     }
 
-    public String getName() {
-        return host;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -28,8 +24,6 @@ public class Host {
 
     @Override
     public String toString() {
-        return "Host{" +
-                "host='" + host + '\'' +
-                '}';
+        return host;
     }
 }

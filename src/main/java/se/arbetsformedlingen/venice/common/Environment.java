@@ -17,10 +17,16 @@ public class Environment {
         return name;
     }
 
-    public void addHost(Host host) {
+    void addHost(Host host) {
         hosts.add(host);
     }
+
     public List<Host> getHosts() {
         return hosts;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

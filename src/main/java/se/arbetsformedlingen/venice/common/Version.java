@@ -9,10 +9,6 @@ public class Version {
         this.version = version;
     }
 
-    public String getVersion() {
-        return version;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -28,8 +24,6 @@ public class Version {
 
     @Override
     public String toString() {
-        return "Version{" +
-                "version='" + version + '\'' +
-                '}';
+        return version;
     }
 }
