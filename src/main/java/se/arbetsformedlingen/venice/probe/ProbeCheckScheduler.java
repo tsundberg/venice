@@ -1,8 +1,8 @@
 package se.arbetsformedlingen.venice.probe;
 
 import se.arbetsformedlingen.venice.common.Application;
+import se.arbetsformedlingen.venice.common.Applications;
 import se.arbetsformedlingen.venice.common.Host;
-import se.arbetsformedlingen.venice.common.Hosts;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,16 +19,11 @@ public class ProbeCheckScheduler {
     }
 
     private void addProbes() {
-        Application gfr = new Application("gfr");
-        for (String hostName : Hosts.getGFRHosts()) {
-            CheckProbe probe = new CheckProbe(new Host(hostName), gfr);
-            probes.add(new ProbeChecker(probe, latestProbeStatuses));
-        }
-
-        Application geo = new Application("geo");
-        for (String hostName : Hosts.getGFRHosts()) {
-            CheckProbe probe = new CheckProbe(new Host(hostName), geo);
-            probes.add(new ProbeChecker(probe, latestProbeStatuses));
+        for (Application app : Applications.getApplications()) {
+            for (Host host : app.getHosts()) {
+                CheckProbe probe = new CheckProbe(host, app);
+                probes.add(new ProbeChecker(probe, latestProbeStatuses));
+            }
         }
     }
 
