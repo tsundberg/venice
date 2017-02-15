@@ -14,8 +14,8 @@ public class LatestProbeStatusesTest {
 
         ProbeResponse actual = statuses.getStatus(new Host("host name"), new Application("application name"));
 
-        assertThat(actual.getHostName()).isEqualTo("host name");
-        assertThat(actual.getApplicationName()).isEqualTo("application name");
+        assertThat(actual.getHost().toString()).isEqualTo("host name");
+        assertThat(actual.getApplication().toString()).isEqualTo("application name");
         assertThat(actual.getStatus()).isEqualTo("Unknown");
         assertThat(actual.getVersion()).isEqualTo("Unknown");
     }

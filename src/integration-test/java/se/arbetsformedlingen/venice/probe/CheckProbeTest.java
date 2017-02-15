@@ -10,16 +10,14 @@ public class CheckProbeTest {
 
     @Test
     public void check_gfr_u1() {
-        String hostName = "L7700649.u1.local";
-        Host host = new Host(hostName);
-        String applicationName = "gfr";
-        Application application = new Application(applicationName);
+        Host host = new Host("L7700649.u1.local");
+        Application application = new Application("gfr");
         CheckProbe probe = new CheckProbe(host, application);
 
         ProbeResponse actual = probe.get();
 
-        assertThat(actual.getHostName()).isEqualTo(hostName);
-        assertThat(actual.getApplicationName()).isEqualTo(applicationName);
+        assertThat(actual.getHost()).isEqualTo(host);
+        assertThat(actual.getApplication()).isEqualTo(application);
     }
 
 }
