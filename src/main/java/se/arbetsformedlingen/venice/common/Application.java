@@ -1,6 +1,7 @@
 package se.arbetsformedlingen.venice.common;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,16 +14,21 @@ public class Application {
         this.environments = new ArrayList<>();
     }
 
-    public String getApplicationName() {
-        return application;
-    }
-
-    public void addEnvironment(Environment env) {
+    void addEnvironment(Environment env) {
         this.environments.add(env);
     }
 
     public List<Environment> getEnvironments() {
         return environments;
+    }
+
+    public List<Host> getHosts() {
+        List<Host> hosts = new LinkedList<>();
+        for (Environment env : getEnvironments()) {
+            hosts.addAll(env.getHosts());
+        }
+
+        return hosts;
     }
 
     @Override
@@ -40,8 +46,6 @@ public class Application {
 
     @Override
     public String toString() {
-        return "Application{" +
-                "application='" + application + '\'' +
-                '}';
+        return application;
     }
 }
