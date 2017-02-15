@@ -27,10 +27,12 @@ function createEnvironmentContainer(env) {
             serverElement.addClass("col-sm-offset-1");
         }
         serverElement.addClass("server");
-        if (server.status == "online") {
-            serverElement.addClass("server-online");
+        if (server.status == "OK") {
+            serverElement.addClass("server-ok");
+        } if (server.status == "WARNING") {
+            serverElement.addClass("server-warning");
         } else {
-            serverElement.addClass("server-offline");
+            serverElement.addClass("server-nok");
         }
 
         var serverNameElement = $(document.createElement("H3"));

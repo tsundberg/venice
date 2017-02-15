@@ -2,10 +2,14 @@
     color: #eee;
 }
 
-.server.server-online {
+.server.server-ok {
     background-color: green;
 }
 
-.server.server-offline {
+.server.server-warning {
+    background-color: yellow;
+}
+
+.server.server-nok {
     background-color: red;
 }
