@@ -29,8 +29,10 @@ function createEnvironmentContainer(env) {
         serverElement.addClass("server");
         if (server.status == "OK") {
             serverElement.addClass("server-ok");
-        } if (server.status == "WARNING") {
+        } else if (server.status == "WARNING") {
             serverElement.addClass("server-warning");
+        } else if (server.status == "Unknown") {
+            serverElement.addClass("server-unknown");
         } else {
             serverElement.addClass("server-nok");
         }

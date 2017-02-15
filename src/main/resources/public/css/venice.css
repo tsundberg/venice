@@ -7,7 +7,12 @@
 }
 
 .server.server-warning {
+    color: black;
     background-color: yellow;
+}
+
+.server.server-unknown {
+    background-color: grey;
 }
 
 .server.server-nok {
