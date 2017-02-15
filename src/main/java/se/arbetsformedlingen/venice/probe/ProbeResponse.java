@@ -22,20 +22,20 @@ public class ProbeResponse {
         this.version = version;
     }
 
-    String getHostName() {
-        return host.getName();
+    Host getHost() {
+        return host;
     }
 
-    String getApplicationName() {
-        return application.getApplicationName();
+    Application getApplication() {
+        return application;
     }
 
     public String getVersion() {
-        return version.getVersion();
+        return version.toString();
     }
 
     public String getStatus() {
-        return status.getStatus();
+        return status.toString();
     }
 
     @Override
