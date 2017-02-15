@@ -53,11 +53,10 @@ public class CheckProbe implements java.util.function.Supplier<ProbeResponse> {
     }
 
     private String getUri() {
-        String hostName = host.getName();
         String port = ports.get(application);
         String ugkForetagProbe = probeNames.get(application);
 
-        return "http://" + hostName + port + "/jolokia/read/af-probe:probe=" + ugkForetagProbe + "/";
+        return "http://" + host + port + "/jolokia/read/af-probe:probe=" + ugkForetagProbe + "/";
     }
 
     private Executor getAuthenticatedExecutor() {
