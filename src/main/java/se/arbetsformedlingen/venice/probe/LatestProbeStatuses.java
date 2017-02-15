@@ -12,16 +12,13 @@ class LatestProbeStatuses {
     private static ConcurrentMap<String, ProbeResponse> probeStatuses = new ConcurrentHashMap<>();
 
     void addStatus(ProbeResponse value) {
-        String key = generateKey(value.getHostName(), value.getApplicationName());
+        String key = generateKey(value.getHost(), value.getApplication());
 
         probeStatuses.put(key, value);
     }
 
     ProbeResponse getStatus(Host host, Application application) {
-        String hostName = host.getName();
-        String applicationName = application.getApplicationName();
-
-        String key = generateKey(hostName, applicationName);
+        String key = generateKey(host, application);
 
         if (probeStatuses.containsKey(key)) {
             return probeStatuses.get(key);
@@ -32,7 +29,7 @@ class LatestProbeStatuses {
         return new ProbeResponse(application, host, status, version);
     }
 
-    private String generateKey(String host, String application) {
+    private String generateKey(Host host, Application application) {
         return host + "->" + application;
     }
 }
