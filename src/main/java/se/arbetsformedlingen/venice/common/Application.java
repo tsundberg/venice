@@ -1,17 +1,42 @@
 package se.arbetsformedlingen.venice.common;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Application {
     private String application;
     private List<Environment> environments;
 
+    private static Map<String, String> probeNames;
+    private static Map<String, String> ports;
+
     public Application(String application) {
         this.application = application;
         this.environments = new ArrayList<>();
+
+        addPorts();
+        addProbes();
+    }
+
+    private void addPorts() {
+        if (ports == null) {
+            ports = new HashMap<>();
+
+            ports.put("gfr", "/wildfly05");
+            ports.put("geo", "/wildfly01");
+            ports.put("cpr", "/wildfly05");
+            ports.put("marknadsanalys", "/wildfly02");
+        }
+    }
+
+    private void addProbes() {
+        if (probeNames == null) {
+            probeNames = new HashMap<>();
+
+            probeNames.put("gfr", "UgkForetagProbe");
+            probeNames.put("geo", "UgkGeoProbe");
+            probeNames.put("cpr", "CprProbe");
+            probeNames.put("marknadsanalys", "MarknadsanalysProbe");
+        }
     }
 
     void addEnvironment(Environment env) {
@@ -29,6 +54,14 @@ public class Application {
         }
 
         return hosts;
+    }
+
+    public String getProbeName() {
+        return probeNames.get(application);
+    }
+
+    public String getPort() {
+        return ports.get(application);
     }
 
     @Override

@@ -14,29 +14,9 @@ public class CheckProbe implements java.util.function.Supplier<ProbeResponse> {
     private final Host host;
     private final Application application;
 
-    private Map<Application, String> ports = new HashMap<>();
-    private Map<Application, String> probeNames = new HashMap<>();
-
     CheckProbe(Host host, Application application) {
         this.host = host;
         this.application = application;
-
-        addPorts();
-        addProbeNames();
-    }
-
-    private void addPorts() {
-        ports.put(new Application("gfr"), "/wildfly05");
-        ports.put(new Application("geo"), "/wildfly01");
-        ports.put(new Application("cpr"), "/wildfly05");
-        ports.put(new Application("marknadsanalys"), "/wildfly02");
-    }
-
-    private void addProbeNames() {
-        probeNames.put(new Application("gfr"), "UgkForetagProbe");
-        probeNames.put(new Application("geo"), "UgkGeoProbe");
-        probeNames.put(new Application("cpr"), "CprProbe");
-        probeNames.put(new Application("marknadsanalys"), "MarknadsanalysProbe");
     }
 
     @Override
@@ -57,10 +37,10 @@ public class CheckProbe implements java.util.function.Supplier<ProbeResponse> {
     }
 
     private String getUri() {
-        String port = ports.get(application);
-        String ugkForetagProbe = probeNames.get(application);
+        String port = application.getPort();
+        String probeName = application.getProbeName();
 
-        return "http://" + host + port + "/jolokia/read/af-probe:probe=" + ugkForetagProbe + "/";
+        return "http://" + host + port + "/jolokia/read/af-probe:probe=" + probeName + "/";
     }
 
     private Executor getAuthenticatedExecutor() {
