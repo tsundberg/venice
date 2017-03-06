@@ -17,7 +17,7 @@ import java.util.function.BiFunction;
 
 import static spark.Spark.staticFileLocation;
 
-public class Main {
+public class Venice {
     public static void main(String[] args) {
         staticFileLocation("/public");
 

@@ -65,7 +65,7 @@ shadowJar {
     exclude 'META-INF/*.DSA'
     exclude 'META-INF/*.RSA'
     manifest {
-        attributes 'Main-Class': 'se.arbetsformedlingen.venice.Main',
+        attributes 'Main-Class': 'se.arbetsformedlingen.venice.Venice',
                 'Build-Date': new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date())
     }
 }
