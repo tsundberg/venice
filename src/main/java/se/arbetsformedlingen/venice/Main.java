@@ -1,5 +1,8 @@
 package se.arbetsformedlingen.venice;
 
+import se.arbetsformedlingen.venice.build.BuildCheckScheduler;
+import se.arbetsformedlingen.venice.build.BuildController;
+import se.arbetsformedlingen.venice.common.Scheduler;
 import se.arbetsformedlingen.venice.index.IndexController;
 import se.arbetsformedlingen.venice.probe.ProbeCheckScheduler;
 import se.arbetsformedlingen.venice.probe.ProbeController;
@@ -20,8 +23,10 @@ public class Main {
 
         getView("/", IndexController::getView);
         getString("/probes", ProbeController::getStatus);
+        getString("/builds", BuildController::getBuilds);
 
-        scheduleProbes();
+        scheduleBuildChecks();
+        scheduleProbeChecks();
     }
 
     private static void getView(String route, BiFunction<Request, Response, ModelAndView> controller) {
@@ -32,8 +37,13 @@ public class Main {
         Spark.get(route, transformer::apply);
     }
 
-    private static void scheduleProbes() {
-        ProbeCheckScheduler scheduler = new ProbeCheckScheduler();
+    private static void scheduleBuildChecks() {
+        Scheduler scheduler = new BuildCheckScheduler();
+        scheduler.startChecking(30, TimeUnit.SECONDS);
+    }
+
+    private static void scheduleProbeChecks() {
+        Scheduler scheduler = new ProbeCheckScheduler();
         scheduler.startChecking(30, TimeUnit.SECONDS);
     }
 }
