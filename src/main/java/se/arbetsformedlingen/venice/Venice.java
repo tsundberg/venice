@@ -1,7 +1,7 @@
 package se.arbetsformedlingen.venice;
 
-import se.arbetsformedlingen.venice.build.BuildCheckScheduler;
-import se.arbetsformedlingen.venice.build.BuildController;
+import se.arbetsformedlingen.venice.ci.BuildCheckScheduler;
+import se.arbetsformedlingen.venice.ci.BuildController;
 import se.arbetsformedlingen.venice.common.Scheduler;
 import se.arbetsformedlingen.venice.index.IndexController;
 import se.arbetsformedlingen.venice.probe.ProbeCheckScheduler;

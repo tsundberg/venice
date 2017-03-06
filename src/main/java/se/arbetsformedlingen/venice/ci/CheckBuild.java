@@ -1,4 +1,4 @@
-package se.arbetsformedlingen.venice.build;
+package se.arbetsformedlingen.venice.ci;
 
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;

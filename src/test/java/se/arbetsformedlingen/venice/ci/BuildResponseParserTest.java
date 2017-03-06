@@ -1,9 +1,8 @@
-package se.arbetsformedlingen.venice.build;
+package se.arbetsformedlingen.venice.ci;
 
 import org.junit.Test;
 import se.arbetsformedlingen.venice.common.Application;
 import se.arbetsformedlingen.venice.common.Status;
-import se.arbetsformedlingen.venice.probe.ProbeResponse;
 
 import java.util.List;
 

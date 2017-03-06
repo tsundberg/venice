@@ -1,4 +1,4 @@
-package se.arbetsformedlingen.venice.build;
+package se.arbetsformedlingen.venice.ci;
 
 import org.junit.Test;
 import se.arbetsformedlingen.venice.common.Application;

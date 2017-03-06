@@ -1,4 +1,4 @@
-package se.arbetsformedlingen.venice.build;
+package se.arbetsformedlingen.venice.ci;
 
 import se.arbetsformedlingen.venice.common.Scheduler;
 
