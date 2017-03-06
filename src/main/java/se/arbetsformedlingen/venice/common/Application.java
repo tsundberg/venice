@@ -3,14 +3,14 @@ package se.arbetsformedlingen.venice.common;
 import java.util.*;
 
 public class Application {
-    private String application;
+    private String name;
     private List<Environment> environments;
 
     private static Map<String, String> probeNames;
     private static Map<String, String> ports;
 
-    public Application(String application) {
-        this.application = application;
+    public Application(String name) {
+        this.name = name;
         this.environments = new ArrayList<>();
 
         addPorts();
@@ -57,11 +57,15 @@ public class Application {
     }
 
     public String getProbeName() {
-        return probeNames.get(application);
+        return probeNames.get(name);
     }
 
     public String getPort() {
-        return ports.get(application);
+        return ports.get(name);
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
@@ -69,16 +73,16 @@ public class Application {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Application that = (Application) o;
-        return Objects.equals(application, that.application);
+        return Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(application);
+        return Objects.hash(name);
     }
 
     @Override
     public String toString() {
-        return application;
+        return name;
     }
 }
