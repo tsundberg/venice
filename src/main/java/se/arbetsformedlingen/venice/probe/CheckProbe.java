@@ -14,6 +14,9 @@ public class CheckProbe implements java.util.function.Supplier<ProbeResponse> {
     @Override
     public ProbeResponse get() {
         String uri = getUri();
+
+        System.out.println(uri);
+
         Executor executor = getAuthenticatedExecutor();
 
         String result;

@@ -16,4 +16,15 @@ public class ApplicationTest {
 
         assertThat(actual).isEqualTo(expected);
     }
+
+    @Test
+    public void get_agselect_probename(){
+        String expected = "MarknadsanalysProbe";
+
+        Application app = new Application("agselect");
+
+        String actual = app.getProbeName();
+
+        assertThat(actual).isEqualTo(expected);
+    }
 }

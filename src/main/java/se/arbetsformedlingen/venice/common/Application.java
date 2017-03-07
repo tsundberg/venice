@@ -21,11 +21,11 @@ public class Application {
             probeNames.put("gfr", "UgkForetagProbe");
             probeNames.put("geo", "UgkGeoProbe");
             probeNames.put("cpr", "CprProbe");
-            probeNames.put("marknadsanalys", "MarknadsanalysProbe");
+            probeNames.put("agselect", "MarknadsanalysProbe");
         }
     }
 
-    public String getProbeName() {
+    String getProbeName() {
         return probeNames.get(name);
     }
 
