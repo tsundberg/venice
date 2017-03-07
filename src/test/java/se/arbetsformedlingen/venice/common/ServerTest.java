@@ -1,36 +1,17 @@
-package se.arbetsformedlingen.venice.probe;
+package se.arbetsformedlingen.venice.common;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import org.junit.Test;
-import se.arbetsformedlingen.venice.common.*;
-import se.arbetsformedlingen.venice.probe.ProbeController;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class ProbeControllerTest {
+public class ServerTest {
 
     @Test
-    public void probe_status_for_gfr() {
-        String expected = "[" +
-                "{\"name\":\"agselect\",\"environments\":[{\"name\":\"production\",\"servers\":{\"L7700746\":{\"status\":\"online\",\"version\":\"4.6.401\"},\"L7700747\":{\"status\":\"online\",\"version\":\"4.6.401\"},\"L7700770\":{\"status\":\"offline\",\"version\":\"4.6.401\"}}},{\"name\":\"t2\",\"servers\":{\"L7700746\":{\"status\":\"online\",\"version\":\"4.6.401\"},\"L7700747\":{\"status\":\"online\",\"version\":\"4.6.401\"}}},{\"name\":\"t1\",\"servers\":{\"L7700746\":{\"status\":\"online\",\"version\":\"4.6.401\"}}},{\"name\":\"i1\",\"servers\":{\"L7700746\":{\"status\":\"online\",\"version\":\"4.6.401\"}}},{\"name\":\"u1\",\"servers\":{\"L7700746\":{\"status\":\"online\",\"version\":\"4.6.401\"}}}]}," +
-                "{\"name\":\"cpr\",\"environments\":[{\"name\":\"production\",\"servers\":{\"L7700746\":{\"status\":\"online\",\"version\":\"4.6.401\"},\"L7700747\":{\"status\":\"online\",\"version\":\"4.6.401\"},\"L7700770\":{\"status\":\"offline\",\"version\":\"4.6.401\"}}},{\"name\":\"t2\",\"servers\":{\"L7700746\":{\"status\":\"online\",\"version\":\"4.6.401\"},\"L7700747\":{\"status\":\"online\",\"version\":\"4.6.401\"}}},{\"name\":\"t1\",\"servers\":{\"L7700746\":{\"status\":\"online\",\"version\":\"4.6.401\"}}},{\"name\":\"i1\",\"servers\":{\"L7700746\":{\"status\":\"online\",\"version\":\"4.6.401\"}}},{\"name\":\"u1\",\"servers\":{\"L7700746\":{\"status\":\"online\",\"version\":\"4.6.401\"}}}]}," +
-                "{\"name\":\"geo\",\"environments\":[{\"name\":\"production\",\"servers\":{\"L7700746\":{\"status\":\"online\",\"version\":\"4.6.401\"},\"L7700747\":{\"status\":\"online\",\"version\":\"4.6.401\"},\"L7700770\":{\"status\":\"offline\",\"version\":\"4.6.401\"}}},{\"name\":\"t2\",\"servers\":{\"L7700746\":{\"status\":\"online\",\"version\":\"4.6.401\"},\"L7700747\":{\"status\":\"online\",\"version\":\"4.6.401\"}}},{\"name\":\"t1\",\"servers\":{\"L7700746\":{\"status\":\"online\",\"version\":\"4.6.401\"}}},{\"name\":\"i1\",\"servers\":{\"L7700746\":{\"status\":\"online\",\"version\":\"4.6.401\"}}},{\"name\":\"u1\",\"servers\":{\"L7700746\":{\"status\":\"online\",\"version\":\"4.6.401\"}}}]}," +
-                "{\"name\":\"gfr\",\"environments\":[{\"name\":\"production\",\"servers\":{\"L7700747\":{\"status\":\"online\",\"version\":\"4.6.401\"},\"L7700746\":{\"status\":\"online\",\"version\":\"4.6.401\"},\"L7700770\":{\"status\":\"offline\",\"version\":\"4.6.401\"}}},{\"name\":\"t2\",\"servers\":{\"L7700746\":{\"status\":\"online\",\"version\":\"4.6.401\"},\"L7700747\":{\"status\":\"online\",\"version\":\"4.6.401\"}}},{\"name\":\"t1\",\"servers\":{\"L7700746\":{\"status\":\"online\",\"version\":\"4.6.401\"}}},{\"name\":\"i1\",\"servers\":{\"L7700746\":{\"status\":\"online\",\"version\":\"4.6.401\"}}},{\"name\":\"u1\",\"servers\":{\"L7700746\":{\"status\":\"online\",\"version\":\"4.6.401\"}}}]}" +
-                "]";
-
-        JsonRespnseBuilder resBuilder = new JsonRespnseBuilder(new LatestProbeStatuses());
-
-        String actual = resBuilder.build(getServers());
-
-        System.out.println(actual);
-    }
-
-    private List<Server> getServers() {
+    public void sort_servers() {
         Application geo = new Application("geo");
         Application cpr = new Application("cpr");
         Application gfr = new Application("gfr");
@@ -117,7 +98,12 @@ public class ProbeControllerTest {
         Collections.shuffle(servers);
         Collections.sort(servers);
 
-        return servers;
-    }
+        assertThat(servers).containsExactly(
+                agselect8, agselect7, agselect6, agselect5, agselect4, agselect3, agselect2, agselect1,
+                cpr8, cpr7, cpr6, cpr5, cpr4, cpr3, cpr2, cpr1,
+                geo8, geo7, geo6, geo5, geo4, geo3, geo2, geo1,
+                gfr8, gfr7, gfr6, gfr5, gfr4, gfr3, gfr2, gfr1
+        );
 
+    }
 }

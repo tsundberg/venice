@@ -1,16 +1,13 @@
 package se.arbetsformedlingen.venice.probe;
 
 import org.json.JSONObject;
-import se.arbetsformedlingen.venice.common.Application;
-import se.arbetsformedlingen.venice.common.Host;
-import se.arbetsformedlingen.venice.common.Status;
-import se.arbetsformedlingen.venice.common.Version;
+import se.arbetsformedlingen.venice.common.*;
 
 class ProbeResponseParser {
     private ProbeResponseParser() {
     }
 
-    static ProbeResponse parse(String json) {
+    static ProbeResponse parse(Server server, String json) {
         JSONObject jsonObject = new JSONObject(json);
 
         JSONObject probeStatus = jsonObject.getJSONObject("value").getJSONObject("ProbeStatus");
@@ -27,6 +24,6 @@ class ProbeResponseParser {
         String applicationVersion = probeStatus.getString("applicationVersion");
         Version version = new Version(applicationVersion);
 
-        return new ProbeResponse(application, host, status, version);
+        return new ProbeResponse(server, status, version);
     }
 }

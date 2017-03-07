@@ -1,10 +1,7 @@
 package se.arbetsformedlingen.venice.probe;
 
 import org.junit.Test;
-import se.arbetsformedlingen.venice.common.Application;
-import se.arbetsformedlingen.venice.common.Host;
-import se.arbetsformedlingen.venice.common.Status;
-import se.arbetsformedlingen.venice.common.Version;
+import se.arbetsformedlingen.venice.common.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.mock;
@@ -14,11 +11,16 @@ public class ProbeCheckerTest {
 
     @Test
     public void check_probe() throws Exception {
-        Host host = new Host("L7700770");
         Application application = new Application("gfr");
+        Environment environment = new Environment("u1");
+        Host host = new Host("L7700770");
+        Port port = new Port("8580");
+        Server server = new Server(application, environment, host, port);
+
         Status status = new Status("OK");
         Version version = new Version("4.6.470");
-        ProbeResponse expected = new ProbeResponse(application, host, status, version);
+
+        ProbeResponse expected = new ProbeResponse(server, status, version);
 
         LatestProbeStatuses latestProbeStatuses = new LatestProbeStatuses();
 
@@ -31,7 +33,7 @@ public class ProbeCheckerTest {
             Thread.sleep(5);
         }
 
-        ProbeResponse actual = latestProbeStatuses.getStatus(host, application);
+        ProbeResponse actual = latestProbeStatuses.getStatus(server);
 
         assertThat(actual).isEqualTo(expected);
     }
@@ -40,10 +42,14 @@ public class ProbeCheckerTest {
         CheckProbe checkProbe = mock(CheckProbe.class);
 
         Application application = new Application("gfr");
+        Environment environment = new Environment("u1");
         Host host = new Host("L7700770");
+        Port port = new Port("8580");
+        Server server = new Server(application, environment, host, port);
+
         Status status = new Status("OK");
         Version version = new Version("4.6.470");
-        ProbeResponse response = new ProbeResponse(application, host, status, version);
+        ProbeResponse response = new ProbeResponse(server, status, version);
 
         when(checkProbe.get()).thenReturn(response);
 

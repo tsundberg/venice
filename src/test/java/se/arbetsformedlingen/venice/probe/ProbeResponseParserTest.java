@@ -1,10 +1,7 @@
 package se.arbetsformedlingen.venice.probe;
 
 import org.junit.Test;
-import se.arbetsformedlingen.venice.common.Application;
-import se.arbetsformedlingen.venice.common.Host;
-import se.arbetsformedlingen.venice.common.Status;
-import se.arbetsformedlingen.venice.common.Version;
+import se.arbetsformedlingen.venice.common.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -14,14 +11,18 @@ public class ProbeResponseParserTest {
     public void parse_probe_response() {
         Application application = new Application("gfr");
         Host host = new Host("L7700649.u1.local");
+        Environment environment = new Environment("u1");
+        Port  port = new Port("8580");
+        Server server = new Server (application, environment, host, port);
+
         Version version = new Version("4.6.470");
         Status status = new Status("ERROR");
 
-        ProbeResponse expected = new ProbeResponse(application, host, status, version);
+        ProbeResponse expected = new ProbeResponse(server, status, version);
 
         String sampleJson = getSampleJson();
 
-        ProbeResponse actual = ProbeResponseParser.parse(sampleJson);
+        ProbeResponse actual = ProbeResponseParser.parse(server, sampleJson);
 
         assertThat(actual).isEqualTo(expected);
     }

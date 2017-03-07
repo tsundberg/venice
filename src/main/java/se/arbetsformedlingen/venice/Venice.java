@@ -3,15 +3,18 @@ package se.arbetsformedlingen.venice;
 import se.arbetsformedlingen.venice.ci.BuildCheckScheduler;
 import se.arbetsformedlingen.venice.ci.BuildController;
 import se.arbetsformedlingen.venice.common.Scheduler;
+import se.arbetsformedlingen.venice.common.Server;
 import se.arbetsformedlingen.venice.index.IndexController;
 import se.arbetsformedlingen.venice.probe.ProbeCheckScheduler;
 import se.arbetsformedlingen.venice.probe.ProbeController;
+import se.arbetsformedlingen.venice.tpjadmin.TPJAdmin;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
 import spark.template.mustache.MustacheTemplateEngine;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiFunction;
 
@@ -43,7 +46,8 @@ public class Venice {
     }
 
     private static void scheduleProbeChecks() {
-        Scheduler scheduler = new ProbeCheckScheduler();
+        List<Server> servers = TPJAdmin.prepareServers();
+        Scheduler scheduler = new ProbeCheckScheduler(servers);
         scheduler.startChecking(30, TimeUnit.SECONDS);
     }
 }

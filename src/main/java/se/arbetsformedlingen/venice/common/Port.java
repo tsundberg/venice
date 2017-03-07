@@ -2,32 +2,32 @@ package se.arbetsformedlingen.venice.common;
 
 import java.util.Objects;
 
-public class Host {
-    private String host;
+public class Port {
+    private String number;
 
-    public Host(String host) {
-        this.host = host;
+    public Port(String number) {
+        this.number = number;
     }
 
-    public String getName() {
-        return host;
+    public String getNumber() {
+        return number;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Host host1 = (Host) o;
-        return Objects.equals(host, host1.host);
+        Port port = (Port) o;
+        return Objects.equals(number, port.number);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(host);
+        return Objects.hash(number);
     }
 
     @Override
     public String toString() {
-        return host;
+        return number;
     }
 }

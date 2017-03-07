@@ -16,15 +16,4 @@ public class ApplicationTest {
 
         assertThat(actual).isEqualTo(expected);
     }
-
-    @Test
-    public void get_gfr_port(){
-        String expected = "/wildfly05";
-
-        Application app = new Application("gfr");
-
-        String actual = app.getPort();
-
-        assertThat(actual).isEqualTo(expected);
-    }
 }

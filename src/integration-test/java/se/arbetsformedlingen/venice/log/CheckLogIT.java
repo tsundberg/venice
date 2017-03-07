@@ -29,7 +29,7 @@ import java.util.Map;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
-public class CheckLogTest {
+public class CheckLogIT {
 
     private Client client;
 

@@ -13,7 +13,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-public class RestClientTest {
+public class RestClientIT {
 
     @Test
     @Ignore

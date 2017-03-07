@@ -2,21 +2,13 @@ package se.arbetsformedlingen.venice.probe;
 
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
-import se.arbetsformedlingen.venice.common.Application;
-import se.arbetsformedlingen.venice.common.Host;
-import se.arbetsformedlingen.venice.common.Status;
-import se.arbetsformedlingen.venice.common.Version;
-
-import java.util.HashMap;
-import java.util.Map;
+import se.arbetsformedlingen.venice.common.*;
 
 public class CheckProbe implements java.util.function.Supplier<ProbeResponse> {
-    private final Host host;
-    private final Application application;
+    private Server server;
 
-    CheckProbe(Host host, Application application) {
-        this.host = host;
-        this.application = application;
+    CheckProbe(Server server) {
+        this.server = server;
     }
 
     @Override
@@ -30,17 +22,18 @@ public class CheckProbe implements java.util.function.Supplier<ProbeResponse> {
                     .returnContent()
                     .asString();
 
-            return ProbeResponseParser.parse(result);
+            return ProbeResponseParser.parse(server, result);
         } catch (Exception e) {
             return errorResponse(e);
         }
     }
 
     private String getUri() {
-        String port = application.getPort();
-        String probeName = application.getProbeName();
+        String probeName = server.getProbeName();
+        Host host = server.getHost();
+        Port port = server.getPort();
 
-        return "http://" + host + port + "/jolokia/read/af-probe:probe=" + probeName + "/";
+        return "http://" + host + ":" + port + "/jolokia/read/af-probe:probe=" + probeName + "/";
     }
 
     private Executor getAuthenticatedExecutor() {
@@ -54,6 +47,6 @@ public class CheckProbe implements java.util.function.Supplier<ProbeResponse> {
     private ProbeResponse errorResponse(Exception e) {
         Status status = new Status(e.getMessage());
         Version version = new Version("Unknown");
-        return new ProbeResponse(application, host, status, version);
+        return new ProbeResponse(server, status, version);
     }
 }
