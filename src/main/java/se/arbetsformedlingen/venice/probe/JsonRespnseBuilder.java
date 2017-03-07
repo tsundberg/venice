@@ -1,15 +1,13 @@
 package se.arbetsformedlingen.venice.probe;
 
-import se.arbetsformedlingen.venice.common.Server;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import se.arbetsformedlingen.venice.common.Application;
 import se.arbetsformedlingen.venice.common.Environment;
+import se.arbetsformedlingen.venice.common.Server;
 
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
-
-import org.json.JSONObject;
-import org.json.JSONArray;
 
 public class JsonRespnseBuilder {
     private LatestProbeStatuses statuses;
@@ -19,14 +17,20 @@ public class JsonRespnseBuilder {
     }
 
     public String build(List<Server> servers) {
-        Set<Application> apps = new HashSet<>();
-        servers.stream().forEach(srv -> {
-            apps.add(srv.getApplication());
+        List<Application> apps = new LinkedList<>();
+        servers.forEach(srv -> {
+            Application application = srv.getApplication();
+            if (!apps.contains(application)) {
+                apps.add(application);
+            }
         });
 
-        Set<Environment> envs = new HashSet<>();
-        servers.stream().forEach(srv -> {
-            envs.add(srv.getEnvironment());
+        List<Environment> envs = new LinkedList<>();
+        servers.forEach(srv -> {
+            Environment environment = srv.getEnvironment();
+            if (!envs.contains(environment)) {
+                envs.add(environment);
+            }
         });
 
         JSONArray response = new JSONArray();
@@ -36,6 +40,7 @@ public class JsonRespnseBuilder {
 
             JSONArray envList = new JSONArray();
             for (Environment env : envs) {
+
                 JSONObject envObj = new JSONObject();
                 envObj.put("name", env.getName());
 
@@ -61,6 +66,7 @@ public class JsonRespnseBuilder {
 
                 envList.put(envObj);
             }
+            appObj.put("environments", envList);
 
             response.put(appObj);
         }
