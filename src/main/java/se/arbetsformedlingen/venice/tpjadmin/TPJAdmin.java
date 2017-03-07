@@ -24,6 +24,7 @@ public class TPJAdmin {
     static {
         environments.put("T2", "t2");
         environments.put("T1", "t1");
+        environments.put("I1", "i1");
         environments.put("UTV", "u1");
         environments.put("PROD", "prod");
 
