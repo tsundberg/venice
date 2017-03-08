@@ -62,7 +62,7 @@ public class TPJAdmin {
         return applicationServers;
     }
 
-    static List<Application> getApplications() {
+   public static List<Application> getApplications() {
         List<Application> apps = new LinkedList<>();
 
         for (String key : applications.keySet()) {

@@ -4,6 +4,7 @@ import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import se.arbetsformedlingen.venice.common.Application;
 import se.arbetsformedlingen.venice.common.Status;
+import se.arbetsformedlingen.venice.tpjadmin.TPJAdmin;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -31,14 +32,15 @@ public class CheckBuild implements java.util.function.Supplier<List<BuildRespons
         return "http://l7700676.ws.ams.se:8080/job/Masterdata/api/json";
     }
 
-    private List<BuildResponse> errorResponse(Exception e) {
+    List<BuildResponse> errorResponse(Exception e) {
         List<BuildResponse> responses = new LinkedList<>();
 
-        Application application = new Application("gfr");
-        Status status = new Status(e.getMessage());
-        BuildResponse error = new BuildResponse(application, status);
+        for (Application application : TPJAdmin.getApplications()) {
+            Status status = new Status(e.getMessage());
+            BuildResponse error = new BuildResponse(application, status);
 
-        responses.add(error);
+            responses.add(error);
+        }
 
         return responses;
     }
