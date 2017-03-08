@@ -29,7 +29,7 @@ public class CheckProbe implements java.util.function.Supplier<ProbeResponse> {
         }
     }
 
-    private String getUri() {
+    String getUri() {
         String probeName = applicationServer.getProbeName();
         Host host = applicationServer.getHost();
         Port port = applicationServer.getPort();
