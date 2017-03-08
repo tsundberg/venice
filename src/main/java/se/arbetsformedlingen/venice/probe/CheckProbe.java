@@ -45,7 +45,7 @@ public class CheckProbe implements java.util.function.Supplier<ProbeResponse> {
                 .auth(user, password);
     }
 
-    private ProbeResponse errorResponse(Exception e) {
+    ProbeResponse errorResponse(Exception e) {
         Status status = new Status(e.getMessage());
         Version version = new Version("Unknown");
         return new ProbeResponse(applicationServer, status, version);
