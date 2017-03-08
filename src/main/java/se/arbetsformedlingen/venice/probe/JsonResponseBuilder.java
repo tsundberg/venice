@@ -9,10 +9,10 @@ import se.arbetsformedlingen.venice.common.Server;
 import java.util.LinkedList;
 import java.util.List;
 
-class JsonRespnseBuilder {
+class JsonResponseBuilder {
     private LatestProbeStatuses statuses;
 
-    JsonRespnseBuilder(LatestProbeStatuses statuses) {
+    JsonResponseBuilder(LatestProbeStatuses statuses) {
         this.statuses = statuses;
     }
 

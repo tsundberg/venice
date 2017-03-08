@@ -14,8 +14,8 @@ public class ProbeController {
     public static String getStatus(Request request, Response response) {
         consoleLog(statuses);
 
-        JsonRespnseBuilder jsonRespnseBuilder = new JsonRespnseBuilder(statuses);
-        return jsonRespnseBuilder.build(servers);
+        JsonResponseBuilder jsonResponseBuilder = new JsonResponseBuilder(statuses);
+        return jsonResponseBuilder.build(servers);
     }
 
     private static void consoleLog(LatestProbeStatuses statuses) {
