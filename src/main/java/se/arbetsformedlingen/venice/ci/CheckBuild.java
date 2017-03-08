@@ -10,15 +10,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CheckBuild implements java.util.function.Supplier<List<BuildResponse>> {
+    private static final String MASTERDATA_URL = "http://l7700676.ws.ams.se:8080/job/Masterdata/api/json";
 
     @Override
     public List<BuildResponse> get() {
-        String uri = getUri();
         Executor executor = Executor.newInstance();
 
         String result;
         try {
-            result = executor.execute(Request.Get(uri))
+            result = executor.execute(Request.Get(MASTERDATA_URL))
                     .returnContent()
                     .asString();
 
@@ -26,10 +26,6 @@ public class CheckBuild implements java.util.function.Supplier<List<BuildRespons
         } catch (Exception e) {
             return errorResponse(e);
         }
-    }
-
-    private String getUri() {
-        return "http://l7700676.ws.ams.se:8080/job/Masterdata/api/json";
     }
 
     List<BuildResponse> errorResponse(Exception e) {
