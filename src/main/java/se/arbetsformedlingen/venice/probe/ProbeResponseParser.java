@@ -4,9 +4,6 @@ import org.json.JSONObject;
 import se.arbetsformedlingen.venice.common.*;
 
 class ProbeResponseParser {
-    private ProbeResponseParser() {
-    }
-
     static ProbeResponse parse(ApplicationServer applicationServer, String json) {
         JSONObject jsonObject = new JSONObject(json);
 
