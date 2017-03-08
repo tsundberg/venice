@@ -34,10 +34,6 @@ public class Server implements Comparable<Server> {
         return port;
     }
 
-    public String getApplicationName() {
-        return application.getName();
-    }
-
     public String getProbeName() {
         return application.getProbeName();
     }
@@ -60,14 +56,14 @@ public class Server implements Comparable<Server> {
 
     @Override
     public int compareTo(Server o) {
-        int application = getApplicationName().compareTo(o.getApplicationName());
+        int application = this.application.getName().compareTo(o.application.getName());
         if (application != 0) {
             return application;
         }
 
         List<String> environmentOrder = Arrays.asList("prod", "t2", "t1", "i1", "u1");
-        Integer lhsPos = environmentOrder.indexOf(getEnvironment().getName());
-        Integer rhsPos = environmentOrder.indexOf(o.getEnvironment().getName());
+        Integer lhsPos = environmentOrder.indexOf(environment.getName());
+        Integer rhsPos = environmentOrder.indexOf(o.environment.getName());
         int env = lhsPos.compareTo(rhsPos);
         if (env != 0) {
             return env;
