@@ -6,27 +6,27 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class ProbeResponse {
-    private Server server;
+    private ApplicationServer applicationServer;
     private Version version;
     private Status status;
     private LocalDateTime checkTimestamp = LocalDateTime.now();
 
-    ProbeResponse(Server server, Status status, Version version) {
-        this.server = server;
+    ProbeResponse(ApplicationServer applicationServer, Status status, Version version) {
+        this.applicationServer = applicationServer;
         this.status = status;
         this.version = version;
     }
 
-    Server getServer() {
-        return server;
+    ApplicationServer getApplicationServer() {
+        return applicationServer;
     }
 
     Host getHost() {
-        return server.getHost();
+        return applicationServer.getHost();
     }
 
     Application getApplication() {
-        return server.getApplication();
+        return applicationServer.getApplication();
     }
 
     public String getVersion() {
@@ -42,20 +42,20 @@ public class ProbeResponse {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProbeResponse that = (ProbeResponse) o;
-        return Objects.equals(server, that.server) &&
+        return Objects.equals(applicationServer, that.applicationServer) &&
                 Objects.equals(version, that.version) &&
                 Objects.equals(status, that.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(server, version, status);
+        return Objects.hash(applicationServer, version, status);
     }
 
     @Override
     public String toString() {
         return "ProbeResponse{" +
-                "server=" + server +
+                "server=" + applicationServer +
                 ", version=" + version +
                 ", status=" + status +
                 ", checkTimestamp=" + checkTimestamp +

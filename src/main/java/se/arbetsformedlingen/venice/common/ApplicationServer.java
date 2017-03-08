@@ -4,14 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-// todo rename
-public class Server implements Comparable<Server> {
+public class ApplicationServer implements Comparable<ApplicationServer> {
     private final Application application;
     private final Environment environment;
     private final Host host;
     private final Port port;
 
-    public Server(Application application, Environment environment, Host host, Port port) {
+    public ApplicationServer(Application application, Environment environment, Host host, Port port) {
         this.application = application;
         this.environment = environment;
         this.host = host;
@@ -42,11 +41,11 @@ public class Server implements Comparable<Server> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Server server = (Server) o;
-        return Objects.equals(application, server.application) &&
-                Objects.equals(environment, server.environment) &&
-                Objects.equals(host, server.host) &&
-                Objects.equals(port, server.port);
+        ApplicationServer applicationServer = (ApplicationServer) o;
+        return Objects.equals(application, applicationServer.application) &&
+                Objects.equals(environment, applicationServer.environment) &&
+                Objects.equals(host, applicationServer.host) &&
+                Objects.equals(port, applicationServer.port);
     }
 
     @Override
@@ -55,7 +54,7 @@ public class Server implements Comparable<Server> {
     }
 
     @Override
-    public int compareTo(Server o) {
+    public int compareTo(ApplicationServer o) {
         int application = this.application.getName().compareTo(o.application.getName());
         if (application != 0) {
             return application;

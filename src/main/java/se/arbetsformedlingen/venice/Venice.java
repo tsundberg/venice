@@ -3,7 +3,7 @@ package se.arbetsformedlingen.venice;
 import se.arbetsformedlingen.venice.ci.BuildCheckScheduler;
 import se.arbetsformedlingen.venice.ci.BuildController;
 import se.arbetsformedlingen.venice.common.Scheduler;
-import se.arbetsformedlingen.venice.common.Server;
+import se.arbetsformedlingen.venice.common.ApplicationServer;
 import se.arbetsformedlingen.venice.index.IndexController;
 import se.arbetsformedlingen.venice.probe.ProbeCheckScheduler;
 import se.arbetsformedlingen.venice.probe.ProbeController;
@@ -46,8 +46,8 @@ public class Venice {
     }
 
     private static void scheduleProbeChecks() {
-        List<Server> servers = TPJAdmin.prepareServers();
-        Scheduler scheduler = new ProbeCheckScheduler(servers);
+        List<ApplicationServer> applicationServers = TPJAdmin.prepareServers();
+        Scheduler scheduler = new ProbeCheckScheduler(applicationServers);
         scheduler.startChecking(30, TimeUnit.SECONDS);
     }
 }

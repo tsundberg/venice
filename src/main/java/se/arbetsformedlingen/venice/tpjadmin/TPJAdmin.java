@@ -6,14 +6,14 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicHeader;
 import se.arbetsformedlingen.venice.common.Application;
 import se.arbetsformedlingen.venice.common.Environment;
-import se.arbetsformedlingen.venice.common.Server;
+import se.arbetsformedlingen.venice.common.ApplicationServer;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TPJAdmin {
-    private static List<Server> servers = new CopyOnWriteArrayList<>();
+    private static List<ApplicationServer> applicationServers = new CopyOnWriteArrayList<>();
     private static final String host = "l7700759.wpa.ams.se";
     private static final String port = "8180";
     private static final String uri = "/tpjadmin/rest/properties/v0/wildfly/instances/";
@@ -34,11 +34,11 @@ public class TPJAdmin {
         applications.put("agselect", "agselect");
     }
 
-    public static List<Server> getServers() {
-        return servers;
+    public static List<ApplicationServer> getApplicationServers() {
+        return applicationServers;
     }
 
-    public static List<Server> prepareServers() {
+    public static List<ApplicationServer> prepareServers() {
         Executor executor = Executor.newInstance();
 
         System.out.println("Fetching servers");
@@ -46,8 +46,8 @@ public class TPJAdmin {
             for (String env : environments.keySet()) {
                 System.out.print(".");
                 try {
-                    List<Server> srvs = getServers(executor, app, env);
-                    servers.addAll(srvs);
+                    List<ApplicationServer> srvs = getServers(executor, app, env);
+                    applicationServers.addAll(srvs);
                 } catch (IOException e) {
                     e.printStackTrace();
                     System.exit(1);
@@ -57,12 +57,12 @@ public class TPJAdmin {
         System.out.println();
         System.out.println("Servers fetched");
 
-        Collections.sort(servers);
+        Collections.sort(applicationServers);
 
-        return servers;
+        return applicationServers;
     }
 
-    public static List<Application> getApplications() {
+    static List<Application> getApplications() {
         List<Application> apps = new LinkedList<>();
 
         for (String key : applications.keySet()) {
@@ -86,7 +86,7 @@ public class TPJAdmin {
         return envs;
     }
 
-    private static List<Server> getServers(Executor executor, String app, String env) throws IOException {
+    private static List<ApplicationServer> getServers(Executor executor, String app, String env) throws IOException {
         String url = "http://" + host + ":" + port + uri + env + "/" + app + "";
         Header pisaHeader = getPisaId();
 

@@ -7,7 +7,7 @@ class ProbeResponseParser {
     private ProbeResponseParser() {
     }
 
-    static ProbeResponse parse(Server server, String json) {
+    static ProbeResponse parse(ApplicationServer applicationServer, String json) {
         JSONObject jsonObject = new JSONObject(json);
 
         JSONObject probeStatus = jsonObject.getJSONObject("value").getJSONObject("ProbeStatus");
@@ -24,6 +24,6 @@ class ProbeResponseParser {
         String applicationVersion = probeStatus.getString("applicationVersion");
         Version version = new Version(applicationVersion);
 
-        return new ProbeResponse(server, status, version);
+        return new ProbeResponse(applicationServer, status, version);
     }
 }

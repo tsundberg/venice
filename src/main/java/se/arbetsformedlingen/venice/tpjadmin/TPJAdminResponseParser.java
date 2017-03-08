@@ -6,10 +6,10 @@ import se.arbetsformedlingen.venice.common.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TPJAdminResponseParser {
+class TPJAdminResponseParser {
 
-    static List<Server> parse(Application application, Environment environment, String json) {
-        List<Server> servers = new LinkedList<>();
+    static List<ApplicationServer> parse(Application application, Environment environment, String json) {
+        List<ApplicationServer> applicationServers = new LinkedList<>();
 
         JSONObject jsonObject = new JSONObject(json);
 
@@ -27,10 +27,10 @@ public class TPJAdminResponseParser {
 
             Port port = new Port(portNumber);
 
-            Server server = new Server(application, environment, host, port);
-            servers.add(server);
+            ApplicationServer applicationServer = new ApplicationServer(application, environment, host, port);
+            applicationServers.add(applicationServer);
         }
 
-        return servers;
+        return applicationServers;
     }
 }

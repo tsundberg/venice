@@ -15,12 +15,12 @@ public class ProbeCheckerTest {
         Environment environment = new Environment("u1");
         Host host = new Host("L7700770");
         Port port = new Port("8580");
-        Server server = new Server(application, environment, host, port);
+        ApplicationServer applicationServer = new ApplicationServer(application, environment, host, port);
 
         Status status = new Status("OK");
         Version version = new Version("4.6.470");
 
-        ProbeResponse expected = new ProbeResponse(server, status, version);
+        ProbeResponse expected = new ProbeResponse(applicationServer, status, version);
 
         LatestProbeStatuses latestProbeStatuses = new LatestProbeStatuses();
 
@@ -33,7 +33,7 @@ public class ProbeCheckerTest {
             Thread.sleep(5);
         }
 
-        ProbeResponse actual = latestProbeStatuses.getStatus(server);
+        ProbeResponse actual = latestProbeStatuses.getStatus(applicationServer);
 
         assertThat(actual).isEqualTo(expected);
     }
@@ -45,11 +45,11 @@ public class ProbeCheckerTest {
         Environment environment = new Environment("u1");
         Host host = new Host("L7700770");
         Port port = new Port("8580");
-        Server server = new Server(application, environment, host, port);
+        ApplicationServer applicationServer = new ApplicationServer(application, environment, host, port);
 
         Status status = new Status("OK");
         Version version = new Version("4.6.470");
-        ProbeResponse response = new ProbeResponse(server, status, version);
+        ProbeResponse response = new ProbeResponse(applicationServer, status, version);
 
         when(checkProbe.get()).thenReturn(response);
 

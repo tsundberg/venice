@@ -18,13 +18,13 @@ public class TPJAdminResponseParserTest {
         Host host3 = new Host("l7700770.wpa.ams.se");
         Port port = new Port("8180");
 
-        Server geo1 = new Server(application, environment, host1, port);
-        Server geo2 = new Server(application, environment, host2, port);
-        Server geo3 = new Server(application, environment, host3, port);
+        ApplicationServer geo1 = new ApplicationServer(application, environment, host1, port);
+        ApplicationServer geo2 = new ApplicationServer(application, environment, host2, port);
+        ApplicationServer geo3 = new ApplicationServer(application, environment, host3, port);
 
         String jsonSample = "{\"l7700770.wpa.ams.se\":1, \"l7700747.wpa.ams.se\":1, \"l7700746.wpa.ams.se\":1}";
 
-        List<Server> actual = TPJAdminResponseParser.parse(application, environment, jsonSample);
+        List<ApplicationServer> actual = TPJAdminResponseParser.parse(application, environment, jsonSample);
 
         assertThat(actual).containsExactlyInAnyOrder(geo1, geo2, geo3);
     }

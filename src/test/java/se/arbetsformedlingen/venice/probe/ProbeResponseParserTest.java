@@ -13,16 +13,16 @@ public class ProbeResponseParserTest {
         Host host = new Host("L7700649.u1.local");
         Environment environment = new Environment("u1");
         Port  port = new Port("8580");
-        Server server = new Server (application, environment, host, port);
+        ApplicationServer applicationServer = new ApplicationServer(application, environment, host, port);
 
         Version version = new Version("4.6.470");
         Status status = new Status("ERROR");
 
-        ProbeResponse expected = new ProbeResponse(server, status, version);
+        ProbeResponse expected = new ProbeResponse(applicationServer, status, version);
 
         String sampleJson = getSampleJson();
 
-        ProbeResponse actual = ProbeResponseParser.parse(server, sampleJson);
+        ProbeResponse actual = ProbeResponseParser.parse(applicationServer, sampleJson);
 
         assertThat(actual).isEqualTo(expected);
     }

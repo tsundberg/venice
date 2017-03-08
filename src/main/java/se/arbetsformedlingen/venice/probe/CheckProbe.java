@@ -5,10 +5,10 @@ import org.apache.http.client.fluent.Request;
 import se.arbetsformedlingen.venice.common.*;
 
 public class CheckProbe implements java.util.function.Supplier<ProbeResponse> {
-    private Server server;
+    private ApplicationServer applicationServer;
 
-    CheckProbe(Server server) {
-        this.server = server;
+    CheckProbe(ApplicationServer applicationServer) {
+        this.applicationServer = applicationServer;
     }
 
     @Override
@@ -23,16 +23,16 @@ public class CheckProbe implements java.util.function.Supplier<ProbeResponse> {
                     .returnContent()
                     .asString();
 
-            return ProbeResponseParser.parse(server, result);
+            return ProbeResponseParser.parse(applicationServer, result);
         } catch (Exception e) {
             return errorResponse(e);
         }
     }
 
     private String getUri() {
-        String probeName = server.getProbeName();
-        Host host = server.getHost();
-        Port port = server.getPort();
+        String probeName = applicationServer.getProbeName();
+        Host host = applicationServer.getHost();
+        Port port = applicationServer.getPort();
 
         return "http://" + host + ":" + port + "/jolokia/read/af-probe:probe=" + probeName + "/";
     }
@@ -48,6 +48,6 @@ public class CheckProbe implements java.util.function.Supplier<ProbeResponse> {
     private ProbeResponse errorResponse(Exception e) {
         Status status = new Status(e.getMessage());
         Version version = new Version("Unknown");
-        return new ProbeResponse(server, status, version);
+        return new ProbeResponse(applicationServer, status, version);
     }
 }

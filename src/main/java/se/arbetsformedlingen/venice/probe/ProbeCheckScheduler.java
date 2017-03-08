@@ -1,7 +1,7 @@
 package se.arbetsformedlingen.venice.probe;
 
 import se.arbetsformedlingen.venice.common.Scheduler;
-import se.arbetsformedlingen.venice.common.Server;
+import se.arbetsformedlingen.venice.common.ApplicationServer;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -13,13 +13,13 @@ public class ProbeCheckScheduler implements Scheduler {
     private LatestProbeStatuses latestProbeStatuses = new LatestProbeStatuses();
     private List<ProbeChecker> probes = new LinkedList<>();
 
-    public ProbeCheckScheduler(List<Server> servers) {
-        addProbes(servers);
+    public ProbeCheckScheduler(List<ApplicationServer> applicationServers) {
+        addProbes(applicationServers);
     }
 
-    private void addProbes(List<Server> servers) {
-        for (Server server : servers) {
-            CheckProbe probe = new CheckProbe(server);
+    private void addProbes(List<ApplicationServer> applicationServers) {
+        for (ApplicationServer applicationServer : applicationServers) {
+            CheckProbe probe = new CheckProbe(applicationServer);
             probes.add(new ProbeChecker(probe, latestProbeStatuses));
         }
     }

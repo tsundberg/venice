@@ -45,7 +45,7 @@ public class ProbeControllerTest {
         assertThat(firstServer.has("status")).isTrue();
     }
 
-    private List<Server> getServers() {
+    private List<ApplicationServer> getServers() {
         Application gfr = new Application("gfr");
         Application agselect = new Application("agselect");
 
@@ -54,23 +54,23 @@ public class ProbeControllerTest {
 
         Port port = new Port("8180");
 
-        List<Server> servers = new LinkedList<>();
+        List<ApplicationServer> applicationServers = new LinkedList<>();
 
-        Server gfr8 = new Server(gfr, prod, new Host("l7700746.wpa.ams.se"), port);
-        servers.add(gfr8);
+        ApplicationServer gfr8 = new ApplicationServer(gfr, prod, new Host("l7700746.wpa.ams.se"), port);
+        applicationServers.add(gfr8);
 
-        Server agselect5 = new Server(agselect, t2, new Host("l7700836.ata.ams.se"), port);
-        Server agselect6 = new Server(agselect, prod, new Host("l7700843.wpa.ams.se"), port);
-        Server agselect7 = new Server(agselect, prod, new Host("l7700842.wpa.ams.se"), port);
-        Server agselect8 = new Server(agselect, prod, new Host("l7700841.wpa.ams.se"), port);
-        servers.add(agselect5);
-        servers.add(agselect6);
-        servers.add(agselect7);
-        servers.add(agselect8);
+        ApplicationServer agselect5 = new ApplicationServer(agselect, t2, new Host("l7700836.ata.ams.se"), port);
+        ApplicationServer agselect6 = new ApplicationServer(agselect, prod, new Host("l7700843.wpa.ams.se"), port);
+        ApplicationServer agselect7 = new ApplicationServer(agselect, prod, new Host("l7700842.wpa.ams.se"), port);
+        ApplicationServer agselect8 = new ApplicationServer(agselect, prod, new Host("l7700841.wpa.ams.se"), port);
+        applicationServers.add(agselect5);
+        applicationServers.add(agselect6);
+        applicationServers.add(agselect7);
+        applicationServers.add(agselect8);
 
-        Collections.shuffle(servers);
-        Collections.sort(servers);
+        Collections.shuffle(applicationServers);
+        Collections.sort(applicationServers);
 
-        return servers;
+        return applicationServers;
     }
 }

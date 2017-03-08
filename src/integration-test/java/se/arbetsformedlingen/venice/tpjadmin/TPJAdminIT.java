@@ -13,9 +13,9 @@ public class TPJAdminIT {
     @Test
     @Ignore
     public void get_servers() throws Exception {
-        Server expected = new Server(new Application("gfr"), new Environment("u1"), new Host("l7700649.u1.local"), new Port("8580"));
+        ApplicationServer expected = new ApplicationServer(new Application("gfr"), new Environment("u1"), new Host("l7700649.u1.local"), new Port("8580"));
 
-        List<Server> actual = TPJAdmin.getServers();
+        List<ApplicationServer> actual = TPJAdmin.getApplicationServers();
 
         assertThat(actual).contains(expected);
     }

@@ -4,7 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import se.arbetsformedlingen.venice.common.Application;
 import se.arbetsformedlingen.venice.common.Environment;
-import se.arbetsformedlingen.venice.common.Server;
+import se.arbetsformedlingen.venice.common.ApplicationServer;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,9 +16,9 @@ class JsonResponseBuilder {
         this.statuses = statuses;
     }
 
-    String build(List<Server> servers) {
-        List<Application> applications = getApplications(servers);
-        List<Environment> environments = getEnvironments(servers);
+    String build(List<ApplicationServer> applicationServers) {
+        List<Application> applications = getApplications(applicationServers);
+        List<Environment> environments = getEnvironments(applicationServers);
 
         JSONArray response = new JSONArray();
         for (Application application : applications) {
@@ -29,8 +29,8 @@ class JsonResponseBuilder {
                 JSONObject environmentJson = addApplicationName(environment.getName());
 
                 JSONObject serverList = new JSONObject();
-                for (Server server : servers) {
-                    addServer(application, environment, serverList, server);
+                for (ApplicationServer applicationServer : applicationServers) {
+                    addServer(application, environment, serverList, applicationServer);
                 }
 
                 environmentJson.put("servers", serverList);
@@ -50,26 +50,26 @@ class JsonResponseBuilder {
         return appObj;
     }
 
-    private void addServer(Application app, Environment env, JSONObject serverList, Server server) {
-        if (!app.equals(server.getApplication())) {
+    private void addServer(Application app, Environment env, JSONObject serverList, ApplicationServer applicationServer) {
+        if (!app.equals(applicationServer.getApplication())) {
             return;
         }
-        if (!env.equals(server.getEnvironment())) {
+        if (!env.equals(applicationServer.getEnvironment())) {
             return;
         }
 
-        ProbeResponse probeRes = statuses.getStatus(server);
+        ProbeResponse probeRes = statuses.getStatus(applicationServer);
 
         JSONObject appObj = new JSONObject();
         appObj.put("status", probeRes.getStatus());
         appObj.put("version", probeRes.getVersion());
 
-        serverList.put(server.getHost().toString(), appObj);
+        serverList.put(applicationServer.getHost().toString(), appObj);
     }
 
-    private List<Application> getApplications(List<Server> servers) {
+    private List<Application> getApplications(List<ApplicationServer> applicationServers) {
         List<Application> applications = new LinkedList<>();
-        servers.forEach(srv -> {
+        applicationServers.forEach(srv -> {
             Application application = srv.getApplication();
             if (!applications.contains(application)) {
                 applications.add(application);
@@ -78,9 +78,9 @@ class JsonResponseBuilder {
         return applications;
     }
 
-    private List<Environment> getEnvironments(List<Server> servers) {
+    private List<Environment> getEnvironments(List<ApplicationServer> applicationServers) {
         List<Environment> environments = new LinkedList<>();
-        servers.forEach(srv -> {
+        applicationServers.forEach(srv -> {
             Environment environment = srv.getEnvironment();
             if (!environments.contains(environment)) {
                 environments.add(environment);

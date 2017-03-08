@@ -14,9 +14,9 @@ public class CheckProbeIT {
         Host host = new Host("L7700649.u1.local");
         Port port = new Port("8580");
 
-        Server server = new Server(application, environment, host, port);
+        ApplicationServer applicationServer = new ApplicationServer(application, environment, host, port);
 
-        CheckProbe probe = new CheckProbe(server);
+        CheckProbe probe = new CheckProbe(applicationServer);
 
         ProbeResponse actual = probe.get();
 

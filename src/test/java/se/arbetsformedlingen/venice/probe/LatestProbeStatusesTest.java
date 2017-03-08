@@ -15,11 +15,11 @@ public class LatestProbeStatusesTest {
         Environment environment = new Environment("env");
         Host host = new Host("host name");
         Port port = new Port("8580");
-        Server server = new Server(application, environment, host, port);
+        ApplicationServer applicationServer = new ApplicationServer(application, environment, host, port);
 
-        ProbeResponse actual = statuses.getStatus(server);
+        ProbeResponse actual = statuses.getStatus(applicationServer);
 
-        assertThat(actual.getServer()).isEqualTo(server);
+        assertThat(actual.getApplicationServer()).isEqualTo(applicationServer);
         assertThat(actual.getStatus()).isEqualTo("Unknown");
         assertThat(actual.getVersion()).isEqualTo("Unknown");
     }
