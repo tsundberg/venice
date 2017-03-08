@@ -35,4 +35,12 @@ public class BuildResponse {
     public int hashCode() {
         return Objects.hash(application, status);
     }
+
+    @Override
+    public String toString() {
+        return "BuildResponse{" +
+                "application=" + application +
+                ", status=" + status +
+                '}';
+    }
 }
