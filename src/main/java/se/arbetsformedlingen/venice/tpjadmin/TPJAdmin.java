@@ -73,19 +73,7 @@ public class TPJAdmin {
 
         return apps;
     }
-
-    public static List<Environment> getEnvironments() {
-        List<Environment> envs = new LinkedList<>();
-
-        for (String key : environments.keySet()) {
-            String envName = environments.get(key);
-            Environment environment = new Environment(envName);
-            envs.add(environment);
-        }
-
-        return envs;
-    }
-
+    
     private static List<ApplicationServer> getServers(Executor executor, String app, String env) throws IOException {
         String url = "http://" + host + ":" + port + uri + env + "/" + app + "";
         Header pisaHeader = getPisaId();
@@ -111,5 +99,4 @@ public class TPJAdmin {
         String pisaId = System.getenv("PISAID");
         return new BasicHeader("PISA_ID", pisaId);
     }
-
 }
