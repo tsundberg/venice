@@ -2,22 +2,27 @@ package se.arbetsformedlingen.venice.log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import se.arbetsformedlingen.venice.model.HostLoad;
-import se.arbetsformedlingen.venice.model.TimeValue;
+import se.arbetsformedlingen.venice.model.HostLoadValue;
+import se.arbetsformedlingen.venice.model.TimeSeriesValue;
+import se.arbetsformedlingen.venice.model.WebserviceLoadValue;
 
-public class JsonResponseBuilder {
+class JsonResponseBuilder {
 
     // todo Skapa speciella LogResponse object som klarar respektive typ. Skapa sen en builder för varje specific typ.
 
-    public String build(LogResponse logResponse) {
+    String build(LogResponse logResponse) {
         JSONObject response = new JSONObject();
 
         if (logResponse.getLogTypeName().equals("exception")) {
             response = getExceptionJson(logResponse);
         }
 
-        if (logResponse.getLogTypeName().equals("load")) {
-            response = getLoadJson(logResponse);
+        if (logResponse.getLogTypeName().equals("application-load")) {
+            response = getApplicationLoadJson(logResponse);
+        }
+
+        if (logResponse.getLogTypeName().equals("webservice-load")) {
+            response = getWebservieLoadJson(logResponse);
         }
 
         return response.toString();
@@ -31,7 +36,7 @@ public class JsonResponseBuilder {
 
         JSONArray timeSeries = new JSONArray();
 
-        for (TimeValue value : logResponse.getTimeValues()) {
+        for (TimeSeriesValue value : logResponse.getTimeValues()) {
             JSONObject timeValue = new JSONObject();
             timeValue.put("time", value.getTime());
             timeValue.put("value", value.getValue());
@@ -42,7 +47,7 @@ public class JsonResponseBuilder {
         return response;
     }
 
-    private JSONObject getLoadJson(LogResponse logResponse) {
+    private JSONObject getApplicationLoadJson(LogResponse logResponse) {
         JSONObject response = new JSONObject();
 
         response.put("application", logResponse.getApplication());
@@ -50,7 +55,7 @@ public class JsonResponseBuilder {
 
         JSONArray loadSeries = new JSONArray();
 
-        for (HostLoad value : logResponse.getApplicationLoadValues()) {
+        for (HostLoadValue value : logResponse.getApplicationLoadValues()) {
             JSONObject timeValue = new JSONObject();
             timeValue.put("host", value.getHost());
             timeValue.put("load", value.getLoad());
@@ -59,5 +64,25 @@ public class JsonResponseBuilder {
 
         response.put("loadSeries", loadSeries);
         return response;
+    }
+
+    private JSONObject getWebservieLoadJson(LogResponse logResponse) {
+        JSONObject response = new JSONObject();
+
+        response.put("application", logResponse.getApplication());
+        response.put("logType", logResponse.getLogType());
+
+        JSONArray loadSeries = new JSONArray();
+
+        for (WebserviceLoadValue value : logResponse.getWebserviceLoadValues()) {
+            JSONObject timeValue = new JSONObject();
+            timeValue.put("version", value.getWebservice());
+            timeValue.put("calls", value.getCalls());
+            loadSeries.put(timeValue);
+        }
+
+        response.put("loadSeries", loadSeries);
+        return response;
+
     }
 }

@@ -10,24 +10,31 @@ public class LogResponse {
     private LogType logType;
     private TimeSeries timeSeries;
     private ApplicationLoad applicationLoad;
+    private WebserviceLoad webserviceLoad;
 
-    public LogResponse(Application application, LogType logType, TimeSeries timeSeries) {
+    LogResponse(Application application, LogType logType, TimeSeries timeSeries) {
         this.application = application;
         this.logType = logType;
         this.timeSeries = timeSeries;
     }
 
-    public LogResponse(Application application, LogType logType, ApplicationLoad series) {
+    LogResponse(Application application, LogType logType, ApplicationLoad webserviceLoad) {
         this.application = application;
         this.logType = logType;
-        applicationLoad = series;
+        applicationLoad = webserviceLoad;
+    }
+
+    LogResponse(Application application, LogType logType, WebserviceLoad webserviceLoad) {
+        this.application = application;
+        this.logType = logType;
+        this.webserviceLoad = webserviceLoad;
     }
 
     public Application getApplication() {
         return application;
     }
 
-    public String getLogTypeName() {
+    String getLogTypeName() {
         return logType.getType();
     }
 
@@ -35,11 +42,15 @@ public class LogResponse {
         return logType;
     }
 
-    List<TimeValue> getTimeValues() {
+    List<TimeSeriesValue> getTimeValues() {
         return timeSeries.getTimeValues();
     }
 
-    public List<HostLoad> getApplicationLoadValues() {
+    List<HostLoadValue> getApplicationLoadValues() {
         return applicationLoad.getLoadValues();
+    }
+
+    List<WebserviceLoadValue> getWebserviceLoadValues() {
+        return webserviceLoad.getLoadValues();
     }
 }

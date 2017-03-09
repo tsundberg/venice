@@ -6,11 +6,11 @@ import java.util.Objects;
  * A limited time series, it will not allow times outside the last 24 hours.
  * I.e. 0 -- 23
  */
-public class TimeValue implements Comparable<TimeValue> {
+public class TimeSeriesValue implements Comparable<TimeSeriesValue> {
     private Integer time;
     private int value;
 
-    public TimeValue(int time, int value) {
+    public TimeSeriesValue(int time, int value) {
         if (time < 0 || time > 23) {
             throw new IllegalArgumentException("Time values are only allowed the last 24 hours, i.e. 0 -- 23");
         }
@@ -31,8 +31,8 @@ public class TimeValue implements Comparable<TimeValue> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TimeValue timeValue = (TimeValue) o;
-        return value == timeValue.value;
+        TimeSeriesValue timeSeriesValue = (TimeSeriesValue) o;
+        return value == timeSeriesValue.value;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class TimeValue implements Comparable<TimeValue> {
     }
 
     @Override
-    public int compareTo(TimeValue o) {
+    public int compareTo(TimeSeriesValue o) {
         return time.compareTo(o.time);
     }
 

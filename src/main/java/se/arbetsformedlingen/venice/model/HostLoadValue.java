@@ -2,11 +2,11 @@ package se.arbetsformedlingen.venice.model;
 
 import se.arbetsformedlingen.venice.common.Host;
 
-public class HostLoad implements Comparable<HostLoad> {
+public class HostLoadValue implements Comparable<HostLoadValue> {
     private Host host;
     private Long load;
 
-    public HostLoad(Host host, Long load) {
+    public HostLoadValue(Host host, Long load) {
         this.host = host;
         this.load = load;
     }
@@ -20,7 +20,7 @@ public class HostLoad implements Comparable<HostLoad> {
     }
 
     @Override
-    public int compareTo(HostLoad o) {
+    public int compareTo(HostLoadValue o) {
         return host.getName().compareTo(o.host.getName());
     }
 }
