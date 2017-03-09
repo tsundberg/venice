@@ -8,14 +8,14 @@ import java.util.List;
 
 public class ApplicationLoad {
     private Application application;
-    private List<HostLoadValue> series = new ArrayList<>();
+    private List<HostValue> series = new ArrayList<>();
 
-    public ApplicationLoad(Application application, HostLoadValue... timeValues) {
+    public ApplicationLoad(Application application, HostValue... timeValues) {
         Collections.addAll(series, timeValues);
         Collections.sort(series);
     }
 
-    public List<HostLoadValue> getLoadValues() {
+    public List<HostValue> getLoadValues() {
         return series;
     }
 }

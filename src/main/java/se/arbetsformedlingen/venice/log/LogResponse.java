@@ -8,6 +8,7 @@ import java.util.List;
 public class LogResponse {
     private Application application;
     private LogType logType;
+    private ConsumingSystemLoad consumingSystemLoad;
     private TimeSeries timeSeries;
     private ApplicationLoad applicationLoad;
     private WebserviceLoad webserviceLoad;
@@ -30,6 +31,12 @@ public class LogResponse {
         this.webserviceLoad = webserviceLoad;
     }
 
+    LogResponse(Application application, LogType logType, ConsumingSystemLoad consumingSystemLoad) {
+        this.application = application;
+        this.logType = logType;
+        this.consumingSystemLoad = consumingSystemLoad;
+    }
+
     public Application getApplication() {
         return application;
     }
@@ -46,11 +53,15 @@ public class LogResponse {
         return timeSeries.getTimeValues();
     }
 
-    List<HostLoadValue> getApplicationLoadValues() {
+    List<HostValue> getApplicationLoadValues() {
         return applicationLoad.getLoadValues();
     }
 
-    List<WebserviceLoadValue> getWebserviceLoadValues() {
+    List<WebserviceValue> getWebserviceLoadValues() {
         return webserviceLoad.getLoadValues();
+    }
+
+    List<ConsumingSystemValue> getConsumingSystemValues() {
+        return consumingSystemLoad.getConsumingSystems();
     }
 }

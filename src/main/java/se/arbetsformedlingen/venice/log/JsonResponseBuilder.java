@@ -2,9 +2,10 @@ package se.arbetsformedlingen.venice.log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import se.arbetsformedlingen.venice.model.HostLoadValue;
+import se.arbetsformedlingen.venice.model.ConsumingSystemValue;
+import se.arbetsformedlingen.venice.model.HostValue;
 import se.arbetsformedlingen.venice.model.TimeSeriesValue;
-import se.arbetsformedlingen.venice.model.WebserviceLoadValue;
+import se.arbetsformedlingen.venice.model.WebserviceValue;
 
 class JsonResponseBuilder {
 
@@ -23,6 +24,10 @@ class JsonResponseBuilder {
 
         if (logResponse.getLogTypeName().equals("webservice-load")) {
             response = getWebservieLoadJson(logResponse);
+        }
+
+        if (logResponse.getLogTypeName().equals("consuming-system")) {
+            response = getConsumingSystemLoadJson(logResponse);
         }
 
         return response.toString();
@@ -55,7 +60,7 @@ class JsonResponseBuilder {
 
         JSONArray loadSeries = new JSONArray();
 
-        for (HostLoadValue value : logResponse.getApplicationLoadValues()) {
+        for (HostValue value : logResponse.getApplicationLoadValues()) {
             JSONObject timeValue = new JSONObject();
             timeValue.put("host", value.getHost());
             timeValue.put("load", value.getLoad());
@@ -74,7 +79,7 @@ class JsonResponseBuilder {
 
         JSONArray loadSeries = new JSONArray();
 
-        for (WebserviceLoadValue value : logResponse.getWebserviceLoadValues()) {
+        for (WebserviceValue value : logResponse.getWebserviceLoadValues()) {
             JSONObject timeValue = new JSONObject();
             timeValue.put("version", value.getWebservice());
             timeValue.put("calls", value.getCalls());
@@ -83,6 +88,25 @@ class JsonResponseBuilder {
 
         response.put("loadSeries", loadSeries);
         return response;
+    }
 
+    private JSONObject getConsumingSystemLoadJson(LogResponse logResponse) {
+        JSONObject response = new JSONObject();
+
+        response.put("application", logResponse.getApplication());
+        response.put("logType", logResponse.getLogType());
+
+        JSONArray loadSeries = new JSONArray();
+
+        for (ConsumingSystemValue value : logResponse.getConsumingSystemValues()) {
+            JSONObject timeValue = new JSONObject();
+            timeValue.put("system", value.getConsumingSystem());
+            timeValue.put("calls", value.getCalls());
+            timeValue.put("time", value.getTime());
+            loadSeries.put(timeValue);
+        }
+
+        response.put("loadSeries", loadSeries);
+        return response;
     }
 }

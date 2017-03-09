@@ -8,14 +8,14 @@ import java.util.List;
 
 public class WebserviceLoad {
     private Application application;
-    private List<WebserviceLoadValue> series = new ArrayList<>();
+    private List<WebserviceValue> series = new ArrayList<>();
 
-    public WebserviceLoad(Application application, WebserviceLoadValue... timeValues) {
+    public WebserviceLoad(Application application, WebserviceValue... timeValues) {
         Collections.addAll(series, timeValues);
         Collections.sort(series);
     }
 
-    public List<WebserviceLoadValue> getLoadValues() {
+    public List<WebserviceValue> getLoadValues() {
         return series;
     }
 }

@@ -2,17 +2,17 @@ package se.arbetsformedlingen.venice.model;
 
 import se.arbetsformedlingen.venice.common.Webservice;
 
-public class WebserviceLoadValue implements Comparable<WebserviceLoadValue> {
+public class WebserviceValue implements Comparable<WebserviceValue> {
     private Webservice webservice;
     private Long calls;
 
-    public WebserviceLoadValue(Webservice webservice, Long calls) {
+    public WebserviceValue(Webservice webservice, Long calls) {
         this.webservice = webservice;
         this.calls = calls;
     }
 
     @Override
-    public int compareTo(WebserviceLoadValue o) {
+    public int compareTo(WebserviceValue o) {
         return webservice.getName().compareTo(o.webservice.getName());
     }
 
