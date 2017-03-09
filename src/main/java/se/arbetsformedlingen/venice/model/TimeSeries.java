@@ -13,4 +13,8 @@ public class TimeSeries {
         Collections.addAll(series, timeValues);
         Collections.sort(series);
     }
+
+    public List<TimeValue> getTimeValues() {
+        return series;
+    }
 }

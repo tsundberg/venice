@@ -3,7 +3,10 @@ package se.arbetsformedlingen.venice.log;
 import se.arbetsformedlingen.venice.common.Application;
 import se.arbetsformedlingen.venice.model.LogType;
 import se.arbetsformedlingen.venice.model.TimeSeries;
+import se.arbetsformedlingen.venice.model.TimeValue;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.util.List;
 
 public class LogResponse {
     private Application application;
@@ -20,7 +23,11 @@ public class LogResponse {
         return application;
     }
 
-    public LogType getLogType() {
+    LogType getLogType() {
         return logType;
+    }
+
+    List<TimeValue> getTimeValues() {
+        return timeSeries.getTimeValues();
     }
 }
