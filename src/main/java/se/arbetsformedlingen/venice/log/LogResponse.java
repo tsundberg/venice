@@ -9,7 +9,7 @@ public class LogResponse {
     private Application application;
     private LogType logType;
     private TimeSeries timeSeries;
-    private ApplicationSeries applicationSeries;
+    private ApplicationLoad applicationLoad;
 
     public LogResponse(Application application, LogType logType, TimeSeries timeSeries) {
         this.application = application;
@@ -17,10 +17,10 @@ public class LogResponse {
         this.timeSeries = timeSeries;
     }
 
-    public LogResponse(Application application, LogType logType, ApplicationSeries series) {
+    public LogResponse(Application application, LogType logType, ApplicationLoad series) {
         this.application = application;
         this.logType = logType;
-        applicationSeries = series;
+        applicationLoad = series;
     }
 
     public Application getApplication() {
@@ -39,7 +39,7 @@ public class LogResponse {
         return timeSeries.getTimeValues();
     }
 
-    public List<ApplicationLoad> getApplicationLoadValues() {
-        return applicationSeries.getLoadValues();
+    public List<HostLoad> getApplicationLoadValues() {
+        return applicationLoad.getLoadValues();
     }
 }

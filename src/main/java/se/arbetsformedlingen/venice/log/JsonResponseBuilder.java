@@ -2,7 +2,7 @@ package se.arbetsformedlingen.venice.log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import se.arbetsformedlingen.venice.model.ApplicationLoad;
+import se.arbetsformedlingen.venice.model.HostLoad;
 import se.arbetsformedlingen.venice.model.TimeValue;
 
 public class JsonResponseBuilder {
@@ -50,7 +50,7 @@ public class JsonResponseBuilder {
 
         JSONArray loadSeries = new JSONArray();
 
-        for (ApplicationLoad value : logResponse.getApplicationLoadValues()) {
+        for (HostLoad value : logResponse.getApplicationLoadValues()) {
             JSONObject timeValue = new JSONObject();
             timeValue.put("host", value.getHost());
             timeValue.put("load", value.getLoad());

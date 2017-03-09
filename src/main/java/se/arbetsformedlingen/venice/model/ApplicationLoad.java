@@ -1,27 +1,21 @@
 package se.arbetsformedlingen.venice.model;
 
-import se.arbetsformedlingen.venice.common.Host;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import se.arbetsformedlingen.venice.common.Application;
 
-public class ApplicationLoad implements Comparable<ApplicationLoad> {
-    private Host host;
-    private Long load;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-    public ApplicationLoad(Host host, Long load) {
-        this.host = host;
-        this.load = load;
+public class ApplicationLoad {
+    private Application application;
+    private List<HostLoad> series = new ArrayList<>();
+
+    public ApplicationLoad(Application application, HostLoad... timeValues) {
+        Collections.addAll(series, timeValues);
+        Collections.sort(series);
     }
 
-    public Host getHost() {
-        return host;
-    }
-
-    public Long getLoad() {
-        return load;
-    }
-
-    @Override
-    public int compareTo(ApplicationLoad o) {
-        return host.getName().compareTo(o.host.getName());
+    public List<HostLoad> getLoadValues() {
+        return series;
     }
 }
