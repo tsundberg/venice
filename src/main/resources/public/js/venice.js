@@ -154,6 +154,9 @@ var createMonitorComponent = function(appContainer) {
     };
     obj.updateBuildStatus = function() {
         $.getJSON("/builds", function (applications) {
+            applications.sort(function(a,b) {
+                return a.name >= b.name ? 1 : -1;
+            });
             applications.forEach(function (appData) {
                 var app = obj.getOrCreateApplication(appData.name);
                 app.updateBuildStatus(appData);
@@ -162,6 +165,9 @@ var createMonitorComponent = function(appContainer) {
     };
     obj.updateProbes = function() {
         $.getJSON("/probes", function (applications) {
+            applications.sort(function(a,b) {
+                return a.name >= b.name ? 1 : -1;
+            });
             applications.forEach(function (appData) {
                 var app = obj.getOrCreateApplication(appData.name);
                 app.updateServerStatus(appData);
