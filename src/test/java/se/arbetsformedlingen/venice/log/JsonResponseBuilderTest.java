@@ -4,9 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
 import se.arbetsformedlingen.venice.common.Application;
-import se.arbetsformedlingen.venice.model.LogType;
-import se.arbetsformedlingen.venice.model.TimeSeries;
-import se.arbetsformedlingen.venice.model.TimeValue;
+import se.arbetsformedlingen.venice.common.Host;
+import se.arbetsformedlingen.venice.model.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,19 +30,46 @@ public class JsonResponseBuilderTest {
 
         String actual = builder.build(logResponse);
 
-        System.out.println(actual);
-
         JSONObject actualJson = new JSONObject(actual);
 
         assertThat(actualJson.get("application")).isEqualTo("gfr");
         assertThat(actualJson.get("logType")).isEqualTo("exception");
 
         JSONArray actualTimeSeries = (JSONArray) actualJson.get("timeSeries");
-        assertThat(actualTimeSeries.length()).isEqualTo(24) ;
+        assertThat(actualTimeSeries.length()).isEqualTo(24);
 
         JSONObject actualTimeValue = (JSONObject) actualTimeSeries.get(7);
         assertThat(actualTimeValue.get("time")).isEqualTo(7);
         assertThat(actualTimeValue.get("value")).isEqualTo(1);
+    }
+
+    @Test
+    public void load_for_gfr() {
+        JsonResponseBuilder builder = new JsonResponseBuilder();
+        Application application = new Application("gfr");
+        LogType logType = new LogType("load");
+
+        ApplicationSeries series = new ApplicationSeries(application,
+                new ApplicationLoad(new Host("L7700746"), 2345672L),
+                new ApplicationLoad(new Host("L7700747"), 3235159L),
+                new ApplicationLoad(new Host("L7700770"), 1335652L)
+        );
+
+        LogResponse logResponse = new LogResponse(application, logType, series);
+
+        String actual = builder.build(logResponse);
+
+        JSONObject actualJson = new JSONObject(actual);
+
+        assertThat(actualJson.get("application")).isEqualTo("gfr");
+        assertThat(actualJson.get("logType")).isEqualTo("load");
+
+        JSONArray actualTimeSeries = (JSONArray) actualJson.get("loadSeries");
+        assertThat(actualTimeSeries.length()).isEqualTo(3);
+
+        JSONObject actualTimeValue = (JSONObject) actualTimeSeries.get(2);
+        assertThat(actualTimeValue.get("host")).isEqualTo("L7700770");
+        assertThat(actualTimeValue.get("load")).isEqualTo(1335652);
     }
 
 }
