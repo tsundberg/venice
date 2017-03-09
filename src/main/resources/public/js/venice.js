@@ -129,7 +129,7 @@ var createApplicationComponent = function(appName) {
         title.removeClass("status-unknown");
         if (data.status == "OK") {
             title.addClass("status-ok");
-        } else if (data.status == "FAIL") {
+        } else if (data.status == "ERROR") {
             title.addClass("status-warn");
         } else {
             title.addClass("status-unknown");
