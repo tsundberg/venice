@@ -20,10 +20,9 @@
 }
 
 .app {
-    margin-top: 20px;
-    width: 47%;
-    margin-left: 2%;
-    float: left;
+    margin: auto;
+    width: 49%;
+    height: 48%;
     border: 1px solid #000;
 }
 
@@ -69,8 +68,13 @@
 }
 .app .chart-holder {
     padding: 10px;
-    height: 200px;
 }
 
-.container {
+#app-container {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
