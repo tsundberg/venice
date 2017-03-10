@@ -12,22 +12,8 @@ public class ProbeController {
     private static List<ApplicationServer> applicationServers = TPJAdmin.getApplicationServers();
 
     public static String getStatus(Request request, Response response) {
-        consoleLog(statuses);
-
         JsonResponseBuilder jsonResponseBuilder = new JsonResponseBuilder(statuses);
         return jsonResponseBuilder.build(applicationServers);
-    }
-
-    private static void consoleLog(LatestProbeStatuses statuses) {
-        System.out.println();
-
-        List<ApplicationServer> applicationServers = TPJAdmin.getApplicationServers();
-        for (ApplicationServer applicationServer : applicationServers) {
-            ProbeResponse resp = statuses.getStatus(applicationServer);
-            System.out.println(resp);
-        }
-
-        System.out.println();
     }
 
     static void forceStatuses(LatestProbeStatuses statuses) {
