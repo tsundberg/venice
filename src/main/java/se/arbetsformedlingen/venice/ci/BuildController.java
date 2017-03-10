@@ -41,15 +41,4 @@ public class BuildController {
             return arr;
         }
     }
-
-
-    private static void consoleLog(List<BuildResponse> jobs) {
-        System.out.println();
-
-        for (BuildResponse job : jobs) {
-            System.out.println(job.getName() + ": " + job.getStatus());
-        }
-
-        System.out.println();
-    }
 }
