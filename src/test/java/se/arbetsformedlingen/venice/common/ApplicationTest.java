@@ -1,6 +1,7 @@
 package se.arbetsformedlingen.venice.common;
 
 import org.junit.Test;
+import se.arbetsformedlingen.venice.model.Application;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 

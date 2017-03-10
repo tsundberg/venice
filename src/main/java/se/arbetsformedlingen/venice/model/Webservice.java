@@ -1,4 +1,4 @@
-package se.arbetsformedlingen.venice.common;
+package se.arbetsformedlingen.venice.model;
 
 public class Webservice {
     private String name;

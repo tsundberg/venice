@@ -3,10 +3,10 @@ package se.arbetsformedlingen.venice.log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
-import se.arbetsformedlingen.venice.common.Application;
-import se.arbetsformedlingen.venice.common.ConsumingSystem;
-import se.arbetsformedlingen.venice.common.Host;
-import se.arbetsformedlingen.venice.common.Webservice;
+import se.arbetsformedlingen.venice.model.Application;
+import se.arbetsformedlingen.venice.model.ConsumingSystem;
+import se.arbetsformedlingen.venice.model.Host;
+import se.arbetsformedlingen.venice.model.Webservice;
 import se.arbetsformedlingen.venice.model.*;
 
 import static org.assertj.core.api.Assertions.assertThat;

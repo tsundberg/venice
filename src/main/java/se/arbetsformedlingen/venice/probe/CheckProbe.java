@@ -2,7 +2,7 @@ package se.arbetsformedlingen.venice.probe;
 
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
-import se.arbetsformedlingen.venice.common.*;
+import se.arbetsformedlingen.venice.model.*;
 
 public class CheckProbe implements java.util.function.Supplier<ProbeResponse> {
     private ApplicationServer applicationServer;

@@ -1,7 +1,7 @@
 package se.arbetsformedlingen.venice.probe;
 
 import org.json.JSONObject;
-import se.arbetsformedlingen.venice.common.*;
+import se.arbetsformedlingen.venice.model.*;
 
 class ProbeResponseParser {
     static ProbeResponse parse(ApplicationServer applicationServer, String json) {

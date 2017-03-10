@@ -1,6 +1,6 @@
 package se.arbetsformedlingen.venice.log;
 
-import se.arbetsformedlingen.venice.common.Application;
+import se.arbetsformedlingen.venice.model.Application;
 import se.arbetsformedlingen.venice.model.LogType;
 
 import java.util.concurrent.ConcurrentHashMap;

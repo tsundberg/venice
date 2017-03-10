@@ -1,7 +1,7 @@
 package se.arbetsformedlingen.venice.probe;
 
 import se.arbetsformedlingen.venice.common.Scheduler;
-import se.arbetsformedlingen.venice.common.ApplicationServer;
+import se.arbetsformedlingen.venice.model.ApplicationServer;
 
 import java.util.LinkedList;
 import java.util.List;

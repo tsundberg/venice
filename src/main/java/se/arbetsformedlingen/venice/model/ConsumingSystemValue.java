@@ -1,7 +1,5 @@
 package se.arbetsformedlingen.venice.model;
 
-import se.arbetsformedlingen.venice.common.ConsumingSystem;
-
 public class ConsumingSystemValue implements Comparable<ConsumingSystemValue> {
     private ConsumingSystem consumingSystem;
     private Integer time;

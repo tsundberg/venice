@@ -1,6 +1,7 @@
 package se.arbetsformedlingen.venice.common;
 
 import org.junit.Test;
+import se.arbetsformedlingen.venice.model.*;
 
 import java.util.Collections;
 import java.util.LinkedList;

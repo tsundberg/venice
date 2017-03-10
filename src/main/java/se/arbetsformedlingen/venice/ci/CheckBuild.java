@@ -2,9 +2,8 @@ package se.arbetsformedlingen.venice.ci;
 
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
-import se.arbetsformedlingen.venice.common.Application;
-import se.arbetsformedlingen.venice.common.BuildNumber;
-import se.arbetsformedlingen.venice.common.Status;
+import se.arbetsformedlingen.venice.model.Application;
+import se.arbetsformedlingen.venice.model.Status;
 import se.arbetsformedlingen.venice.tpjadmin.TPJAdmin;
 
 import java.io.IOException;

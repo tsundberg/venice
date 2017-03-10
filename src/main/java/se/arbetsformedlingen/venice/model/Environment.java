@@ -1,33 +1,33 @@
-package se.arbetsformedlingen.venice.common;
+package se.arbetsformedlingen.venice.model;
 
 import java.util.Objects;
 
-public class Host {
-    private String host;
+public class Environment {
+    private String name;
 
-    public Host(String host) {
-        this.host = host;
+    public Environment(String name) {
+        this.name = name;
     }
 
     public String getName() {
-        return host;
+        return name;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Host host1 = (Host) o;
-        return Objects.equals(host, host1.host);
+        Environment that = (Environment) o;
+        return Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(host);
+        return Objects.hash(name);
     }
 
     @Override
     public String toString() {
-        return host;
+        return name;
     }
 }

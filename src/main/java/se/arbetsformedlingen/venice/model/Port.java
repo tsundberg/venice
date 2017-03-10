@@ -1,4 +1,4 @@
-package se.arbetsformedlingen.venice.common;
+package se.arbetsformedlingen.venice.model;
 
 import java.util.Objects;
 

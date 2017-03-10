@@ -2,7 +2,7 @@ package se.arbetsformedlingen.venice.tpjadmin;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import se.arbetsformedlingen.venice.common.*;
+import se.arbetsformedlingen.venice.model.*;
 
 import java.util.List;
 

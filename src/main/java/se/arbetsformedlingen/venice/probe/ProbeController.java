@@ -1,6 +1,6 @@
 package se.arbetsformedlingen.venice.probe;
 
-import se.arbetsformedlingen.venice.common.ApplicationServer;
+import se.arbetsformedlingen.venice.model.ApplicationServer;
 import se.arbetsformedlingen.venice.tpjadmin.TPJAdmin;
 import spark.Request;
 import spark.Response;

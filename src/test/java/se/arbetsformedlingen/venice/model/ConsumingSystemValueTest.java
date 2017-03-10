@@ -1,7 +1,6 @@
 package se.arbetsformedlingen.venice.model;
 
 import org.junit.Test;
-import se.arbetsformedlingen.venice.common.ConsumingSystem;
 
 public class ConsumingSystemValueTest {
     private ConsumingSystem consumingSystem = new ConsumingSystem("not important");

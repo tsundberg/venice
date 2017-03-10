@@ -2,9 +2,9 @@ package se.arbetsformedlingen.venice.probe;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import se.arbetsformedlingen.venice.common.Application;
-import se.arbetsformedlingen.venice.common.Environment;
-import se.arbetsformedlingen.venice.common.ApplicationServer;
+import se.arbetsformedlingen.venice.model.Application;
+import se.arbetsformedlingen.venice.model.Environment;
+import se.arbetsformedlingen.venice.model.ApplicationServer;
 
 import java.util.LinkedList;
 import java.util.List;

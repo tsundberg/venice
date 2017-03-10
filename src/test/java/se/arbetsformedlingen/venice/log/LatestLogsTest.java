@@ -1,7 +1,7 @@
 package se.arbetsformedlingen.venice.log;
 
 import org.junit.Test;
-import se.arbetsformedlingen.venice.common.Application;
+import se.arbetsformedlingen.venice.model.Application;
 import se.arbetsformedlingen.venice.model.LogType;
 import se.arbetsformedlingen.venice.model.TimeSeries;
 import se.arbetsformedlingen.venice.model.TimeSeriesValue;

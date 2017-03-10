@@ -1,7 +1,7 @@
 package se.arbetsformedlingen.venice.probe;
 
 import org.junit.Test;
-import se.arbetsformedlingen.venice.common.*;
+import se.arbetsformedlingen.venice.model.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -12,7 +12,7 @@ public class ProbeResponseParserTest {
         Application application = new Application("gfr");
         Host host = new Host("L7700649.u1.local");
         Environment environment = new Environment("u1");
-        Port  port = new Port("8580");
+        Port port = new Port("8580");
         ApplicationServer applicationServer = new ApplicationServer(application, environment, host, port);
 
         Version version = new Version("4.6.470");

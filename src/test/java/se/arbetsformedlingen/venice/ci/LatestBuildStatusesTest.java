@@ -1,8 +1,8 @@
 package se.arbetsformedlingen.venice.ci;
 
 import org.junit.Test;
-import se.arbetsformedlingen.venice.common.Application;
-import se.arbetsformedlingen.venice.common.Status;
+import se.arbetsformedlingen.venice.model.Application;
+import se.arbetsformedlingen.venice.model.Status;
 
 import java.util.LinkedList;
 import java.util.List;

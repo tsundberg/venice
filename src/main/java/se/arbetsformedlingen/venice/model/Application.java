@@ -1,4 +1,4 @@
-package se.arbetsformedlingen.venice.common;
+package se.arbetsformedlingen.venice.model;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +25,7 @@ public class Application {
         }
     }
 
-    String getProbeName() {
+   public String getProbeName() {
         return probeNames.get(name);
     }
 

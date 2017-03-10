@@ -2,7 +2,7 @@ package se.arbetsformedlingen.venice;
 
 import se.arbetsformedlingen.venice.ci.BuildCheckScheduler;
 import se.arbetsformedlingen.venice.ci.BuildController;
-import se.arbetsformedlingen.venice.common.ApplicationServer;
+import se.arbetsformedlingen.venice.model.ApplicationServer;
 import se.arbetsformedlingen.venice.common.Scheduler;
 import se.arbetsformedlingen.venice.index.IndexController;
 import se.arbetsformedlingen.venice.log.LogController;

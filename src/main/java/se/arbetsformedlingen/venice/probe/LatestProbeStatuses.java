@@ -1,8 +1,8 @@
 package se.arbetsformedlingen.venice.probe;
 
-import se.arbetsformedlingen.venice.common.ApplicationServer;
-import se.arbetsformedlingen.venice.common.Status;
-import se.arbetsformedlingen.venice.common.Version;
+import se.arbetsformedlingen.venice.model.ApplicationServer;
+import se.arbetsformedlingen.venice.model.Status;
+import se.arbetsformedlingen.venice.model.Version;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;

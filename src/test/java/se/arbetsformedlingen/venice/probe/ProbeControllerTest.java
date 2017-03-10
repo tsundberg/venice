@@ -3,7 +3,7 @@ package se.arbetsformedlingen.venice.probe;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
-import se.arbetsformedlingen.venice.common.*;
+import se.arbetsformedlingen.venice.model.*;
 
 import java.util.Collections;
 import java.util.LinkedList;

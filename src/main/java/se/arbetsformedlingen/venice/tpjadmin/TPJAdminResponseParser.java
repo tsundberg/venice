@@ -1,7 +1,7 @@
 package se.arbetsformedlingen.venice.tpjadmin;
 
 import org.json.JSONObject;
-import se.arbetsformedlingen.venice.common.*;
+import se.arbetsformedlingen.venice.model.*;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package se.arbetsformedlingen.venice.probe;
 
 import org.junit.Test;
-import se.arbetsformedlingen.venice.common.*;
+import se.arbetsformedlingen.venice.model.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.mock;

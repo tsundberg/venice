@@ -1,7 +1,5 @@
 package se.arbetsformedlingen.venice.model;
 
-import se.arbetsformedlingen.venice.common.Host;
-
 public class HostValue implements Comparable<HostValue> {
     private Host host;
     private Long load;

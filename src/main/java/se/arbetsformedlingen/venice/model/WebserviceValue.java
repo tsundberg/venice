@@ -1,7 +1,5 @@
 package se.arbetsformedlingen.venice.model;
 
-import se.arbetsformedlingen.venice.common.Webservice;
-
 public class WebserviceValue implements Comparable<WebserviceValue> {
     private Webservice webservice;
     private Long calls;

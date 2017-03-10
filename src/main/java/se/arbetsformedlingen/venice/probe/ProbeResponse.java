@@ -1,6 +1,6 @@
 package se.arbetsformedlingen.venice.probe;
 
-import se.arbetsformedlingen.venice.common.*;
+import se.arbetsformedlingen.venice.model.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;

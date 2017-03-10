@@ -1,4 +1,4 @@
-package se.arbetsformedlingen.venice.common;
+package se.arbetsformedlingen.venice.model;
 
 public class ConsumingSystem {
     private String name;

@@ -4,9 +4,9 @@ import org.apache.http.Header;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicHeader;
-import se.arbetsformedlingen.venice.common.Application;
-import se.arbetsformedlingen.venice.common.Environment;
-import se.arbetsformedlingen.venice.common.ApplicationServer;
+import se.arbetsformedlingen.venice.model.Application;
+import se.arbetsformedlingen.venice.model.Environment;
+import se.arbetsformedlingen.venice.model.ApplicationServer;
 
 import java.io.IOException;
 import java.util.*;
