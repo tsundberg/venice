@@ -1,6 +1,7 @@
 package se.arbetsformedlingen.venice.ci;
 
 import se.arbetsformedlingen.venice.common.Application;
+import se.arbetsformedlingen.venice.common.BuildNumber;
 import se.arbetsformedlingen.venice.common.Status;
 
 import java.util.Objects;
@@ -8,6 +9,7 @@ import java.util.Objects;
 public class BuildResponse {
     private final Application application;
     private final Status status;
+    private BuildNumber buildNumber;
 
     BuildResponse(Application application, Status status) {
         this.application = application;
@@ -20,6 +22,14 @@ public class BuildResponse {
 
     public String getStatus() {
         return status.toString();
+    }
+
+    public BuildNumber getBuildNumber() {
+        return buildNumber;
+    }
+
+    public void setBuildNumber(BuildNumber buildNumber) {
+        this.buildNumber = buildNumber;
     }
 
     @Override

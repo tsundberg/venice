@@ -11,8 +11,6 @@ public class BuildController {
     public static String getBuilds(Request request, Response response) {
         LatestBuildStatuses statuses = new LatestBuildStatuses();
 
-        consoleLog(statuses.getStatuses());
-
         BuildController.JsonResponseBuilder resBuilder = new BuildController.JsonResponseBuilder(statuses);
 
         return resBuilder.buildJobList(statuses.getStatuses()).toString();
@@ -29,6 +27,7 @@ public class BuildController {
             JSONObject obj = new JSONObject();
             obj.put("name", job.getName());
             obj.put("status", job.getStatus());
+            obj.put("buildnumber", job.getBuildNumber());
 
             return obj;
         }

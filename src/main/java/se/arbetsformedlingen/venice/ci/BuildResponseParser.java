@@ -3,6 +3,7 @@ package se.arbetsformedlingen.venice.ci;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import se.arbetsformedlingen.venice.common.Application;
+import se.arbetsformedlingen.venice.common.BuildNumber;
 import se.arbetsformedlingen.venice.common.Status;
 
 import java.util.LinkedList;
@@ -32,5 +33,15 @@ class BuildResponseParser {
         }
 
         return builds;
+    }
+
+    static void addBuildNumber(BuildResponse build, String json) {
+        JSONObject job = new JSONObject(json);
+
+        JSONObject lastBuild = job.getJSONObject("lastBuild");
+        Integer lastBuildNumber = lastBuild.getInt("number");
+
+        BuildNumber buildNumber = new BuildNumber(lastBuildNumber);
+        build.setBuildNumber(buildNumber);
     }
 }
