@@ -37,7 +37,7 @@ public class Venice {
         getView("/", IndexController::getView);
         getString("/probes", ProbeController::getStatus);
         getString("/builds", BuildController::getBuilds);
-        getString("/logs", LogController::getLogs);
+        getString("/logs/:application/:logType", LogController::getLogs);
     }
 
     private static void scheduleJobs() {
