@@ -32,7 +32,7 @@ public class TimeSeriesValue implements Comparable<TimeSeriesValue> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TimeSeriesValue timeSeriesValue = (TimeSeriesValue) o;
-        return value == timeSeriesValue.value;
+        return time.equals(timeSeriesValue.time);
     }
 
     @Override
