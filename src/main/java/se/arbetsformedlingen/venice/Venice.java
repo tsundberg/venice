@@ -2,11 +2,11 @@ package se.arbetsformedlingen.venice;
 
 import se.arbetsformedlingen.venice.ci.BuildCheckScheduler;
 import se.arbetsformedlingen.venice.ci.BuildController;
-import se.arbetsformedlingen.venice.model.ApplicationServer;
 import se.arbetsformedlingen.venice.common.Scheduler;
 import se.arbetsformedlingen.venice.index.IndexController;
 import se.arbetsformedlingen.venice.log.LogController;
 import se.arbetsformedlingen.venice.log.LogcheckScheduler;
+import se.arbetsformedlingen.venice.model.ApplicationServer;
 import se.arbetsformedlingen.venice.probe.ProbeCheckScheduler;
 import se.arbetsformedlingen.venice.probe.ProbeController;
 import se.arbetsformedlingen.venice.tpjadmin.TPJAdmin;

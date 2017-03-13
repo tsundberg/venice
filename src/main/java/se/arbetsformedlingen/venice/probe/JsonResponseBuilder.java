@@ -3,8 +3,8 @@ package se.arbetsformedlingen.venice.probe;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import se.arbetsformedlingen.venice.model.Application;
-import se.arbetsformedlingen.venice.model.Environment;
 import se.arbetsformedlingen.venice.model.ApplicationServer;
+import se.arbetsformedlingen.venice.model.Environment;
 
 import java.util.LinkedList;
 import java.util.List;

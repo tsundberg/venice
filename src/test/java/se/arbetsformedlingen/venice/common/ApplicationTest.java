@@ -8,7 +8,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 public class ApplicationTest {
 
     @Test
-    public void get_gfr_probename(){
+    public void get_gfr_probename() {
         String expected = "UgkForetagProbe";
 
         Application app = new Application("gfr");
@@ -19,7 +19,7 @@ public class ApplicationTest {
     }
 
     @Test
-    public void get_agselect_probename(){
+    public void get_agselect_probename() {
         String expected = "MarknadsanalysProbe";
 
         Application app = new Application("agselect");

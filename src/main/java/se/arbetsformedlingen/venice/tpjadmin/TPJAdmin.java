@@ -5,8 +5,8 @@ import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicHeader;
 import se.arbetsformedlingen.venice.model.Application;
-import se.arbetsformedlingen.venice.model.Environment;
 import se.arbetsformedlingen.venice.model.ApplicationServer;
+import se.arbetsformedlingen.venice.model.Environment;
 
 import java.io.IOException;
 import java.util.*;
@@ -62,7 +62,7 @@ public class TPJAdmin {
         return applicationServers;
     }
 
-   public static List<Application> getApplications() {
+    public static List<Application> getApplications() {
         List<Application> apps = new LinkedList<>();
 
         for (String key : applications.keySet()) {
@@ -73,7 +73,7 @@ public class TPJAdmin {
 
         return apps;
     }
-    
+
     private static List<ApplicationServer> getServers(Executor executor, String app, String env) throws IOException {
         String url = "http://" + host + ":" + port + uri + env + "/" + app + "";
         Header pisaHeader = getPisaId();

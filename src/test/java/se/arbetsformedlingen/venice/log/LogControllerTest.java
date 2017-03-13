@@ -4,8 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
 import se.arbetsformedlingen.venice.model.Application;
+import se.arbetsformedlingen.venice.model.ExceptionsPerTime;
 import se.arbetsformedlingen.venice.model.LogType;
-import se.arbetsformedlingen.venice.model.TimeSeries;
 import se.arbetsformedlingen.venice.model.TimeSeriesValue;
 import spark.Request;
 import spark.RequestStub;
@@ -41,7 +41,7 @@ public class LogControllerTest {
         Application application = new Application("gfr");
         LogType logType = new LogType("exception");
 
-        TimeSeries timeSeries = new TimeSeries(
+        ExceptionsPerTime exceptionsPerTime = new ExceptionsPerTime(application,
                 new TimeSeriesValue(22, 3), new TimeSeriesValue(1, 7), new TimeSeriesValue(13, 41), new TimeSeriesValue(2, 3),
                 new TimeSeriesValue(8, 17), new TimeSeriesValue(4, 43), new TimeSeriesValue(3, 17), new TimeSeriesValue(5, 42),
                 new TimeSeriesValue(0, 4), new TimeSeriesValue(19, 33), new TimeSeriesValue(6, 28), new TimeSeriesValue(7, 1),
@@ -50,7 +50,7 @@ public class LogControllerTest {
                 new TimeSeriesValue(17, 3), new TimeSeriesValue(21, 6), new TimeSeriesValue(20, 12), new TimeSeriesValue(23, 4)
         );
 
-        LogResponse gfrExceptionLog = new LogResponse(application, logType, timeSeries);
+        LogResponse gfrExceptionLog = new LogResponse(application, logType, exceptionsPerTime);
 
         latestLog.addLog(gfrExceptionLog);
     }

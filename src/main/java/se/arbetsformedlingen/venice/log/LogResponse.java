@@ -1,6 +1,5 @@
 package se.arbetsformedlingen.venice.log;
 
-import se.arbetsformedlingen.venice.model.Application;
 import se.arbetsformedlingen.venice.model.*;
 
 import java.util.List;
@@ -10,7 +9,7 @@ public class LogResponse {
     private LogType logType;
 
     private ConsumingSystemLoad consumingSystemLoad = new ConsumingSystemLoad(application);
-    private TimeSeries timeSeries = new TimeSeries();
+    private ExceptionsPerTime exceptionsPerTime = new ExceptionsPerTime(application);
     private ApplicationLoad applicationLoad = new ApplicationLoad(application);
     private WebserviceLoad webserviceLoad = new WebserviceLoad(application);
 
@@ -19,10 +18,10 @@ public class LogResponse {
         this.logType = logType;
     }
 
-    LogResponse(Application application, LogType logType, TimeSeries timeSeries) {
+    LogResponse(Application application, LogType logType, ExceptionsPerTime exceptionsPerTime) {
         this.application = application;
         this.logType = logType;
-        this.timeSeries = timeSeries;
+        this.exceptionsPerTime = exceptionsPerTime;
     }
 
     LogResponse(Application application, LogType logType, ApplicationLoad webserviceLoad) {
@@ -56,7 +55,7 @@ public class LogResponse {
     }
 
     List<TimeSeriesValue> getTimeValues() {
-        return timeSeries.getTimeValues();
+        return exceptionsPerTime.getTimeValues();
     }
 
     List<HostValue> getApplicationLoadValues() {

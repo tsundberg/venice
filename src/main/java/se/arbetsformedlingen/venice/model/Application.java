@@ -25,7 +25,7 @@ public class Application {
         }
     }
 
-   public String getProbeName() {
+    public String getProbeName() {
         return probeNames.get(name);
     }
 

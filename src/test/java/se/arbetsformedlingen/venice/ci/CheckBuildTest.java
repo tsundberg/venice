@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CheckBuildTest {
     @Test
-    public void build_error_response (){
+    public void build_error_response() {
         CheckBuild checkBuild = new CheckBuild();
 
         Exception sample = new Exception("Error message");

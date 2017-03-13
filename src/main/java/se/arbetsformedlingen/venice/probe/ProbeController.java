@@ -19,6 +19,7 @@ public class ProbeController {
     static void forceStatuses(LatestProbeStatuses statuses) {
         ProbeController.statuses = statuses;
     }
+
     static void forceServers(List<ApplicationServer> applicationServers) {
         ProbeController.applicationServers = applicationServers;
     }
