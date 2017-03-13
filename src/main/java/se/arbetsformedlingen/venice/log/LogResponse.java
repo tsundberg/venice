@@ -8,10 +8,16 @@ import java.util.List;
 public class LogResponse {
     private Application application;
     private LogType logType;
-    private ConsumingSystemLoad consumingSystemLoad;
-    private TimeSeries timeSeries;
-    private ApplicationLoad applicationLoad;
-    private WebserviceLoad webserviceLoad;
+
+    private ConsumingSystemLoad consumingSystemLoad = new ConsumingSystemLoad(application);
+    private TimeSeries timeSeries = new TimeSeries();
+    private ApplicationLoad applicationLoad = new ApplicationLoad(application);
+    private WebserviceLoad webserviceLoad = new WebserviceLoad(application);
+
+    LogResponse(Application application, LogType logType) {
+        this.application = application;
+        this.logType = logType;
+    }
 
     LogResponse(Application application, LogType logType, TimeSeries timeSeries) {
         this.application = application;

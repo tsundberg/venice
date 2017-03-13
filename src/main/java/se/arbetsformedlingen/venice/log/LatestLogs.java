@@ -6,7 +6,7 @@ import se.arbetsformedlingen.venice.model.LogType;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public class LatestLogs {
+class LatestLogs {
     private static ConcurrentMap<String, LogResponse> logResponse = new ConcurrentHashMap<>();
 
     void addLog(LogResponse value) {
@@ -16,10 +16,19 @@ public class LatestLogs {
 
     LogResponse getLog(Application application, LogType logType) {
         String key = generateKey(application, logType);
-        return logResponse.get(key);
+
+        if (logResponse.containsKey(key)) {
+            return logResponse.get(key);
+        } else {
+            return new LogResponse(application, logType);
+        }
     }
 
     private String generateKey(Application application, LogType logType) {
         return application + "->" + logType;
+    }
+
+    static void clearRepository() {
+        logResponse = new ConcurrentHashMap<>();
     }
 }
