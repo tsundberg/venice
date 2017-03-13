@@ -41,7 +41,7 @@ class JsonResponseBuilder {
 
         JSONArray timeSeries = new JSONArray();
 
-        for (TimeSeriesValue value : logResponse.getTimeValues()) {
+        for (TimeSeriesValue value : logResponse.getExceptionPerHour()) {
             JSONObject timeValue = new JSONObject();
             timeValue.put("time", value.getTime());
             timeValue.put("value", value.getValue());

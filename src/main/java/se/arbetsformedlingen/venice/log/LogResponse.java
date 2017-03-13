@@ -18,7 +18,7 @@ public class LogResponse {
         this.logType = logType;
     }
 
-    LogResponse(Application application, LogType logType, ExceptionsPerTime exceptionsPerTime) {
+   public LogResponse(Application application, LogType logType, ExceptionsPerTime exceptionsPerTime) {
         this.application = application;
         this.logType = logType;
         this.exceptionsPerTime = exceptionsPerTime;
@@ -54,7 +54,7 @@ public class LogResponse {
         return logType;
     }
 
-    List<TimeSeriesValue> getTimeValues() {
+    public List<TimeSeriesValue> getExceptionPerHour() {
         return exceptionsPerTime.getTimeValues();
     }
 

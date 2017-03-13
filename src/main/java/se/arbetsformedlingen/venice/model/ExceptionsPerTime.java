@@ -8,9 +8,13 @@ public class ExceptionsPerTime {
     private Application application;
     private List<TimeSeriesValue> series = new ArrayList<>();
 
-    public ExceptionsPerTime(Application application, TimeSeriesValue... timeSeriesValues) {
+    public ExceptionsPerTime(Application application) {
         this.application = application;
-        Collections.addAll(series, timeSeriesValues);
+    }
+
+    public ExceptionsPerTime(Application application, List<TimeSeriesValue> timeSeriesValues) {
+        this.application = application;
+        series.addAll(timeSeriesValues);
         Collections.sort(series);
     }
 

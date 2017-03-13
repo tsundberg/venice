@@ -10,6 +10,9 @@ import se.arbetsformedlingen.venice.model.TimeSeriesValue;
 import spark.Request;
 import spark.RequestStub;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LogControllerTest {
@@ -41,14 +44,33 @@ public class LogControllerTest {
         Application application = new Application("gfr");
         LogType logType = new LogType("exception");
 
-        ExceptionsPerTime exceptionsPerTime = new ExceptionsPerTime(application,
-                new TimeSeriesValue(22, 3), new TimeSeriesValue(1, 7), new TimeSeriesValue(13, 41), new TimeSeriesValue(2, 3),
-                new TimeSeriesValue(8, 17), new TimeSeriesValue(4, 43), new TimeSeriesValue(3, 17), new TimeSeriesValue(5, 42),
-                new TimeSeriesValue(0, 4), new TimeSeriesValue(19, 33), new TimeSeriesValue(6, 28), new TimeSeriesValue(7, 1),
-                new TimeSeriesValue(9, 18), new TimeSeriesValue(11, 11), new TimeSeriesValue(12, 13), new TimeSeriesValue(14, 25),
-                new TimeSeriesValue(15, 15), new TimeSeriesValue(16, 22), new TimeSeriesValue(10, 32), new TimeSeriesValue(18, 22),
-                new TimeSeriesValue(17, 3), new TimeSeriesValue(21, 6), new TimeSeriesValue(20, 12), new TimeSeriesValue(23, 4)
-        );
+        List<TimeSeriesValue> timeSeriesValues = new LinkedList<>();
+        timeSeriesValues.add(new TimeSeriesValue(22, 3));
+        timeSeriesValues.add(new TimeSeriesValue(1, 7));
+        timeSeriesValues.add(new TimeSeriesValue(13, 41));
+        timeSeriesValues.add(new TimeSeriesValue(2, 3));
+        timeSeriesValues.add(new TimeSeriesValue(8, 17));
+        timeSeriesValues.add(new TimeSeriesValue(4, 43));
+        timeSeriesValues.add(new TimeSeriesValue(3, 17));
+        timeSeriesValues.add(new TimeSeriesValue(5, 42));
+        timeSeriesValues.add(new TimeSeriesValue(0, 4));
+        timeSeriesValues.add(new TimeSeriesValue(19, 33));
+        timeSeriesValues.add(new TimeSeriesValue(6, 28));
+        timeSeriesValues.add(new TimeSeriesValue(7, 1));
+        timeSeriesValues.add(new TimeSeriesValue(9, 18));
+        timeSeriesValues.add(new TimeSeriesValue(11, 11));
+        timeSeriesValues.add(new TimeSeriesValue(12, 13));
+        timeSeriesValues.add(new TimeSeriesValue(14, 25));
+        timeSeriesValues.add(new TimeSeriesValue(15, 15));
+        timeSeriesValues.add(new TimeSeriesValue(16, 22));
+        timeSeriesValues.add(new TimeSeriesValue(10, 32));
+        timeSeriesValues.add(new TimeSeriesValue(18, 22));
+        timeSeriesValues.add(new TimeSeriesValue(17, 3));
+        timeSeriesValues.add(new TimeSeriesValue(21, 6));
+        timeSeriesValues.add(new TimeSeriesValue(20, 12));
+        timeSeriesValues.add(new TimeSeriesValue(23, 4));
+
+        ExceptionsPerTime exceptionsPerTime = new ExceptionsPerTime(application, timeSeriesValues);
 
         LogResponse gfrExceptionLog = new LogResponse(application, logType, exceptionsPerTime);
 

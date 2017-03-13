@@ -7,6 +7,9 @@ import se.arbetsformedlingen.venice.model.ExceptionsPerTime;
 import se.arbetsformedlingen.venice.model.LogType;
 import se.arbetsformedlingen.venice.model.TimeSeriesValue;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LatestLogsTest {
@@ -22,7 +25,13 @@ public class LatestLogsTest {
 
         Application application = new Application("gfr");
         LogType logType = new LogType("exception");
-        ExceptionsPerTime exceptionsPerTime = new ExceptionsPerTime(application, new TimeSeriesValue(10, 17), new TimeSeriesValue(11, 42), new TimeSeriesValue(9, 4711));
+
+        List<TimeSeriesValue> timeSeriesValues = new LinkedList<>();
+        timeSeriesValues.add(new TimeSeriesValue(10, 17));
+        timeSeriesValues.add(new TimeSeriesValue(11, 42));
+        timeSeriesValues.add(new TimeSeriesValue(9, 4711));
+
+        ExceptionsPerTime exceptionsPerTime = new ExceptionsPerTime(application, timeSeriesValues);
         LogResponse logEntry = new LogResponse(application, logType, exceptionsPerTime);
 
         latestLog.addLog(logEntry);
@@ -58,7 +67,7 @@ public class LatestLogsTest {
 
         assertThat(actual.getApplication()).isEqualTo(new Application("gfr"));
         assertThat(actual.getLogType()).isEqualTo(new LogType("exception"));
-        assertThat(actual.getTimeValues()).isEmpty();
+        assertThat(actual.getExceptionPerHour()).isEmpty();
     }
 
     @Test

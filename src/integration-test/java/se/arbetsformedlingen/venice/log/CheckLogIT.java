@@ -3,9 +3,7 @@ package se.arbetsformedlingen.venice.log;
 import org.elasticsearch.action.admin.cluster.state.ClusterStateResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
@@ -21,28 +19,23 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import se.arbetsformedlingen.venice.log.elasticsearch.ElasticSearchClient;
 
-import java.net.InetSocketAddress;
-import java.time.LocalDate;
 import java.util.Map;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 public class CheckLogIT {
-
     private Client client;
+    private ElasticSearchClient elasticSearchClient;
 
     @Before
     public void setUp() {
-        Settings settings = Settings.settingsBuilder()
-                .put("cluster.name", "logsys_prod")
-                .build();
+        elasticSearchClient = new ElasticSearchClient();
 
-        client = new TransportClient.Builder()
-                .settings(settings)
-                .build()
-                .addTransportAddress(new InetSocketTransportAddress(new InetSocketAddress("elk.arbetsformedlingen.se", 9300)));
+        Settings settings = elasticSearchClient.getSettings();
+        client = elasticSearchClient.getClient(settings);
     }
 
     @After
@@ -235,47 +228,17 @@ public class CheckLogIT {
     }
 
     private String today() {
-        LocalDate today = LocalDate.now();
-        int year = today.getYear();
-
-        String month = "" + today.getMonthValue();
-        month = padWithLeadinZero(month);
-
-        String day = "" + today.getDayOfMonth();
-        day = padWithLeadinZero(day);
-
-        return getIndex(year, month, day);
+        return elasticSearchClient.today();
     }
 
     private String yesterday() {
-        LocalDate yesterday = LocalDate.now().minusDays(1);
-        int year = yesterday.getYear();
-
-        String month = "" + yesterday.getMonthValue();
-        month = padWithLeadinZero(month);
-
-        String day = "" + yesterday.getDayOfMonth();
-        day = padWithLeadinZero(day);
-
-        return getIndex(year, month, day);
-    }
-
-    private String getIndex(int year, String month, String day) {
-        return "logstash-" + year + "." + month + "." + day;
-    }
-
-    private String padWithLeadinZero(String tooShort) {
-        while (tooShort.length() < 2) {
-            tooShort = "0" + tooShort;
-        }
-        return tooShort;
+        return elasticSearchClient.yesterday();
     }
 
     private void printIndices() {
         ClusterStateResponse response = client.admin().cluster().prepareState()
                 .execute().actionGet();
         String[] indices = response.getState().getMetaData().getConcreteAllIndices();
-
 
         for (String index : indices) {
             System.out.println(index);
