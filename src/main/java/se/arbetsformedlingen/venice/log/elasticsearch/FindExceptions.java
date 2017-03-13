@@ -113,6 +113,7 @@ public class FindExceptions extends ElasticSearchClient implements java.util.fun
     }
 
     private void addOneException(SearchHit hit, Map<Integer, Integer> exceptionPerHour) {
+        // this might a too complicated solution. ES should be able to group the data per hour. This is the way it probably is implemented in other searches. Check if that is the case when you see this comment.
         Map<String, Object> source = hit.getSource();
         String timeStamp = (String) source.get("@timestamp");
 
