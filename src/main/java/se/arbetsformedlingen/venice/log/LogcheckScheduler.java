@@ -2,6 +2,7 @@ package se.arbetsformedlingen.venice.log;
 
 import se.arbetsformedlingen.venice.common.Scheduler;
 import se.arbetsformedlingen.venice.log.elasticsearch.FindExceptions;
+import se.arbetsformedlingen.venice.model.Application;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,7 +16,10 @@ public class LogcheckScheduler implements Scheduler {
     private List<Checker> checkers = new LinkedList<>();
 
     public LogcheckScheduler() {
-        checkers.add(new Checker(new FindExceptions()));
+        checkers.add(new Checker(new FindExceptions(new Application("gfr"))));
+        checkers.add(new Checker(new FindExceptions(new Application("geo"))));
+        checkers.add(new Checker(new FindExceptions(new Application("gcpr"))));
+        checkers.add(new Checker(new FindExceptions(new Application("agselect"))));
     }
 
     @Override

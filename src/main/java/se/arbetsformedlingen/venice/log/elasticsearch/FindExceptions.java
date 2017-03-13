@@ -23,6 +23,18 @@ import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 public class FindExceptions extends ElasticSearchClient implements java.util.function.Supplier<LogResponse> {
+    private Application application;
+
+    private Map<Application, String> queryStrings = new HashMap<>();
+
+    public FindExceptions(Application application) {
+        this.application = application;
+
+        queryStrings.put(new Application("gfr"), "se.arbetsformedlingen.foretag*");
+        queryStrings.put(new Application("geo"), "se.arbetsformedlingen.geo*");
+        queryStrings.put(new Application("cpr"), "se.arbetsformedlingen.cpr*");
+        queryStrings.put(new Application("agselect"), "se.arbetsformedlingen.gfr.ma*");
+    }
 
     @Override
     public LogResponse get() {
@@ -30,7 +42,8 @@ public class FindExceptions extends ElasticSearchClient implements java.util.fun
 
         Client client = getClient(settings);
 
-        QueryBuilder jboss_app_app_class = queryStringQuery("se.arbetsformedlingen.foretag*")
+        String queryString = queryStrings.get(application);
+        QueryBuilder jboss_app_app_class = queryStringQuery(queryString)
                 .analyzeWildcard(true);
 
         QueryBuilder exception = queryStringQuery("Exception*")
@@ -48,16 +61,7 @@ public class FindExceptions extends ElasticSearchClient implements java.util.fun
                 .execute()
                 .actionGet();
 
-        LogResponse logResponse = collectExceptions(response, client);
-
-        System.out.println("Application: " + logResponse.getApplication());
-        for (TimeSeriesValue tsv : logResponse.getExceptionPerHour()) {
-            System.out.println("  " + tsv.getTime() + ": " + tsv.getValue());
-        }
-        System.out.println();
-        System.out.println();
-
-        return logResponse;
+        return collectExceptions(response, client);
     }
 
     private LogResponse collectExceptions(SearchResponse response, Client client) {
@@ -89,7 +93,6 @@ public class FindExceptions extends ElasticSearchClient implements java.util.fun
             }
         }
 
-        Application application = new Application("gfr");
         LogType logType = new LogType("exception");
         List<TimeSeriesValue> timeSeriesValues = new LinkedList<>();
 
@@ -126,29 +129,4 @@ public class FindExceptions extends ElasticSearchClient implements java.util.fun
         exceptionPerHour.put(hour, hits);
     }
 
-    LocalDateTime getDate(String timeStamp) {
-        String yearString = timeStamp.substring(0, 4);
-        int year = Integer.parseInt(yearString);
-
-        String monthString = timeStamp.substring(5, 7);
-        int month = Integer.parseInt(monthString);
-
-        String dayString = timeStamp.substring(8, 10);
-        int day = Integer.parseInt(dayString);
-
-        String hourString = timeStamp.substring(11, 13);
-        int hour = Integer.parseInt(hourString);
-
-        String minuteString = timeStamp.substring(14, 16);
-        int minute = Integer.parseInt(minuteString);
-
-        String secondString = timeStamp.substring(17, 19);
-        int second = Integer.parseInt(secondString);
-
-        return convertToCET(LocalDateTime.of(year, month, day, hour, minute, second));
-    }
-
-    private LocalDateTime convertToCET(LocalDateTime localDateTime) {
-        return localDateTime.plusHours(1);
-    }
 }

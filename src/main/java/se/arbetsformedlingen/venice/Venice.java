@@ -61,8 +61,7 @@ public class Venice {
 
     private static void scheduleLogChecks() {
         Scheduler scheduler = new LogcheckScheduler();
-        // todo schedule every 5 minute
-        scheduler.startChecking(1, TimeUnit.MINUTES);
+        scheduler.startChecking(5, TimeUnit.MINUTES);
     }
 
     private static void scheduleProbeChecks() {

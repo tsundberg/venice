@@ -7,6 +7,7 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 
 import java.net.InetSocketAddress;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class ElasticSearchClient {
     public Client getClient(Settings settings) {
@@ -14,6 +15,32 @@ public class ElasticSearchClient {
                 .settings(settings)
                 .build()
                 .addTransportAddress(new InetSocketTransportAddress(new InetSocketAddress("elk.arbetsformedlingen.se", 9300)));
+    }
+
+    LocalDateTime getDate(String timeStamp) {
+        String yearString = timeStamp.substring(0, 4);
+        int year = Integer.parseInt(yearString);
+
+        String monthString = timeStamp.substring(5, 7);
+        int month = Integer.parseInt(monthString);
+
+        String dayString = timeStamp.substring(8, 10);
+        int day = Integer.parseInt(dayString);
+
+        String hourString = timeStamp.substring(11, 13);
+        int hour = Integer.parseInt(hourString);
+
+        String minuteString = timeStamp.substring(14, 16);
+        int minute = Integer.parseInt(minuteString);
+
+        String secondString = timeStamp.substring(17, 19);
+        int second = Integer.parseInt(secondString);
+
+        return convertToCET(LocalDateTime.of(year, month, day, hour, minute, second));
+    }
+
+    private LocalDateTime convertToCET(LocalDateTime localDateTime) {
+        return localDateTime.plusHours(1);
     }
 
     public Settings getSettings() {
