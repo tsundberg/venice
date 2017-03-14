@@ -30,7 +30,7 @@ public class LogResponse {
         this.applicationLoad = applicationLoad;
     }
 
-    LogResponse(Application application, LogType logType, WebserviceLoad webserviceLoad) {
+   public LogResponse(Application application, LogType logType, WebserviceLoad webserviceLoad) {
         this.application = application;
         this.logType = logType;
         this.webserviceLoad = webserviceLoad;
@@ -54,7 +54,7 @@ public class LogResponse {
         return logType;
     }
 
-    public List<TimeSeriesValue> getExceptionPerHour() {
+    List<TimeSeriesValue> getExceptionPerHour() {
         return exceptionsPerTime.getTimeValues();
     }
 

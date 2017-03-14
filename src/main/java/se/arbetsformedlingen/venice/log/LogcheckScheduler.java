@@ -4,6 +4,7 @@ import se.arbetsformedlingen.venice.common.Scheduler;
 import se.arbetsformedlingen.venice.log.elasticsearch.ElasticSearchClient;
 import se.arbetsformedlingen.venice.log.elasticsearch.FindApplicationLoad;
 import se.arbetsformedlingen.venice.log.elasticsearch.FindExceptions;
+import se.arbetsformedlingen.venice.log.elasticsearch.FindWebserviceLoad;
 import se.arbetsformedlingen.venice.model.Application;
 
 import java.util.LinkedList;
@@ -28,6 +29,10 @@ public class LogcheckScheduler implements Scheduler {
         checkers.add(new Checker(new FindApplicationLoad(new Application("geo"))));
         checkers.add(new Checker(new FindApplicationLoad(new Application("cpr"))));
         checkers.add(new Checker(new FindApplicationLoad(new Application("agselect"))));
+
+        checkers.add(new Checker(new FindWebserviceLoad(new Application("gfr"))));
+        checkers.add(new Checker(new FindWebserviceLoad(new Application("geo"))));
+        checkers.add(new Checker(new FindWebserviceLoad(new Application("cpr"))));
     }
 
     @Override

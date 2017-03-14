@@ -91,6 +91,81 @@ public class CheckLogIT {
 
     @Test
     @Ignore
+    public void get_calls_per_webservice_for_foretag() throws Exception {
+        QueryStringQueryBuilder jboss_app_app_class = queryStringQuery("se.arbetsformedlingen.foretag.gfrws*")
+                .field("jboss_app_app_class")
+                .analyzeWildcard(true);
+
+        SignificantTermsBuilder significatTerms = AggregationBuilders
+                .significantTerms("calls per webservice")
+                .field("jboss_app_app_op");
+
+        SearchResponse response = client.prepareSearch(today(), yesterday())
+                .setQuery(jboss_app_app_class)
+                .addAggregation(significatTerms)
+                .execute()
+                .actionGet();
+
+        SignificantTerms callsPerHost = response.getAggregations().get("calls per webservice");
+
+        System.out.println("Response time: " + response.getTookInMillis() + " ms");
+        for (SignificantTerms.Bucket bucket : callsPerHost.getBuckets()) {
+            System.out.println(bucket.getKeyAsString() + ": " + bucket.getSubsetDf());
+        }
+    }
+
+    @Test
+    @Ignore
+    public void get_calls_per_webservice_for_cpr() throws Exception {
+        QueryStringQueryBuilder jboss_app_app_class = queryStringQuery("se.arbetsformedlingen.cpr*")
+                .field("jboss_app_app_class")
+                .analyzeWildcard(true);
+
+        SignificantTermsBuilder significatTerms = AggregationBuilders
+                .significantTerms("calls per webservice")
+                .field("jboss_app_app_op");
+
+        SearchResponse response = client.prepareSearch(today(), yesterday())
+                .setQuery(jboss_app_app_class)
+                .addAggregation(significatTerms)
+                .execute()
+                .actionGet();
+
+        SignificantTerms callsPerHost = response.getAggregations().get("calls per webservice");
+
+        System.out.println("Response time: " + response.getTookInMillis() + " ms");
+        for (SignificantTerms.Bucket bucket : callsPerHost.getBuckets()) {
+            System.out.println(bucket.getKeyAsString() + ": " + bucket.getSubsetDf());
+        }
+    }
+
+    @Test
+    @Ignore
+    public void get_calls_per_webservice_for_geo() throws Exception {
+        QueryStringQueryBuilder jboss_app_app_class = queryStringQuery("se.arbetsformedlingen.geo*")
+                .field("jboss_app_app_class")
+                .analyzeWildcard(true);
+
+        SignificantTermsBuilder significatTerms = AggregationBuilders
+                .significantTerms("calls per webservice")
+                .field("jboss_app_app_name");
+
+        SearchResponse response = client.prepareSearch(today(), yesterday())
+                .setQuery(jboss_app_app_class)
+                .addAggregation(significatTerms)
+                .execute()
+                .actionGet();
+
+        SignificantTerms callsPerHost = response.getAggregations().get("calls per webservice");
+
+        System.out.println("Response time: " + response.getTookInMillis() + " ms");
+        for (SignificantTerms.Bucket bucket : callsPerHost.getBuckets()) {
+            System.out.println(bucket.getKeyAsString() + ": " + bucket.getSubsetDf());
+        }
+    }
+
+    @Test
+    @Ignore
     public void get_calls_per_hour_for_foretag() throws Exception {
         QueryStringQueryBuilder jboss_app_app_class = queryStringQuery("se.arbetsformedlingen.foretag*")
                 .field("jboss_app_app_class")

@@ -9,6 +9,7 @@ public class WebserviceLoad {
     private List<WebserviceValue> series = new ArrayList<>();
 
     public WebserviceLoad(Application application, WebserviceValue... timeValues) {
+        this.application = application;
         Collections.addAll(series, timeValues);
         Collections.sort(series);
     }
