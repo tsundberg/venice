@@ -2,13 +2,14 @@ package se.arbetsformedlingen.venice.log;
 
 import se.arbetsformedlingen.venice.model.*;
 
+import java.util.Collections;
 import java.util.List;
 
 public class LogResponse {
     private Application application;
     private LogType logType;
 
-    private ConsumingSystemLoad consumingSystemLoad = new ConsumingSystemLoad(application);
+    private ConsumingSystemLoad consumingSystemLoad = new ConsumingSystemLoad(application, Collections.emptyList());
     private ExceptionsPerTime exceptionsPerTime = new ExceptionsPerTime(application);
     private ApplicationLoad applicationLoad = new ApplicationLoad(application);
     private WebserviceLoad webserviceLoad = new WebserviceLoad(application);
@@ -36,7 +37,7 @@ public class LogResponse {
         this.webserviceLoad = webserviceLoad;
     }
 
-    LogResponse(Application application, LogType logType, ConsumingSystemLoad consumingSystemLoad) {
+   public  LogResponse(Application application, LogType logType, ConsumingSystemLoad consumingSystemLoad) {
         this.application = application;
         this.logType = logType;
         this.consumingSystemLoad = consumingSystemLoad;

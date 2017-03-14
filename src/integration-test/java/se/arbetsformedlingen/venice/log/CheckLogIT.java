@@ -10,6 +10,7 @@ import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramBuilder;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
 import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
@@ -44,6 +45,7 @@ public class CheckLogIT {
     }
 
     @Test
+    @Ignore
     public void get_indices() throws Exception {
         printIndices();
     }
@@ -166,7 +168,7 @@ public class CheckLogIT {
 
     @Test
     @Ignore
-    public void get_calls_per_hour_for_foretag() throws Exception {
+    public void get_calls_per_hour_for_gfr() throws Exception {
         QueryStringQueryBuilder jboss_app_app_class = queryStringQuery("se.arbetsformedlingen.foretag*")
                 .field("jboss_app_app_class")
                 .analyzeWildcard(true);
@@ -184,6 +186,144 @@ public class CheckLogIT {
 
         Histogram webbApp = response.getAggregations().get("calls per hour");
 
+        System.out.println("Calls per four for gfr:");
+        System.out.println("Response time: " + response.getTookInMillis() + " ms");
+        for (Histogram.Bucket bucket : webbApp.getBuckets()) {
+            System.out.println(bucket.getKeyAsString() + ": " + bucket.getDocCount());
+        }
+    }
+
+    @Test
+    public void get_calls_per_hour_for_gfr_per_webservice_consumer() throws Exception {
+        QueryStringQueryBuilder jboss_app_app_class = queryStringQuery("*.service.GFRServiceEndpointBase")
+                .field("jboss_app_app_class")
+                .analyzeWildcard(true);
+
+        SignificantTermsBuilder significatTerms = AggregationBuilders
+                .significantTerms("calls per consumer")
+                .field("jboss_app_message");
+
+        DateHistogramBuilder histogram = AggregationBuilders
+                .dateHistogram("calls per hour")
+                .subAggregation(significatTerms)
+                .field("@timestamp")
+                .interval(DateHistogramInterval.HOUR);
+
+        SearchResponse response = client.prepareSearch(today(), yesterday())
+                .setQuery(jboss_app_app_class)
+                .addAggregation(histogram)
+                .execute()
+                .actionGet();
+
+        System.out.println("Calls per four for gfr:");
+
+        Histogram webbApp = response.getAggregations().get("calls per hour");
+        System.out.println("Response time: " + response.getTookInMillis() + " ms");
+        for (Histogram.Bucket bucket : webbApp.getBuckets()) {
+            System.out.println(bucket.getKeyAsString() + ": " + bucket.getDocCount());
+
+            Aggregations aggregations = bucket.getAggregations();
+            SignificantTerms callsPerHost = aggregations.get("calls per consumer");
+            for (SignificantTerms.Bucket bucket2 : callsPerHost.getBuckets()) {
+                System.out.println("  " + bucket2.getKeyAsString() + ": " + bucket2.getSubsetDf());
+            }
+        }
+    }
+
+    @Test
+    public void get_calls_per_hour_for_cpr_per_webservice_consumer() throws Exception {
+        QueryStringQueryBuilder jboss_app_app_class = queryStringQuery("se.arbetsformedlingen.cpr*")
+                .field("jboss_app_app_class")
+                .analyzeWildcard(true);
+
+        SignificantTermsBuilder significatTerms = AggregationBuilders
+                .significantTerms("calls per webservice")
+                .field("jboss_app_app_op");
+
+        DateHistogramBuilder histogram = AggregationBuilders
+                .dateHistogram("calls per hour")
+                .subAggregation(significatTerms)
+                .field("@timestamp")
+                .interval(DateHistogramInterval.HOUR);
+
+        SearchResponse response = client.prepareSearch(today(), yesterday())
+                .setQuery(jboss_app_app_class)
+                .addAggregation(histogram)
+                .execute()
+                .actionGet();
+
+        System.out.println("Calls per four for cpr:");
+
+        Histogram webbApp = response.getAggregations().get("calls per hour");
+        System.out.println("Response time: " + response.getTookInMillis() + " ms");
+        for (Histogram.Bucket bucket : webbApp.getBuckets()) {
+            System.out.println(bucket.getKeyAsString() + ": " + bucket.getDocCount());
+
+            Aggregations aggregations = bucket.getAggregations();
+            SignificantTerms callsPerHost = aggregations.get("calls per webservice");
+            for (SignificantTerms.Bucket bucket2 : callsPerHost.getBuckets()) {
+                System.out.println("  " + bucket2.getKeyAsString() + ": " + bucket2.getSubsetDf());
+            }
+        }
+    }
+
+    @Test
+    public void get_calls_per_hour_for_geo_per_webservice_consumer() throws Exception {
+        QueryStringQueryBuilder jboss_app_app_class = queryStringQuery("se.arbetsformedlingen.geo*")
+                .field("jboss_app_app_class")
+                .analyzeWildcard(true);
+
+        SignificantTermsBuilder significatTerms = AggregationBuilders
+                .significantTerms("calls per webservice")
+                .field("jboss_app_app_name");
+
+        DateHistogramBuilder histogram = AggregationBuilders
+                .dateHistogram("calls per hour")
+                .subAggregation(significatTerms)
+                .field("@timestamp")
+                .interval(DateHistogramInterval.HOUR);
+
+        SearchResponse response = client.prepareSearch(today(), yesterday())
+                .setQuery(jboss_app_app_class)
+                .addAggregation(histogram)
+                .execute()
+                .actionGet();
+
+        System.out.println("Calls per four for geo:");
+
+        Histogram webbApp = response.getAggregations().get("calls per hour");
+        System.out.println("Response time: " + response.getTookInMillis() + " ms");
+        for (Histogram.Bucket bucket : webbApp.getBuckets()) {
+            System.out.println(bucket.getKeyAsString() + ": " + bucket.getDocCount());
+
+            Aggregations aggregations = bucket.getAggregations();
+            SignificantTerms callsPerHost = aggregations.get("calls per webservice");
+            for (SignificantTerms.Bucket bucket2 : callsPerHost.getBuckets()) {
+                System.out.println("  " + bucket2.getKeyAsString() + ": " + bucket2.getSubsetDf());
+            }
+        }
+    }
+
+    @Test
+    public void get_calls_per_hour_for_agselect() throws Exception {
+        QueryStringQueryBuilder jboss_app_app_class = queryStringQuery("se.arbetsformedlingen.gfr.ma*")
+                .field("jboss_app_app_class")
+                .analyzeWildcard(true);
+
+        DateHistogramBuilder histogram = AggregationBuilders
+                .dateHistogram("calls per hour")
+                .field("@timestamp")
+                .interval(DateHistogramInterval.HOUR);
+
+        SearchResponse response = client.prepareSearch(today(), yesterday())
+                .setQuery(jboss_app_app_class)
+                .addAggregation(histogram)
+                .execute()
+                .actionGet();
+
+        Histogram webbApp = response.getAggregations().get("calls per hour");
+
+        System.out.println("Calls per four for agselect:");
         System.out.println("Response time: " + response.getTookInMillis() + " ms");
         for (Histogram.Bucket bucket : webbApp.getBuckets()) {
             System.out.println(bucket.getKeyAsString() + ": " + bucket.getDocCount());

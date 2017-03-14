@@ -8,8 +8,9 @@ public class ConsumingSystemLoad {
     private Application application;
     private List<ConsumingSystemValue> series = new ArrayList<>();
 
-    public ConsumingSystemLoad(Application application, ConsumingSystemValue... consumingSystemValues) {
-        Collections.addAll(series, consumingSystemValues);
+    public ConsumingSystemLoad(Application application, List<ConsumingSystemValue> consumingSystemValues) {
+        this.application = application;
+        series.addAll(consumingSystemValues);
         Collections.sort(series);
     }
 

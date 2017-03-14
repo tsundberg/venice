@@ -129,56 +129,10 @@ public class JsonResponseBuilderTest {
         Application application = new Application("gfr");
         LogType logType = new LogType("consuming-system");
 
-        ConsumingSystemLoad series = new ConsumingSystemLoad(application,
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 0, 32L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 1, 27L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 2, 33L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 3, 17L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 4, 44L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 5, 24L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 6, 25L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 7, 300L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 8, 360L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 9, 3434L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 10, 3223L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 11, 3432L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 12, 3532L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 13, 3242L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 14, 3276L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 15, 3289L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 16, 2242L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 17, 1548L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 18, 420L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 19, 323L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 20, 32L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 21, 33L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 22, 12L),
-                new ConsumingSystemValue(new ConsumingSystem("KA"), 23, 3L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 0, 232L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 1, 227L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 2, 233L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 3, 217L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 4, 244L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 5, 224L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 6, 225L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 7, 2300L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 8, 2360L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 9, 23434L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 10, 23223L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 11, 23432L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 12, 23532L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 13, 23242L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 14, 23276L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 15, 23289L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 16, 22242L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 17, 21548L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 18, 2420L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 19, 2323L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 20, 232L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 21, 233L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 22, 212L),
-                new ConsumingSystemValue(new ConsumingSystem("gfr"), 23, 23L)
-        );
+
+        List<ConsumingSystemValue> values = getConsumingSystemValues();
+
+        ConsumingSystemLoad series = new ConsumingSystemLoad(application, values);
 
         LogResponse logResponse = new LogResponse(application, logType, series);
 
@@ -198,5 +152,58 @@ public class JsonResponseBuilderTest {
         assertThat(actualTimeValue.get("system")).isEqualTo("KA");
         assertThat(actualTimeValue.get("calls")).isEqualTo(27);
         assertThat(actualTimeValue.get("time")).isEqualTo(1);
+    }
+
+    private List<ConsumingSystemValue> getConsumingSystemValues() {
+        List<ConsumingSystemValue> values = new LinkedList<>();
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 0, 32L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 1, 27L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 2, 33L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 3, 17L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 4, 44L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 5, 24L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 6, 25L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 7, 300L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 8, 360L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 9, 3434L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 10, 3223L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 11, 3432L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 12, 3532L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 13, 3242L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 14, 3276L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 15, 3289L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 16, 2242L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 17, 1548L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 18, 420L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 19, 323L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 20, 32L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 21, 33L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 22, 12L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("KA"), 23, 3L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 0, 232L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 1, 227L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 2, 233L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 3, 217L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 4, 244L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 5, 224L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 6, 225L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 7, 2300L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 8, 2360L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 9, 23434L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 10, 23223L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 11, 23432L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 12, 23532L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 13, 23242L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 14, 23276L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 15, 23289L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 16, 22242L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 17, 21548L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 18, 2420L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 19, 2323L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 20, 232L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 21, 233L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 22, 212L));
+        values.add(new ConsumingSystemValue(new ConsumingSystem("gfr"), 23, 23L));
+        return values;
     }
 }
