@@ -18,11 +18,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
-public class FindExceptions extends ElasticSearchClient implements java.util.function.Supplier<LogResponse> {
+public class FindExceptions extends ElasticSearchClient implements Supplier<LogResponse> {
     private Application application;
 
     private Map<Application, String> queryStrings = new HashMap<>();

@@ -9,6 +9,7 @@ public class ApplicationLoad {
     private List<HostValue> series = new ArrayList<>();
 
     public ApplicationLoad(Application application, HostValue... timeValues) {
+        this.application = application;
         Collections.addAll(series, timeValues);
         Collections.sort(series);
     }

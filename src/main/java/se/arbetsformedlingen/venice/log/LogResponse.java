@@ -24,10 +24,10 @@ public class LogResponse {
         this.exceptionsPerTime = exceptionsPerTime;
     }
 
-    LogResponse(Application application, LogType logType, ApplicationLoad webserviceLoad) {
+  public  LogResponse(Application application, LogType logType, ApplicationLoad applicationLoad) {
         this.application = application;
         this.logType = logType;
-        applicationLoad = webserviceLoad;
+        this.applicationLoad = applicationLoad;
     }
 
     LogResponse(Application application, LogType logType, WebserviceLoad webserviceLoad) {
