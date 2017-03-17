@@ -96,9 +96,10 @@ var createChart = function(container) {
     };
 
     var loadWidth = 20;
-    var mainChartLeft = 2*margin.left + loadWidth;
+    var mainChartLeft = margin.left + loadWidth + 50;
 
     var serverColors = d3.scaleOrdinal(d3.schemeCategory10);
+    var consumerColors = d3.scaleOrdinal(d3.schemeCategory20);
 
     var svg = d3.select(container)
         .append("svg");
@@ -108,8 +109,25 @@ var createChart = function(container) {
         .attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
 
     var chartArea = svg.append("g")
-        .attr("class", "chart-area")
+        .attr("class", "load-area")
         .attr("transform", "translate(" + mainChartLeft + ", " + margin.right + ")");
+
+    var hourToDate = function(hour) {
+        var currentHour = new Date().getHours();
+        if (hour > currentHour) {
+            var d = new Date(new Date().getTime() - 86400*1000);
+            d.setHours(hour);
+            d.setMinutes(0);
+            d.setSeconds(0);
+            return d;
+        } else {
+            var d = new Date();
+            d.setHours(hour);
+            d.setMinutes(0);
+            d.setSeconds(0);
+            return d;
+        }
+    };
 
     var obj = {};
     obj.update = function() {
@@ -158,28 +176,10 @@ var createChart = function(container) {
 
         updateSel.exit().remove();
     };
+
     obj.updateExceptions = function(data) {
-        var currentHour = new Date().getHours();
-        var buildYesterdayFromHour = function(hour) {
-            var d = new Date(new Date().getTime()-86400*1000);
-            d.setHours(hour);
-            d.setMinutes(0);
-            d.setSeconds(0);
-            return d;
-        };
-        var buildTodayFromHour = function(hour) {
-            var d = new Date();
-            d.setHours(hour);
-            d.setMinutes(0);
-            d.setSeconds(0);
-            return d;
-        };
         data.forEach(function(d) {
-            if (d.time > currentHour) {
-                d.time = buildYesterdayFromHour(d.time);
-            } else {
-                d.time = buildTodayFromHour(d.time);
-            }
+            d.time = hourToDate(d.time);
         });
 
         data.sort(function(a,b) { return a.time >= b.time ? 1 : -1; });
@@ -191,8 +191,14 @@ var createChart = function(container) {
             currentMax = 10;
         }
 
+        var now = new Date();
+        now.setMinutes(0);
+        now.setSeconds(0);
+
+        var aDayAgo = new Date(now.getTime() - 86400*1000);
+
         var xScale = d3.scaleTime()
-            .domain(timeRange)
+            .domain([aDayAgo, now])
             .range([0, this.chartAreaWidth]);
 
         var exceptionScale = d3.scaleLinear()
@@ -216,7 +222,7 @@ var createChart = function(container) {
 
         if (!this.exceptionAxis) {
             this.exceptionAxis = chartArea.append("g")
-                .attr("class", "y-axis")
+                .attr("class", "y-axis-right")
                 .attr("transform", "translate(" + this.chartAreaWidth + ", 0)")
                 .call(d3.axisRight(exceptionScale));
         } else {
@@ -234,15 +240,105 @@ var createChart = function(container) {
                 .append("path")
                 .attr("class", "exception-line")
                 .attr("d", exceptionLine)
-                .style("stroke", "crimson")
+                .style("stroke", "#800")
                 .style("stroke-width", "2px")
                 .style("fill", "transparent");
         } else {
-            this.exceptionPath.transition()
+            this.exceptionPath
+                .datum(data)
+                .transition()
                 .duration(500)
                 .attr("d", exceptionLine);
         }
+
+        chartArea.select("path.exception-line").raise();
     };
+
+    obj.updateConsumingSystems = function(data) {
+        var timeNested = d3.nest()
+            .key(function(d) { return d.time; })
+            .sortValues(function(a,b) { return a.system >= b.system ? 1 : -1; })
+            .entries(data);
+
+        timeNested.forEach(function(d) {
+            d.total = d3.sum(d.values, function(d2) { return d2.calls; });
+        });
+
+        console.log(timeNested);
+
+        var timeRange = d3.extent(data, function(d) { return hourToDate(d.time); });
+        var currentMax = d3.max(timeNested, function(d) { return d.total; });
+
+        if (currentMax == 0) {
+            currentMax = 10;
+        }
+
+        var barWidth = 0.7*this.chartAreaWidth/24;
+
+        var xScale = d3.scaleTime()
+            .domain(timeRange)
+            .range([0, this.chartAreaWidth - barWidth]);
+
+        var callsScale = d3.scaleLinear()
+            .domain([currentMax, 0])
+            .range([0, this.usableHeight]);
+
+        timeNested.forEach(function(d) {
+            var offset = 0;
+            d.values.forEach(function(d2) {
+                d2.height = this.usableHeight - callsScale(d2.calls);
+                d2.y = offset;
+                offset += d2.height;
+            }.bind(this));
+        }.bind(this));
+
+        if (!this.callsAxis) {
+            this.callsAxis = chartArea.append("g")
+                .attr("class", "y-axis-left")
+                .call(d3.axisLeft(callsScale));
+        } else {
+            this.callsAxis.transition()
+                .duration(500)
+                .call(d3.axisLeft(callsScale));
+        }
+
+        var loadBarSel = chartArea.selectAll("g.load-group")
+            .data(timeNested);
+
+        loadBarSel.selectAll("rect.load-bar")
+            .data(function(d) { return d.values; })
+            .selectAll("rect.load-bar")
+                .data(function(d) { return d.values; })
+                .transition()
+                .duration(500)
+                .attr("height", function(d) { return d.height; })
+                .attr("y", function(d) { return this.usableHeight - d.y - d.height; }.bind(this));
+
+        loadBarSel.enter()
+            .append("g")
+            .attr("class", "load-group")
+            .attr("transform", function(d) { return "translate(" + xScale(hourToDate(+d.key)) + ", 0)"; })
+            .selectAll("rect.load-bar")
+                .data(function(d) { return d.values; })
+                .enter()
+                .append("rect")
+                .attr("class", "load-bar")
+                .attr("width", barWidth)
+                .attr("height", function(d) { return d.height; })
+                .attr("y", function(d) { return this.usableHeight - d.y - d.height; }.bind(this))
+                .style("fill", function(d) { return consumerColors(d.system); })
+                    .append("title")
+                    .text(function(d) { return d.system; });
+
+        loadBarSel.selectAll("rect.load-bar")
+            .data(function(d) { return d.values; })
+            .selectAll("rect.load-bar")
+                .data(function(d) { return d.values; })
+                .exit()
+                .remove();
+
+        chartArea.select("path.exception-line").raise();
+    }
     return obj;
 };
 
@@ -363,6 +459,14 @@ var createMonitorComponent = function(appContainer) {
             });
         }.bind(this));
     };
+    obj.updateConsumers = function() {
+        Object.keys(this.applications).forEach(function(name) {
+            var app = this.applications[name];
+            $.getJSON("/logs/" + name + "/consuming-system", function (data) {
+                app.chart.updateConsumingSystems(data.loadSeries);
+            });
+        }.bind(this));
+    };
     obj.monitor = function() {
         console.log("Updating");
         this.updateProbes();
@@ -371,6 +475,7 @@ var createMonitorComponent = function(appContainer) {
         // Upload charts slightly later
         setTimeout(function() {
             this.updateLoad();
+            this.updateConsumers();
             this.updateExceptions();
         }.bind(this), 1000);
 
