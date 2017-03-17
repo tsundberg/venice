@@ -1,5 +1,6 @@
 package se.arbetsformedlingen.venice.probe;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import se.arbetsformedlingen.venice.model.*;
 
@@ -8,6 +9,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class CheckProbeIT {
 
     @Test
+    @Ignore
     public void check_gfr_u1() {
         Application application = new Application("gfr");
         Environment environment = new Environment("u1");

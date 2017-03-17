@@ -194,6 +194,7 @@ public class CheckLogIT {
     }
 
     @Test
+    @Ignore
     public void get_calls_per_hour_for_gfr_per_webservice_consumer() throws Exception {
         QueryStringQueryBuilder jboss_app_app_class = queryStringQuery("*.service.GFRServiceEndpointBase")
                 .field("jboss_app_app_class")
@@ -231,6 +232,7 @@ public class CheckLogIT {
     }
 
     @Test
+    @Ignore
     public void get_calls_per_hour_for_cpr_per_webservice_consumer() throws Exception {
         QueryStringQueryBuilder jboss_app_app_class = queryStringQuery("se.arbetsformedlingen.cpr*")
                 .field("jboss_app_app_class")
@@ -268,6 +270,7 @@ public class CheckLogIT {
     }
 
     @Test
+    @Ignore
     public void get_calls_per_hour_for_geo_per_webservice_consumer() throws Exception {
         QueryStringQueryBuilder jboss_app_app_class = queryStringQuery("se.arbetsformedlingen.geo*")
                 .field("jboss_app_app_class")
@@ -305,6 +308,7 @@ public class CheckLogIT {
     }
 
     @Test
+    @Ignore
     public void get_calls_per_hour_for_agselect() throws Exception {
         QueryStringQueryBuilder jboss_app_app_class = queryStringQuery("se.arbetsformedlingen.gfr.ma*")
                 .field("jboss_app_app_class")
