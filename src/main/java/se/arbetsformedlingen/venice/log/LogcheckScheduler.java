@@ -4,6 +4,11 @@ import se.arbetsformedlingen.venice.common.Scheduler;
 import se.arbetsformedlingen.venice.log.elasticsearch.*;
 import se.arbetsformedlingen.venice.model.Application;
 
+import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -17,24 +22,26 @@ public class LogcheckScheduler implements Scheduler {
     private List<Checker> checkers = new LinkedList<>();
 
     public LogcheckScheduler() {
-        checkers.add(new Checker(new FindExceptions(new Application("gfr"))));
-        checkers.add(new Checker(new FindExceptions(new Application("geo"))));
-        checkers.add(new Checker(new FindExceptions(new Application("cpr"))));
-        checkers.add(new Checker(new FindExceptions(new Application("agselect"))));
+        Settings settings = ElasticSearchClient.getSettings();
+        Client client = ElasticSearchClient.getClient(settings);
+        checkers.add(new Checker(new FindExceptions(client, new Application("gfr"))));
+        checkers.add(new Checker(new FindExceptions(client, new Application("geo"))));
+        checkers.add(new Checker(new FindExceptions(client, new Application("cpr"))));
+        checkers.add(new Checker(new FindExceptions(client, new Application("agselect"))));
 
-        checkers.add(new Checker(new FindApplicationLoad(new Application("gfr"))));
-        checkers.add(new Checker(new FindApplicationLoad(new Application("geo"))));
-        checkers.add(new Checker(new FindApplicationLoad(new Application("cpr"))));
-        checkers.add(new Checker(new FindApplicationLoad(new Application("agselect"))));
+        checkers.add(new Checker(new FindApplicationLoad(client, new Application("gfr"))));
+        checkers.add(new Checker(new FindApplicationLoad(client, new Application("geo"))));
+        checkers.add(new Checker(new FindApplicationLoad(client, new Application("cpr"))));
+        checkers.add(new Checker(new FindApplicationLoad(client, new Application("agselect"))));
 
-        checkers.add(new Checker(new FindWebserviceLoad(new Application("gfr"))));
-        checkers.add(new Checker(new FindWebserviceLoad(new Application("geo"))));
-        checkers.add(new Checker(new FindWebserviceLoad(new Application("cpr"))));
+        checkers.add(new Checker(new FindWebserviceLoad(client, new Application("gfr"))));
+        checkers.add(new Checker(new FindWebserviceLoad(client, new Application("geo"))));
+        checkers.add(new Checker(new FindWebserviceLoad(client, new Application("cpr"))));
 
-        checkers.add(new Checker(new FindConsumingSystemLoad(new Application("gfr"))));
-        checkers.add(new Checker(new FindConsumingSystemLoad(new Application("geo"))));
-        checkers.add(new Checker(new FindConsumingSystemLoad(new Application("cpr"))));
-        checkers.add(new Checker(new FindConsumingSystemLoad(new Application("agselect"))));
+        checkers.add(new Checker(new FindConsumingSystemLoad(client, new Application("gfr"))));
+        checkers.add(new Checker(new FindConsumingSystemLoad(client, new Application("geo"))));
+        checkers.add(new Checker(new FindConsumingSystemLoad(client, new Application("cpr"))));
+        checkers.add(new Checker(new FindConsumingSystemLoad(client, new Application("agselect"))));
     }
 
     @Override

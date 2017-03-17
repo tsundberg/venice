@@ -7,8 +7,12 @@ import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.Before;
 import se.arbetsformedlingen.venice.log.LogResponse;
 import se.arbetsformedlingen.venice.model.Application;
+
+import org.elasticsearch.client.Client;
+import org.elasticsearch.common.settings.Settings;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -17,19 +21,28 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class FindConsumingSystemLoadTest {
+
+    private Client client;
+
+    @Before
+    public void get_client() {
+        Settings settings = ElasticSearchClient.getSettings();
+        client = ElasticSearchClient.getClient(settings);
+    }
+
     @Test
     @Ignore
     public void find_application_load() {
-        FindConsumingSystemLoad findWebserviceLoad = new FindConsumingSystemLoad(new Application("cpr"));
+        FindConsumingSystemLoad findWebserviceLoad = new FindConsumingSystemLoad(client, new Application("cpr"));
         LogResponse logResponse = findWebserviceLoad.get();
 
-        findWebserviceLoad = new FindConsumingSystemLoad(new Application("gfr"));
+        findWebserviceLoad = new FindConsumingSystemLoad(client, new Application("gfr"));
         logResponse = findWebserviceLoad.get();
 
-        findWebserviceLoad = new FindConsumingSystemLoad(new Application("geo"));
+        findWebserviceLoad = new FindConsumingSystemLoad(client, new Application("geo"));
         logResponse = findWebserviceLoad.get();
 
-        findWebserviceLoad = new FindConsumingSystemLoad(new Application("agselect"));
+        findWebserviceLoad = new FindConsumingSystemLoad(client, new Application("agselect"));
         logResponse = findWebserviceLoad.get();
 
         System.out.println();
@@ -37,7 +50,7 @@ public class FindConsumingSystemLoadTest {
 
     @Test
     public void extract_hour() {
-        FindConsumingSystemLoad findWebserviceLoad = new FindConsumingSystemLoad(new Application("cpr"));
+        FindConsumingSystemLoad findWebserviceLoad = new FindConsumingSystemLoad(client, new Application("cpr"));
 
         Integer actual = findWebserviceLoad.getHour("2017-03-13T22:00:00.000Z");
 
@@ -46,7 +59,7 @@ public class FindConsumingSystemLoadTest {
 
     @Test
     public void extract_hour_past_midnight() {
-        FindConsumingSystemLoad findWebserviceLoad = new FindConsumingSystemLoad(new Application("cpr"));
+        FindConsumingSystemLoad findWebserviceLoad = new FindConsumingSystemLoad(client, new Application("cpr"));
 
         Integer actual = findWebserviceLoad.getHour("2017-03-13T23:00:00.000Z");
 
@@ -55,7 +68,7 @@ public class FindConsumingSystemLoadTest {
 
     @Test
     public void get_last_days_values() {
-        FindConsumingSystemLoad findWebserviceLoad = new FindConsumingSystemLoad(new Application("cpr"));
+        FindConsumingSystemLoad findWebserviceLoad = new FindConsumingSystemLoad(client, new Application("cpr"));
 
         List<Histogram.Bucket> sample = new LinkedList<>();
         for (int i = 0; i < 48; i++) {
@@ -69,7 +82,7 @@ public class FindConsumingSystemLoadTest {
 
     @Test
     public void get_last_days_values_short() {
-        FindConsumingSystemLoad findWebserviceLoad = new FindConsumingSystemLoad(new Application("cpr"));
+        FindConsumingSystemLoad findWebserviceLoad = new FindConsumingSystemLoad(client, new Application("cpr"));
 
         List<Histogram.Bucket> sample = new LinkedList<>();
         for (int i = 0; i < 12; i++) {

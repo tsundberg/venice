@@ -22,13 +22,16 @@ import java.util.function.Supplier;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
-public class FindConsumingSystemLoad extends ElasticSearchClient implements Supplier<LogResponse> {
+public class FindConsumingSystemLoad implements Supplier<LogResponse> {
     private Application application;
 
     private Map<Application, String> queryStrings = new HashMap<>();
     private Map<Application, String> significantField = new HashMap<>();
 
-    public FindConsumingSystemLoad(Application application) {
+    private Client client;
+
+    public FindConsumingSystemLoad(Client client, Application application) {
+        this.client = client;
         this.application = application;
 
         queryStrings.put(new Application("gfr"), "*.service.GFRServiceEndpointBase");
@@ -41,10 +44,6 @@ public class FindConsumingSystemLoad extends ElasticSearchClient implements Supp
 
     @Override
     public LogResponse get() {
-        Settings settings = getSettings();
-
-        Client client = getClient(settings);
-
         String queryString = queryStrings.get(application);
         QueryBuilder jboss_app_app_class = queryStringQuery(queryString)
                 .analyzeWildcard(true);
@@ -68,7 +67,7 @@ public class FindConsumingSystemLoad extends ElasticSearchClient implements Supp
                 .field("@timestamp")
                 .interval(DateHistogramInterval.HOUR);
 
-        SearchResponse response = client.prepareSearch(today(), yesterday())
+        SearchResponse response = client.prepareSearch(ElasticSearchClient.today(), ElasticSearchClient.yesterday())
                 .setQuery(jboss_app_app_class)
                 .addAggregation(histogram)
                 .execute()
@@ -101,7 +100,7 @@ public class FindConsumingSystemLoad extends ElasticSearchClient implements Supp
                 .field("@timestamp")
                 .interval(DateHistogramInterval.HOUR);
 
-        SearchResponse response = client.prepareSearch(today(), yesterday())
+        SearchResponse response = client.prepareSearch(ElasticSearchClient.today(), ElasticSearchClient.yesterday())
                 .setQuery(jboss_app_app_class)
                 .addAggregation(histogram)
                 .execute()

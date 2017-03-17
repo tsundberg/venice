@@ -18,14 +18,17 @@ import java.util.function.Supplier;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
-public class FindWebserviceLoad extends ElasticSearchClient implements Supplier<LogResponse> {
+public class FindWebserviceLoad implements Supplier<LogResponse> {
     private Application application;
 
     private Map<Application, String> queryStrings = new HashMap<>();
     private Map<Application, String> significantField = new HashMap<>();
 
-    public FindWebserviceLoad(Application application) {
+    private Client client;
+
+    public FindWebserviceLoad(Client client, Application application) {
         this.application = application;
+        this.client = client;
 
         queryStrings.put(new Application("gfr"), "se.arbetsformedlingen.foretag.gfrws*");
         queryStrings.put(new Application("geo"), "se.arbetsformedlingen.geo*");
@@ -38,10 +41,6 @@ public class FindWebserviceLoad extends ElasticSearchClient implements Supplier<
 
     @Override
     public LogResponse get() {
-        Settings settings = getSettings();
-
-        Client client = getClient(settings);
-
         String queryString = queryStrings.get(application);
         QueryBuilder jboss_app_app_class = queryStringQuery(queryString)
                 .analyzeWildcard(true);
@@ -51,7 +50,7 @@ public class FindWebserviceLoad extends ElasticSearchClient implements Supplier<
                 .significantTerms("calls per webservice")
                 .field(significantField);
 
-        SearchResponse response = client.prepareSearch(today(), yesterday())
+        SearchResponse response = client.prepareSearch(ElasticSearchClient.today(), ElasticSearchClient.yesterday())
                 .setQuery(jboss_app_app_class)
                 .addAggregation(significatTerms)
                 .execute()

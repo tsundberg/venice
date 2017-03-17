@@ -23,12 +23,15 @@ import java.util.function.Supplier;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
-public class FindExceptions extends ElasticSearchClient implements Supplier<LogResponse> {
+public class FindExceptions implements Supplier<LogResponse> {
     private Application application;
 
     private Map<Application, String> queryStrings = new HashMap<>();
 
-    public FindExceptions(Application application) {
+    private Client client;
+
+    public FindExceptions(Client client, Application application) {
+        this.client = client;
         this.application = application;
 
         queryStrings.put(new Application("gfr"), "se.arbetsformedlingen.foretag*");
@@ -39,10 +42,6 @@ public class FindExceptions extends ElasticSearchClient implements Supplier<LogR
 
     @Override
     public LogResponse get() {
-        Settings settings = getSettings();
-
-        Client client = getClient(settings);
-
         String queryString = queryStrings.get(application);
         QueryBuilder jboss_app_app_class = queryStringQuery(queryString)
                 .analyzeWildcard(true);
@@ -55,7 +54,7 @@ public class FindExceptions extends ElasticSearchClient implements Supplier<LogR
                 .must(exception);
 
         int pageSize = 5;
-        SearchResponse response = client.prepareSearch(today(), yesterday())
+        SearchResponse response = client.prepareSearch(ElasticSearchClient.today(), ElasticSearchClient.yesterday())
                 .setQuery(query)
                 .setSize(pageSize)
                 .setScroll(TimeValue.timeValueSeconds(30))
@@ -118,7 +117,7 @@ public class FindExceptions extends ElasticSearchClient implements Supplier<LogR
         Map<String, Object> source = hit.getSource();
         String timeStamp = (String) source.get("@timestamp");
 
-        LocalDateTime localDateTime = getDate(timeStamp);
+        LocalDateTime localDateTime = ElasticSearchClient.getDate(timeStamp);
 
         int hour = localDateTime.getHour();
         Integer hits = exceptionPerHour.get(hour);

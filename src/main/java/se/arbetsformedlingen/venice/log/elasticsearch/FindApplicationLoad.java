@@ -18,12 +18,15 @@ import java.util.function.Supplier;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
-public class FindApplicationLoad extends ElasticSearchClient implements Supplier<LogResponse> {
+public class FindApplicationLoad implements Supplier<LogResponse> {
     private Application application;
 
     private Map<Application, String> queryStrings = new HashMap<>();
 
-   public FindApplicationLoad(Application application) {
+    private Client client;
+
+    public FindApplicationLoad(Client client, Application application) {
+        this.client = client;
         this.application = application;
 
         queryStrings.put(new Application("gfr"), "se.arbetsformedlingen.foretag*");
@@ -34,23 +37,19 @@ public class FindApplicationLoad extends ElasticSearchClient implements Supplier
 
     @Override
     public LogResponse get() {
-        Settings settings = getSettings();
-
-        Client client = getClient(settings);
-
         String queryString = queryStrings.get(application);
         QueryBuilder jboss_app_app_class = queryStringQuery(queryString)
-                .analyzeWildcard(true);
+            .analyzeWildcard(true);
 
         SignificantTermsBuilder significatTerms = AggregationBuilders
-                .significantTerms("calls per host")
-                .field("host");
+            .significantTerms("calls per host")
+            .field("host");
 
-        SearchResponse response = client.prepareSearch(today(), yesterday())
-                .setQuery(jboss_app_app_class)
-                .addAggregation(significatTerms)
-                .execute()
-                .actionGet();
+        SearchResponse response = client.prepareSearch(ElasticSearchClient.today(), ElasticSearchClient.yesterday())
+            .setQuery(jboss_app_app_class)
+            .addAggregation(significatTerms)
+            .execute()
+            .actionGet();
 
         SignificantTerms callsPerHost = response.getAggregations().get("calls per host");
         HostValue[] values = getHostValues(callsPerHost);

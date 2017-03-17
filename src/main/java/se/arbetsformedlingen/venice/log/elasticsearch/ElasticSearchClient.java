@@ -10,14 +10,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class ElasticSearchClient {
-    public Client getClient(Settings settings) {
+    public static Client getClient(Settings settings) {
         return new TransportClient.Builder()
                 .settings(settings)
                 .build()
                 .addTransportAddress(new InetSocketTransportAddress(new InetSocketAddress("elk.arbetsformedlingen.se", 9300)));
     }
 
-    LocalDateTime getDate(String timeStamp) {
+    static LocalDateTime getDate(String timeStamp) {
         String yearString = timeStamp.substring(0, 4);
         int year = Integer.parseInt(yearString);
 
@@ -39,17 +39,17 @@ public class ElasticSearchClient {
         return convertToCET(LocalDateTime.of(year, month, day, hour, minute, second));
     }
 
-    private LocalDateTime convertToCET(LocalDateTime localDateTime) {
+    private static LocalDateTime convertToCET(LocalDateTime localDateTime) {
         return localDateTime.plusHours(1);
     }
 
-    public Settings getSettings() {
+    public static Settings getSettings() {
         return Settings.settingsBuilder()
                 .put("cluster.name", "logsys_prod")
                 .build();
     }
 
-    public String today() {
+    public static String today() {
         LocalDate today = LocalDate.now();
         int year = today.getYear();
 
@@ -62,7 +62,7 @@ public class ElasticSearchClient {
         return getIndex(year, month, day);
     }
 
-    public String yesterday() {
+    public static String yesterday() {
         LocalDate yesterday = LocalDate.now().minusDays(1);
         int year = yesterday.getYear();
 
@@ -75,11 +75,11 @@ public class ElasticSearchClient {
         return getIndex(year, month, day);
     }
 
-    private String getIndex(int year, String month, String day) {
+    private static String getIndex(int year, String month, String day) {
         return "logstash-" + year + "." + month + "." + day;
     }
 
-    private String padWithLeadinZero(String tooShort) {
+    private static String padWithLeadinZero(String tooShort) {
         while (tooShort.length() < 2) {
             tooShort = "0" + tooShort;
         }
