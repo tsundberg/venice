@@ -21,7 +21,7 @@ public class FindApplicationLoadTest {
     @Test
     @Ignore
     public void find_application_load() {
-        Configuration configuration = new Configuration();
+        Configuration configuration = new Configuration("no file");
         FindApplicationLoad findExceptions = new FindApplicationLoad(client, new Application("gfr"), configuration);
         LogResponse logResponse = findExceptions.get();
 

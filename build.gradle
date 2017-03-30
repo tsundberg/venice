@@ -36,7 +36,8 @@ dependencies {
     compile 'org.apache.httpcomponents:fluent-hc:4.5.3'
     compile 'org.codeartisans:org.json:20161124'
     compile 'org.elasticsearch:elasticsearch:2.2.2'
-
+    compile 'org.yaml:snakeyaml:1.18'
+    
     testCompile 'org.assertj:assertj-core:3.6.2'
     testCompile 'com.google.code.gson:gson:2.8.0'
     testCompile 'junit:junit:4.12'

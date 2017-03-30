@@ -1,0 +1,40 @@
+applications:
+  - application:
+    name: gfr
+    tpjName: foretag
+    probe: UgkForetagProbe
+    serverLoadString: se.arbetsformedlingen.foretag*
+
+  - application:
+    name: geo
+    probe: UgkGeoProbe
+    serverLoadString: se.arbetsformedlingen.geo*
+
+  - application:
+    name: cpr
+    probe: CprProbe
+    serverLoadString: se.arbetsformedlingen.cpr*
+
+  - application:
+    name: agselect
+    probe: MarknadsanalysProbe
+    serverLoadString: se.arbetsformedlingen.gfr.ma*
+
+updateFrequenzy:
+  jenkins:
+    period: 30
+    timeUnit: SECONDS
+
+  elasticSearch:
+    period: 5
+    timeUnit: MINUTES
+
+  probe:
+    period: 30
+    timeUnit: SECONDS
+
+tpjadmin:
+  host: l7700759.wpa.ams.se
+  port: 8180
+  uri: /tpjadmin/rest/properties/v0/wildfly/instances/
+

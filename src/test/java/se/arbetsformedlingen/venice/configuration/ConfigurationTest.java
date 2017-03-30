@@ -7,7 +7,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.ThrowableAssert.catchThrowable;
 
 public class ConfigurationTest {
-    private Configuration configuration = new Configuration();
+    private Configuration configuration = new Configuration("no file");
+
+    @Test
+    public void read_config_from_file() {
+        Configuration configuration = new Configuration("build/resources/main/configuration.yaml");
+
+        String expected = "l7700759.wpa.ams.se";
+
+        String actual = configuration.getTpjAdminHost();
+
+        assertThat(actual).isEqualTo(expected);
+    }
 
     @Test
     public void get_application_load_search_string_for_gfr() {

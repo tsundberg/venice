@@ -42,7 +42,7 @@ public class Venice {
     }
 
     private static void scheduleJobs() {
-        Configuration configuration = new Configuration();
+        Configuration configuration = new Configuration("/etc/venice/configuration.yaml");
 
         scheduleBuildChecks();
         scheduleLogChecks(configuration);
