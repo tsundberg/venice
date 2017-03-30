@@ -7,6 +7,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.significant.SignificantTerms;
 import org.elasticsearch.search.aggregations.bucket.significant.SignificantTermsBuilder;
+import se.arbetsformedlingen.venice.configuration.Configuration;
 import se.arbetsformedlingen.venice.log.LogResponse;
 import se.arbetsformedlingen.venice.model.*;
 
@@ -20,24 +21,19 @@ import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 public class FindApplicationLoad implements Supplier<LogResponse> {
     private Application application;
-
-    private Map<Application, String> queryStrings = new HashMap<>();
+    private Configuration configuration;
 
     private Client client;
 
-    public FindApplicationLoad(Client client, Application application) {
+    public FindApplicationLoad(Client client, Application application, Configuration configuration) {
         this.client = client;
         this.application = application;
-
-        queryStrings.put(new Application("gfr"), "se.arbetsformedlingen.foretag*");
-        queryStrings.put(new Application("geo"), "se.arbetsformedlingen.geo*");
-        queryStrings.put(new Application("cpr"), "se.arbetsformedlingen.cpr*");
-        queryStrings.put(new Application("agselect"), "se.arbetsformedlingen.gfr.ma*");
+        this.configuration = configuration;
     }
 
     @Override
     public LogResponse get() {
-        String queryString = queryStrings.get(application);
+        String queryString = configuration.getApplicationLoadSearchString(application);
         QueryBuilder jboss_app_app_class = queryStringQuery(queryString)
             .analyzeWildcard(true);
 

@@ -1,13 +1,11 @@
 package se.arbetsformedlingen.venice.log;
 
+import org.elasticsearch.client.Client;
+import org.elasticsearch.common.settings.Settings;
 import se.arbetsformedlingen.venice.common.Scheduler;
+import se.arbetsformedlingen.venice.configuration.Configuration;
 import se.arbetsformedlingen.venice.log.elasticsearch.*;
 import se.arbetsformedlingen.venice.model.Application;
-
-import org.elasticsearch.client.Client;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -21,7 +19,7 @@ public class LogcheckScheduler implements Scheduler {
     private LatestLogs latestLogs = new LatestLogs();
     private List<Checker> checkers = new LinkedList<>();
 
-    public LogcheckScheduler() {
+    public LogcheckScheduler(Configuration configuration) {
         Settings settings = ElasticSearchClient.getSettings();
         Client client = ElasticSearchClient.getClient(settings);
         checkers.add(new Checker(new FindExceptions(client, new Application("gfr"))));
@@ -29,10 +27,10 @@ public class LogcheckScheduler implements Scheduler {
         checkers.add(new Checker(new FindExceptions(client, new Application("cpr"))));
         checkers.add(new Checker(new FindExceptions(client, new Application("agselect"))));
 
-        checkers.add(new Checker(new FindApplicationLoad(client, new Application("gfr"))));
-        checkers.add(new Checker(new FindApplicationLoad(client, new Application("geo"))));
-        checkers.add(new Checker(new FindApplicationLoad(client, new Application("cpr"))));
-        checkers.add(new Checker(new FindApplicationLoad(client, new Application("agselect"))));
+        checkers.add(new Checker(new FindApplicationLoad(client, new Application("gfr"), configuration)));
+        checkers.add(new Checker(new FindApplicationLoad(client, new Application("geo"), configuration)));
+        checkers.add(new Checker(new FindApplicationLoad(client, new Application("cpr"), configuration)));
+        checkers.add(new Checker(new FindApplicationLoad(client, new Application("agselect"), configuration)));
 
         checkers.add(new Checker(new FindWebserviceLoad(client, new Application("gfr"))));
         checkers.add(new Checker(new FindWebserviceLoad(client, new Application("geo"))));

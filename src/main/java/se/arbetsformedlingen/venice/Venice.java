@@ -3,6 +3,7 @@ package se.arbetsformedlingen.venice;
 import se.arbetsformedlingen.venice.ci.BuildCheckScheduler;
 import se.arbetsformedlingen.venice.ci.BuildController;
 import se.arbetsformedlingen.venice.common.Scheduler;
+import se.arbetsformedlingen.venice.configuration.Configuration;
 import se.arbetsformedlingen.venice.index.IndexController;
 import se.arbetsformedlingen.venice.log.LogController;
 import se.arbetsformedlingen.venice.log.LogcheckScheduler;
@@ -41,8 +42,10 @@ public class Venice {
     }
 
     private static void scheduleJobs() {
+        Configuration configuration = new Configuration();
+
         scheduleBuildChecks();
-        scheduleLogChecks();
+        scheduleLogChecks(configuration);
         scheduleProbeChecks();
     }
 
@@ -59,8 +62,8 @@ public class Venice {
         scheduler.startChecking(30, TimeUnit.SECONDS);
     }
 
-    private static void scheduleLogChecks() {
-        Scheduler scheduler = new LogcheckScheduler();
+    private static void scheduleLogChecks(Configuration configuration) {
+        Scheduler scheduler = new LogcheckScheduler(configuration);
         scheduler.startChecking(5, TimeUnit.MINUTES);
     }
 

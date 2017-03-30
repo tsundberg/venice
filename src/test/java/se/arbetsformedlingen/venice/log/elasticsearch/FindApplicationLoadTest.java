@@ -1,13 +1,13 @@
 package se.arbetsformedlingen.venice.log.elasticsearch;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.Before;
-import se.arbetsformedlingen.venice.log.LogResponse;
-import se.arbetsformedlingen.venice.model.Application;
-
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import se.arbetsformedlingen.venice.configuration.Configuration;
+import se.arbetsformedlingen.venice.log.LogResponse;
+import se.arbetsformedlingen.venice.model.Application;
 
 public class FindApplicationLoadTest {
     private Client client;
@@ -21,7 +21,8 @@ public class FindApplicationLoadTest {
     @Test
     @Ignore
     public void find_application_load() {
-        FindApplicationLoad findExceptions = new FindApplicationLoad(client, new Application("gfr"));
+        Configuration configuration = new Configuration();
+        FindApplicationLoad findExceptions = new FindApplicationLoad(client, new Application("gfr"), configuration);
         LogResponse logResponse = findExceptions.get();
 
         System.out.println(logResponse);
