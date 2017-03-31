@@ -57,9 +57,9 @@ public class Configuration {
         }
     }
 
-    private InputStream getInputStream(String configFile) throws FileNotFoundException {
-        if (new File(configFile).exists()) {
-            return new FileInputStream(configFile);
+    private InputStream getInputStream(String config) throws FileNotFoundException {
+        if (new File(config).exists()) {
+            return new FileInputStream(config);
         } else {
             return getClass().getResourceAsStream("/configuration.yaml");
         }
