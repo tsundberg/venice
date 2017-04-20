@@ -138,8 +138,6 @@ public class JsonResponseBuilderTest {
 
         String actual = builder.build(logResponse);
 
-        System.out.println(actual);
-
         JSONObject actualJson = new JSONObject(actual);
 
         assertThat(actualJson.get("application")).isEqualTo("gfr");
