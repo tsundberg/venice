@@ -11,7 +11,7 @@ public class LogResponse {
 
     private ConsumingSystemLoad consumingSystemLoad = new ConsumingSystemLoad(application, Collections.emptyList());
     private ExceptionsPerTime exceptionsPerTime = new ExceptionsPerTime(application);
-    private ApplicationLoad applicationLoad = new ApplicationLoad(application);
+    private ApplicationLoad applicationLoad = new ApplicationLoad();
     private WebserviceLoad webserviceLoad = new WebserviceLoad(application);
 
     LogResponse(Application application, LogType logType) {

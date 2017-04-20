@@ -2,7 +2,6 @@ package se.arbetsformedlingen.venice.configuration;
 
 import org.yaml.snakeyaml.Yaml;
 import se.arbetsformedlingen.venice.model.Application;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,7 +30,7 @@ public class Configuration {
     }
 
     public String getTpjAdminHost() {
-        Map tpjAdmin =  getTpjAdmin();
+        Map tpjAdmin = getTpjAdmin();
 
         String host = (String) tpjAdmin.get("host");
 
@@ -43,7 +42,7 @@ public class Configuration {
     }
 
     public Integer getTpjAdminPort() {
-        Map tpjAdmin =  getTpjAdmin();
+        Map tpjAdmin = getTpjAdmin();
 
         Integer port = (Integer) tpjAdmin.get("port");
 
@@ -55,7 +54,7 @@ public class Configuration {
     }
 
     public String getTpjAdminUri() {
-        Map tpjAdmin =  getTpjAdmin();
+        Map tpjAdmin = getTpjAdmin();
 
         String uri = (String) tpjAdmin.get("uri");
 
@@ -77,7 +76,7 @@ public class Configuration {
     }
 
     public String getCiServerHost() {
-        Map ciServer =  getCiServer();
+        Map ciServer = getCiServer();
 
         String host = (String) ciServer.get("host");
 
@@ -89,7 +88,7 @@ public class Configuration {
     }
 
     public Integer getCiServerPort() {
-        Map ciServer =  getCiServer();
+        Map ciServer = getCiServer();
 
         Integer port = (Integer) ciServer.get("port");
 

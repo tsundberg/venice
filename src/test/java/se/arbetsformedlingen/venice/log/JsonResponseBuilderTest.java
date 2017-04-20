@@ -69,7 +69,7 @@ public class JsonResponseBuilderTest {
         Application application = new Application("gfr");
         LogType logType = new LogType("application-load");
 
-        ApplicationLoad series = new ApplicationLoad(application,
+        ApplicationLoad series = new ApplicationLoad(
                 new HostValue(new Host("L7700746"), 2345672L),
                 new HostValue(new Host("L7700747"), 3235159L),
                 new HostValue(new Host("L7700770"), 1335652L)
