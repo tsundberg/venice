@@ -1,6 +1,7 @@
 package se.arbetsformedlingen.venice.tpjadmin;
 
 import org.junit.Test;
+import se.arbetsformedlingen.venice.configuration.Configuration;
 import se.arbetsformedlingen.venice.model.Application;
 
 import java.util.List;
@@ -13,7 +14,10 @@ public class TPJAdminTest {
     public void get_applications() {
         Application expected = new Application("geo");
 
-        List<Application> actual = TPJAdmin.getApplications();
+        Configuration configuration = new Configuration("build/resources/main/configuration.yaml");
+        TPJAdmin tpjAdmin = new TPJAdmin(configuration);
+
+        List<Application> actual = tpjAdmin.getApplications();
 
         assertThat(actual).contains(expected);
     }

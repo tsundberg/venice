@@ -44,9 +44,9 @@ public class Venice {
     private static void scheduleJobs() {
         Configuration configuration = new Configuration("/etc/venice/configuration.yaml");
 
-        scheduleBuildChecks();
+        scheduleBuildChecks(configuration);
         scheduleLogChecks(configuration);
-        scheduleProbeChecks();
+        scheduleProbeChecks(configuration);
     }
 
     private static void getView(String route, BiFunction<Request, Response, ModelAndView> controller) {
@@ -57,8 +57,9 @@ public class Venice {
         Spark.get(route, transformer::apply);
     }
 
-    private static void scheduleBuildChecks() {
-        Scheduler scheduler = new BuildCheckScheduler();
+    private static void scheduleBuildChecks(Configuration configuration) {
+        TPJAdmin tpjAdmin = new TPJAdmin(configuration);
+        Scheduler scheduler = new BuildCheckScheduler(tpjAdmin);
         scheduler.startChecking(30, TimeUnit.SECONDS);
     }
 
@@ -67,8 +68,11 @@ public class Venice {
         scheduler.startChecking(5, TimeUnit.MINUTES);
     }
 
-    private static void scheduleProbeChecks() {
-        List<ApplicationServer> applicationServers = TPJAdmin.prepareServers();
+    private static void scheduleProbeChecks(Configuration configuration) {
+        TPJAdmin tpjAdmin = new TPJAdmin(configuration);
+        ProbeController.setServers(tpjAdmin.getApplicationServers());
+        List<ApplicationServer> applicationServers = tpjAdmin.prepareServers();
+
         Scheduler scheduler = new ProbeCheckScheduler(applicationServers);
         scheduler.startChecking(30, TimeUnit.SECONDS);
     }

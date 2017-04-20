@@ -2,6 +2,7 @@ package se.arbetsformedlingen.venice.tpjadmin;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import se.arbetsformedlingen.venice.configuration.Configuration;
 import se.arbetsformedlingen.venice.model.*;
 
 import java.util.List;
@@ -15,7 +16,10 @@ public class TPJAdminIT {
     public void get_servers() throws Exception {
         ApplicationServer expected = new ApplicationServer(new Application("gfr"), new Environment("u1"), new Host("l7700649.u1.local"), new Port("8580"));
 
-        List<ApplicationServer> actual = TPJAdmin.getApplicationServers();
+        Configuration configuration = new Configuration("build/resources/main/configuration.yaml");
+        TPJAdmin tpjAdmin = new TPJAdmin(configuration);
+
+        List<ApplicationServer> actual = tpjAdmin.getApplicationServers();
 
         assertThat(actual).contains(expected);
     }

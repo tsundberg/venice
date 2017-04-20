@@ -4,6 +4,7 @@ import org.apache.http.Header;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicHeader;
+import se.arbetsformedlingen.venice.configuration.Configuration;
 import se.arbetsformedlingen.venice.model.Application;
 import se.arbetsformedlingen.venice.model.ApplicationServer;
 import se.arbetsformedlingen.venice.model.Environment;
@@ -14,7 +15,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TPJAdmin {
     private static List<ApplicationServer> applicationServers = new CopyOnWriteArrayList<>();
-    private static final String host = "l7700759.wpa.ams.se";
     private static final String port = "8180";
     private static final String uri = "/tpjadmin/rest/properties/v0/wildfly/instances/";
 
@@ -34,11 +34,17 @@ public class TPJAdmin {
         applications.put("agselect", "agselect");
     }
 
-    public static List<ApplicationServer> getApplicationServers() {
+    private Configuration configuration;
+
+    public TPJAdmin(Configuration configuration) {
+        this.configuration = configuration;
+    }
+
+    public List<ApplicationServer> getApplicationServers() {
         return applicationServers;
     }
 
-    public static List<ApplicationServer> prepareServers() {
+    public List<ApplicationServer> prepareServers() {
         Executor executor = Executor.newInstance();
 
         System.out.println("Fetching servers");
@@ -62,7 +68,7 @@ public class TPJAdmin {
         return applicationServers;
     }
 
-    public static List<Application> getApplications() {
+    public List<Application> getApplications() {
         List<Application> apps = new LinkedList<>();
 
         for (String key : applications.keySet()) {
@@ -74,7 +80,8 @@ public class TPJAdmin {
         return apps;
     }
 
-    private static List<ApplicationServer> getServers(Executor executor, String app, String env) throws IOException {
+    private List<ApplicationServer> getServers(Executor executor, String app, String env) throws IOException {
+        String host = configuration.getTpjAdminHost();
         String url = "http://" + host + ":" + port + uri + env + "/" + app + "";
         Header pisaHeader = getPisaId();
 
@@ -96,7 +103,7 @@ public class TPJAdmin {
         return TPJAdminResponseParser.parse(application, environment, json);
     }
 
-    private static BasicHeader getPisaId() {
+    private BasicHeader getPisaId() {
         String pisaId = System.getenv("PISAID");
         return new BasicHeader("PISA_ID", pisaId);
     }

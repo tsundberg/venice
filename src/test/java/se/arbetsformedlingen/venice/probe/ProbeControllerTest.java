@@ -16,7 +16,7 @@ public class ProbeControllerTest {
     @Test
     public void probe_status_for_gfr() {
         ProbeController.forceStatuses(new LatestProbeStatuses());
-        ProbeController.forceServers(getServers());
+        ProbeController.setServers(getServers());
 
         String actual = ProbeController.getStatus(null, null);
 

@@ -29,8 +29,9 @@ public class Configuration {
         throw new ConfigurationException("Application load search string is not defined for " + application);
     }
 
-    String getTpjAdminHost() {
-        return "l7700759.wpa.ams.se";
+   public String getTpjAdminHost() {
+        Map tpjadmin = (Map) configurations.get("tpjadmin");
+        return (String) tpjadmin.get("host");
     }
 
     private Map getApplicationConfiguration(Application application) {

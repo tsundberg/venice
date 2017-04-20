@@ -1,7 +1,6 @@
 package se.arbetsformedlingen.venice.probe;
 
 import se.arbetsformedlingen.venice.model.ApplicationServer;
-import se.arbetsformedlingen.venice.tpjadmin.TPJAdmin;
 import spark.Request;
 import spark.Response;
 
@@ -9,7 +8,7 @@ import java.util.List;
 
 public class ProbeController {
     private static LatestProbeStatuses statuses = new LatestProbeStatuses();
-    private static List<ApplicationServer> applicationServers = TPJAdmin.getApplicationServers();
+    private static List<ApplicationServer> applicationServers;
 
     public static String getStatus(Request request, Response response) {
         JsonResponseBuilder jsonResponseBuilder = new JsonResponseBuilder(statuses);
@@ -20,7 +19,7 @@ public class ProbeController {
         ProbeController.statuses = statuses;
     }
 
-    static void forceServers(List<ApplicationServer> applicationServers) {
+    public static void setServers(List<ApplicationServer> applicationServers) {
         ProbeController.applicationServers = applicationServers;
     }
 }

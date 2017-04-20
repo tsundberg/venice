@@ -14,6 +14,11 @@ public class CheckBuild implements java.util.function.Supplier<List<BuildRespons
     private static final String MASTERDATA_URL = "http://l7700676.ws.ams.se:8080/job/Masterdata/api/json";
     private static final String JOB_URL_HEAD = "http://l7700676.ws.ams.se:8080/job/Masterdata/job/";
     private static final String JOB_URL_TAIL = "/api/json";
+    private TPJAdmin tpjAdmin;
+
+    CheckBuild(TPJAdmin tpjAdmin) {
+        this.tpjAdmin = tpjAdmin;
+    }
 
     @Override
     public List<BuildResponse> get() {
@@ -53,7 +58,7 @@ public class CheckBuild implements java.util.function.Supplier<List<BuildRespons
     List<BuildResponse> errorResponse(Exception e) {
         List<BuildResponse> responses = new LinkedList<>();
 
-        for (Application application : TPJAdmin.getApplications()) {
+        for (Application application : tpjAdmin.getApplications()) {
             Status status = new Status(e.getMessage());
             BuildResponse error = new BuildResponse(application, status);
 
