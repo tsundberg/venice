@@ -29,9 +29,14 @@ public class Configuration {
         throw new ConfigurationException("Application load search string is not defined for " + application);
     }
 
-   public String getTpjAdminHost() {
-        Map tpjadmin = (Map) configurations.get("tpjadmin");
-        return (String) tpjadmin.get("host");
+    public String getTpjAdminHost() {
+        Map tpjAdmin = (Map) configurations.get("tpjadmin");
+        return (String) tpjAdmin.get("host");
+    }
+
+    public Integer getTpjAdminPort() {
+        Map tpjAdmin = (Map) configurations.get("tpjadmin");
+        return (Integer) tpjAdmin.get("port");
     }
 
     private Map getApplicationConfiguration(Application application) {

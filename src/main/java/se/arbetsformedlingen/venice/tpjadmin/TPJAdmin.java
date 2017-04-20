@@ -15,7 +15,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TPJAdmin {
     private static List<ApplicationServer> applicationServers = new CopyOnWriteArrayList<>();
-    private static final String port = "8180";
     private static final String uri = "/tpjadmin/rest/properties/v0/wildfly/instances/";
 
     private static Map<String, String> environments = new HashMap<>();
@@ -82,6 +81,7 @@ public class TPJAdmin {
 
     private List<ApplicationServer> getServers(Executor executor, String app, String env) throws IOException {
         String host = configuration.getTpjAdminHost();
+        Integer port = configuration.getTpjAdminPort();
         String url = "http://" + host + ":" + port + uri + env + "/" + app + "";
         Header pisaHeader = getPisaId();
 
