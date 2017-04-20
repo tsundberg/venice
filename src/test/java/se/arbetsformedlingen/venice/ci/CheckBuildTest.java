@@ -13,7 +13,7 @@ public class CheckBuildTest {
     public void build_error_response() {
         Configuration configuration = new Configuration("build/resources/main/configuration.yaml");
         TPJAdmin tpjAdmin = new TPJAdmin(configuration);
-        CheckBuild checkBuild = new CheckBuild(tpjAdmin);
+        CheckBuild checkBuild = new CheckBuild(tpjAdmin, configuration);
 
         Exception sample = new Exception("Error message");
 

@@ -2,6 +2,7 @@ package se.arbetsformedlingen.venice.configuration;
 
 import org.yaml.snakeyaml.Yaml;
 import se.arbetsformedlingen.venice.model.Application;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -75,6 +76,40 @@ public class Configuration {
         throw new ConfigurationException("tpjadmin is not defined");
     }
 
+    public String getCiServerHost() {
+        Map ciServer =  getCiServer();
+
+        String host = (String) ciServer.get("host");
+
+        if (host != null) {
+            return host;
+        }
+
+        throw new ConfigurationException("continuousIntegration host is not defined");
+    }
+
+    public Integer getCiServerPort() {
+        Map ciServer =  getCiServer();
+
+        Integer port = (Integer) ciServer.get("port");
+
+        if (port != null) {
+            return port;
+        }
+
+        throw new ConfigurationException("continuousIntegration port is not defined");
+    }
+
+    private Map getCiServer() {
+        Map continuousIntegration = (Map) configurations.get("continuousIntegration");
+
+        if (continuousIntegration != null) {
+            return continuousIntegration;
+        }
+
+        throw new ConfigurationException("continuousIntegration is not defined");
+    }
+
     private Map getApplicationConfiguration(Application application) {
         List applications = (List) configurations.get("applications");
         for (Object appObject : applications) {
@@ -109,4 +144,5 @@ public class Configuration {
             return getClass().getResourceAsStream("/configuration.yaml");
         }
     }
+
 }

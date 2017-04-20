@@ -18,6 +18,10 @@ updateFrequenzy:
     period: 30
     timeUnit: SECONDS
 
+continuousIntegration:
+  host: default-ci-server
+  port: 8888
+
 tpjadmin:
   host: default-host
   port: 9999

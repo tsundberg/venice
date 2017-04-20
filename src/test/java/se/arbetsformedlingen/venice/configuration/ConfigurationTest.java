@@ -1,10 +1,12 @@
 package se.arbetsformedlingen.venice.configuration;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import se.arbetsformedlingen.venice.model.Application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Fail.fail;
 import static org.assertj.core.api.ThrowableAssert.catchThrowable;
 
 public class ConfigurationTest {
@@ -38,7 +40,7 @@ public class ConfigurationTest {
 
     @Test
     public void missing_tpj_admin_host_from_config_file() {
-        Configuration configuration = new Configuration("build/resources/test/missing-tpjadmin-nodes-configuration.yaml");
+        Configuration configuration = new Configuration("build/resources/test/missing-nodes-configuration.yaml");
 
         assertThatThrownBy(configuration::getTpjAdminHost)
                 .isInstanceOf(ConfigurationException.class)
@@ -65,7 +67,7 @@ public class ConfigurationTest {
 
     @Test
     public void missing_tpj_admin_port_from_config_file() {
-        Configuration configuration = new Configuration("build/resources/test/missing-tpjadmin-nodes-configuration.yaml");
+        Configuration configuration = new Configuration("build/resources/test/missing-nodes-configuration.yaml");
 
         assertThatThrownBy(configuration::getTpjAdminPort)
                 .isInstanceOf(ConfigurationException.class)
@@ -92,7 +94,7 @@ public class ConfigurationTest {
 
     @Test
     public void missing_tpj_admin_uri_from_config_file() {
-        Configuration configuration = new Configuration("build/resources/test/missing-tpjadmin-nodes-configuration.yaml");
+        Configuration configuration = new Configuration("build/resources/test/missing-nodes-configuration.yaml");
 
         assertThatThrownBy(configuration::getTpjAdminUri)
                 .isInstanceOf(ConfigurationException.class)
@@ -133,6 +135,70 @@ public class ConfigurationTest {
         assertThat(thrown).isInstanceOf(ConfigurationException.class)
                 .hasMessageContaining("Application load search string is not defined for unknown");
     }
+
+    @Test
+    public void missing_continuous_integration_from_config_file() {
+        Configuration configuration = new Configuration("build/resources/test/empty-configuration.yaml");
+
+        assertThatThrownBy(configuration::getCiServerHost)
+                .isInstanceOf(ConfigurationException.class)
+                .hasMessageContaining("continuousIntegration is not defined");
+    }
+
+    @Test
+    public void read_ci_server_host_from_config_file() {
+        Configuration configuration = new Configuration("build/resources/main/configuration.yaml");
+
+        String actual = configuration.getCiServerHost();
+
+        assertThat(actual).isEqualTo("l7700759.wpa.ams.se");
+    }
+
+    @Test
+    public void default_ci_server_host_from_config_file() {
+        Configuration configuration = new Configuration("no file");
+
+        String actual = configuration.getCiServerHost();
+
+        assertThat(actual).isEqualTo("default-ci-server");
+    }
+
+    @Test
+    public void missing_ci_server_host_from_config_file() {
+        Configuration configuration = new Configuration("build/resources/test/missing-nodes-configuration.yaml");
+
+        assertThatThrownBy(configuration::getCiServerHost)
+                .isInstanceOf(ConfigurationException.class)
+                .hasMessageContaining("continuousIntegration host is not defined");
+    }
+
+    @Test
+    public void read_ci_server_port_from_config_file() {
+        Configuration configuration = new Configuration("build/resources/main/configuration.yaml");
+
+        Integer actual = configuration.getCiServerPort();
+
+        assertThat(actual).isEqualTo(8180);
+    }
+
+    @Test
+    public void default_ci_server_port_from_config_file() {
+        Configuration configuration = new Configuration("no file");
+
+        Integer actual = configuration.getCiServerPort();
+
+        assertThat(actual).isEqualTo(8888);
+    }
+
+    @Test
+    public void missing_ci_server_port_from_config_file() {
+        Configuration configuration = new Configuration("build/resources/test/missing-nodes-configuration.yaml");
+
+        assertThatThrownBy(configuration::getCiServerPort)
+                .isInstanceOf(ConfigurationException.class)
+                .hasMessageContaining("continuousIntegration port is not defined");
+    }
+
 
 }
 

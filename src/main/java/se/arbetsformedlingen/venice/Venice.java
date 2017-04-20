@@ -59,7 +59,7 @@ public class Venice {
 
     private static void scheduleBuildChecks(Configuration configuration) {
         TPJAdmin tpjAdmin = new TPJAdmin(configuration);
-        Scheduler scheduler = new BuildCheckScheduler(tpjAdmin);
+        Scheduler scheduler = new BuildCheckScheduler(tpjAdmin, configuration);
         scheduler.startChecking(30, TimeUnit.SECONDS);
     }
 

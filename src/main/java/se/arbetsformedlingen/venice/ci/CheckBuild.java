@@ -2,6 +2,7 @@ package se.arbetsformedlingen.venice.ci;
 
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
+import se.arbetsformedlingen.venice.configuration.Configuration;
 import se.arbetsformedlingen.venice.model.Application;
 import se.arbetsformedlingen.venice.model.Status;
 import se.arbetsformedlingen.venice.tpjadmin.TPJAdmin;
@@ -11,13 +12,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CheckBuild implements java.util.function.Supplier<List<BuildResponse>> {
-    private static final String MASTERDATA_URL = "http://l7700676.ws.ams.se:8080/job/Masterdata/api/json";
-    private static final String JOB_URL_HEAD = "http://l7700676.ws.ams.se:8080/job/Masterdata/job/";
-    private static final String JOB_URL_TAIL = "/api/json";
     private TPJAdmin tpjAdmin;
+    private Configuration configuration;
 
-    CheckBuild(TPJAdmin tpjAdmin) {
+    CheckBuild(TPJAdmin tpjAdmin, Configuration configuration) {
         this.tpjAdmin = tpjAdmin;
+        this.configuration = configuration;
     }
 
     @Override
@@ -26,7 +26,10 @@ public class CheckBuild implements java.util.function.Supplier<List<BuildRespons
 
         String result;
         try {
-            result = executor.execute(Request.Get(MASTERDATA_URL))
+            String host = configuration.getCiServerHost();
+            Integer port = configuration.getCiServerPort();
+            String projectUri = "http://" + host + ":" + port + "/job/Masterdata/api/json";
+            result = executor.execute(Request.Get(projectUri))
                     .returnContent()
                     .asString();
 
@@ -45,7 +48,11 @@ public class CheckBuild implements java.util.function.Supplier<List<BuildRespons
     private void addBuildNumber(BuildResponse build) throws IOException {
         Executor executor = Executor.newInstance();
 
-        String url = JOB_URL_HEAD + build.getName() + JOB_URL_TAIL;
+        String host = configuration.getCiServerHost();
+        Integer port = configuration.getCiServerPort();
+        String jobUrlHead = "http://" + host + ":" + port + "/job/Masterdata/job/";
+        String jobUrlTail = "/api/json";
+        String url = jobUrlHead + build.getName() + jobUrlTail;
 
         String result;
         result = executor.execute(Request.Get(url))
