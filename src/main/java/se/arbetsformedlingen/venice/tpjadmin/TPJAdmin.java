@@ -11,12 +11,9 @@ import se.arbetsformedlingen.venice.model.Environment;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TPJAdmin {
-    private static List<ApplicationServer> applicationServers = new CopyOnWriteArrayList<>();
-    // private static final String uri = "/tpjadmin/rest/properties/v0/wildfly/instances/";
-
+    private static List<ApplicationServer> applicationServers = new LinkedList<>();
     private static Map<String, String> environments = new HashMap<>();
     private static Map<String, String> applications = new HashMap<>();
 
@@ -82,7 +79,7 @@ public class TPJAdmin {
     private List<ApplicationServer> getServers(Executor executor, String app, String env) throws IOException {
         String host = configuration.getTpjAdminHost();
         Integer port = configuration.getTpjAdminPort();
-        String uri  = configuration.getTpjAdminUri();
+        String uri = configuration.getTpjAdminUri();
         String url = "http://" + host + ":" + port + uri + env + "/" + app + "";
         Header pisaHeader = getPisaId();
 
