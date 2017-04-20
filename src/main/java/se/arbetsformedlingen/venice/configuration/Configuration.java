@@ -2,6 +2,7 @@ package se.arbetsformedlingen.venice.configuration;
 
 import org.yaml.snakeyaml.Yaml;
 import se.arbetsformedlingen.venice.model.Application;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,6 +38,11 @@ public class Configuration {
     public Integer getTpjAdminPort() {
         Map tpjAdmin = (Map) configurations.get("tpjadmin");
         return (Integer) tpjAdmin.get("port");
+    }
+
+    public String getTpjAdminUri() {
+        Map tpjAdmin = (Map) configurations.get("tpjadmin");
+        return (String) tpjAdmin.get("uri");
     }
 
     private Map getApplicationConfiguration(Application application) {

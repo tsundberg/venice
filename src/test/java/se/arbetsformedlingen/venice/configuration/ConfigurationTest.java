@@ -23,7 +23,16 @@ public class ConfigurationTest {
 
         Integer actual = configuration.getTpjAdminPort();
 
-        assertThat(actual).isEqualTo( 8180);
+        assertThat(actual).isEqualTo(8180);
+    }
+
+    @Test
+    public void read_tpj_admin_uri_from_config_file() {
+        Configuration configuration = new Configuration("build/resources/main/configuration.yaml");
+
+        String actual = configuration.getTpjAdminUri();
+
+        assertThat(actual).isEqualTo("/tpjadmin/rest/properties/v0/wildfly/instances/");
     }
 
     @Test
