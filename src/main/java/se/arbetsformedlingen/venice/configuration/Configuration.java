@@ -2,7 +2,6 @@ package se.arbetsformedlingen.venice.configuration;
 
 import org.yaml.snakeyaml.Yaml;
 import se.arbetsformedlingen.venice.model.Application;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,8 +40,25 @@ public class Configuration {
     }
 
     public String getTpjAdminUri() {
+        Map tpjAdmin =  getTpjAdmin();
+
+        String uri = (String) tpjAdmin.get("uri");
+
+        if (uri != null) {
+            return uri;
+        }
+
+        throw new ConfigurationException("tpjadmin uri is not defined");
+    }
+
+    private Map getTpjAdmin() {
         Map tpjAdmin = (Map) configurations.get("tpjadmin");
-        return (String) tpjAdmin.get("uri");
+
+        if (tpjAdmin != null) {
+            return tpjAdmin;
+        }
+
+        throw new ConfigurationException("tpjadmin is not defined");
     }
 
     private Map getApplicationConfiguration(Application application) {
@@ -64,6 +80,9 @@ public class Configuration {
         Yaml yaml = new Yaml();
         try {
             configurations = (Map) yaml.load(getInputStream(configFile));
+            if (configurations == null) {
+                configurations = new HashMap();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

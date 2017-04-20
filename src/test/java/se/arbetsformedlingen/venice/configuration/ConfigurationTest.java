@@ -4,9 +4,19 @@ import org.junit.Test;
 import se.arbetsformedlingen.venice.model.Application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.ThrowableAssert.catchThrowable;
 
 public class ConfigurationTest {
+
+    @Test
+    public void missing_tpj_admin_from_config_file() {
+        Configuration configuration = new Configuration("build/resources/test/empty-configuration.yaml");
+
+        assertThatThrownBy(configuration::getTpjAdminUri)
+                .isInstanceOf(ConfigurationException.class)
+                .hasMessageContaining("tpjadmin is not defined");
+    }
 
     @Test
     public void read_tpj_admin_host_from_config_file() {
@@ -34,14 +44,29 @@ public class ConfigurationTest {
 
     @Test
     public void read_tpj_admin_uri_from_config_file() {
-        // todo fixa defaults
-        // todo fixa missing
-
         Configuration configuration = new Configuration("build/resources/main/configuration.yaml");
 
         String actual = configuration.getTpjAdminUri();
 
         assertThat(actual).isEqualTo("/tpjadmin/rest/properties/v0/wildfly/instances/");
+    }
+
+    @Test
+    public void default_tpj_admin_uri_from_config_file() {
+        Configuration configuration = new Configuration("no file");
+
+        String actual = configuration.getTpjAdminUri();
+
+        assertThat(actual).isEqualTo("/tpjadmin/rest/properties/v0/wildfly/instances/default/");
+    }
+
+    @Test
+    public void missing_tpj_admin_uri_from_config_file() {
+        Configuration configuration = new Configuration("build/resources/test/missing-tpjadmin-nodes-configuration.yaml");
+
+        assertThatThrownBy(configuration::getTpjAdminUri)
+                .isInstanceOf(ConfigurationException.class)
+                .hasMessageContaining("tpjadmin uri is not defined");
     }
 
     @Test
