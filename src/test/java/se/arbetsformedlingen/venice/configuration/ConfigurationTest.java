@@ -10,6 +10,9 @@ public class ConfigurationTest {
 
     @Test
     public void read_tpj_admin_host_from_config_file() {
+        // todo fixa defaults
+        // todo fixa missing
+
         Configuration configuration = new Configuration("build/resources/main/configuration.yaml");
 
         String actual = configuration.getTpjAdminHost();
@@ -19,6 +22,9 @@ public class ConfigurationTest {
 
     @Test
     public void read_tpj_admin_port_from_config_file() {
+        // todo fixa defaults
+        // todo fixa missing
+
         Configuration configuration = new Configuration("build/resources/main/configuration.yaml");
 
         Integer actual = configuration.getTpjAdminPort();
@@ -28,6 +34,9 @@ public class ConfigurationTest {
 
     @Test
     public void read_tpj_admin_uri_from_config_file() {
+        // todo fixa defaults
+        // todo fixa missing
+
         Configuration configuration = new Configuration("build/resources/main/configuration.yaml");
 
         String actual = configuration.getTpjAdminUri();
@@ -37,7 +46,7 @@ public class ConfigurationTest {
 
     @Test
     public void get_application_load_search_string_for_gfr() {
-        Configuration configuration = new Configuration("no file");
+        Configuration configuration = new Configuration("build/resources/main/configuration.yaml");
 
         String expected = "se.arbetsformedlingen.foretag*";
         Application gfr = new Application("gfr");
@@ -48,7 +57,18 @@ public class ConfigurationTest {
     }
 
     @Test
-    public void fail_getting_application_load_search_string_for_unknown_application() {
+    public void default_application_load_search_string_for_urk() {
+        Configuration configuration = new Configuration("no file");
+
+        Application gfr = new Application("urk");
+
+        String actual = configuration.getApplicationLoadSearchString(gfr);
+
+        assertThat(actual).isEqualTo("se.arbetsformedlingen.urk*");
+    }
+
+    @Test
+    public void missing_application_load_search_string_for_unknown_application() {
         Configuration configuration = new Configuration("no file");
 
         Application unknown = new Application("unknown");
