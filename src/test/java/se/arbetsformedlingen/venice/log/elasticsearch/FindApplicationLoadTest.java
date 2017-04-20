@@ -22,8 +22,9 @@ public class FindApplicationLoadTest {
     @Ignore
     public void find_application_load() {
         Configuration configuration = new Configuration("no file");
-        FindApplicationLoad findExceptions = new FindApplicationLoad(client, new Application("gfr"), configuration);
-        LogResponse logResponse = findExceptions.get();
+        Application application = new Application("gfr");
+        FindApplicationLoad findApplicationLoad = new FindApplicationLoad(client, application, configuration);
+        LogResponse logResponse = findApplicationLoad.get();
 
         System.out.println(logResponse);
     }
