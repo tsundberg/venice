@@ -2,6 +2,16 @@
 
 Monitoring of selected applications
 
+## Configuration
+
+The is done in `/etc/venice/configuration.yaml` 
+
+If the configuration file is missing, a default configuration is located on the class path.
+
+### Sample configuration
+
+A sample configuration should be added here when it is available.
+
 ## Build
 
     ./gradlew clean stage --daemon
