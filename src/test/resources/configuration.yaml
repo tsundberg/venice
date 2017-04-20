@@ -19,7 +19,7 @@ updateFrequenzy:
     timeUnit: SECONDS
 
 tpjadmin:
-  host: l7700759.wpa.ams.se
-  port: 8180
-  uri: /tpjadmin/rest/properties/v0/wildfly/instances/default/
+  host: default-host
+  port: 9999
+  uri: default-uri
 

@@ -30,13 +30,27 @@ public class Configuration {
     }
 
     public String getTpjAdminHost() {
-        Map tpjAdmin = (Map) configurations.get("tpjadmin");
-        return (String) tpjAdmin.get("host");
+        Map tpjAdmin =  getTpjAdmin();
+
+        String host = (String) tpjAdmin.get("host");
+
+        if (host != null) {
+            return host;
+        }
+
+        throw new ConfigurationException("tpjadmin host is not defined");
     }
 
     public Integer getTpjAdminPort() {
-        Map tpjAdmin = (Map) configurations.get("tpjadmin");
-        return (Integer) tpjAdmin.get("port");
+        Map tpjAdmin =  getTpjAdmin();
+
+        Integer port = (Integer) tpjAdmin.get("port");
+
+        if (port != null) {
+            return port;
+        }
+
+        throw new ConfigurationException("tpjadmin port is not defined");
     }
 
     public String getTpjAdminUri() {

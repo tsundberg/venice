@@ -20,9 +20,6 @@ public class ConfigurationTest {
 
     @Test
     public void read_tpj_admin_host_from_config_file() {
-        // todo fixa defaults
-        // todo fixa missing
-
         Configuration configuration = new Configuration("build/resources/main/configuration.yaml");
 
         String actual = configuration.getTpjAdminHost();
@@ -31,15 +28,48 @@ public class ConfigurationTest {
     }
 
     @Test
-    public void read_tpj_admin_port_from_config_file() {
-        // todo fixa defaults
-        // todo fixa missing
+    public void default_tpj_admin_host_from_config_file() {
+        Configuration configuration = new Configuration("no file");
 
+        String actual = configuration.getTpjAdminHost();
+
+        assertThat(actual).isEqualTo("default-host");
+    }
+
+    @Test
+    public void missing_tpj_admin_host_from_config_file() {
+        Configuration configuration = new Configuration("build/resources/test/missing-tpjadmin-nodes-configuration.yaml");
+
+        assertThatThrownBy(configuration::getTpjAdminHost)
+                .isInstanceOf(ConfigurationException.class)
+                .hasMessageContaining("tpjadmin host is not defined");
+    }
+
+    @Test
+    public void read_tpj_admin_port_from_config_file() {
         Configuration configuration = new Configuration("build/resources/main/configuration.yaml");
 
         Integer actual = configuration.getTpjAdminPort();
 
         assertThat(actual).isEqualTo(8180);
+    }
+
+    @Test
+    public void default_tpj_admin_port_from_config_file() {
+        Configuration configuration = new Configuration("no file");
+
+        Integer actual = configuration.getTpjAdminPort();
+
+        assertThat(actual).isEqualTo(9999);
+    }
+
+    @Test
+    public void missing_tpj_admin_port_from_config_file() {
+        Configuration configuration = new Configuration("build/resources/test/missing-tpjadmin-nodes-configuration.yaml");
+
+        assertThatThrownBy(configuration::getTpjAdminPort)
+                .isInstanceOf(ConfigurationException.class)
+                .hasMessageContaining("tpjadmin port is not defined");
     }
 
     @Test
@@ -57,7 +87,7 @@ public class ConfigurationTest {
 
         String actual = configuration.getTpjAdminUri();
 
-        assertThat(actual).isEqualTo("/tpjadmin/rest/properties/v0/wildfly/instances/default/");
+        assertThat(actual).isEqualTo("default-uri");
     }
 
     @Test
