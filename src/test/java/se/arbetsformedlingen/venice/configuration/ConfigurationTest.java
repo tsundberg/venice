@@ -1,12 +1,11 @@
 package se.arbetsformedlingen.venice.configuration;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import se.arbetsformedlingen.venice.model.Application;
+import se.arbetsformedlingen.venice.model.Probe;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Fail.fail;
 import static org.assertj.core.api.ThrowableAssert.catchThrowable;
 
 public class ConfigurationTest {
@@ -106,9 +105,8 @@ public class ConfigurationTest {
         Configuration configuration = new Configuration("build/resources/main/configuration.yaml");
 
         String expected = "se.arbetsformedlingen.foretag*";
-        Application gfr = new Application("gfr");
 
-        String actual = configuration.getApplicationLoadSearchString(gfr);
+        String actual = configuration.getApplicationLoadSearchString("gfr");
 
         assertThat(actual).isEqualTo(expected);
     }
@@ -117,22 +115,17 @@ public class ConfigurationTest {
     public void default_application_load_search_string_for_urk() {
         Configuration configuration = new Configuration("no file");
 
-        Application gfr = new Application("urk");
-
-        String actual = configuration.getApplicationLoadSearchString(gfr);
+        String actual = configuration.getApplicationLoadSearchString("urk");
 
         assertThat(actual).isEqualTo("se.arbetsformedlingen.urk*");
     }
 
     @Test
     public void missing_application_load_search_string_for_unknown_application() {
-        Configuration configuration = new Configuration("no file");
+        Configuration configuration = new Configuration("build/resources/test/missing-nodes-configuration.yaml");
 
-        Application unknown = new Application("unknown");
-
-        Throwable thrown = catchThrowable(() -> configuration.getApplicationLoadSearchString(unknown));
-
-        assertThat(thrown).isInstanceOf(ConfigurationException.class)
+        assertThat(catchThrowable(() -> configuration.getApplicationLoadSearchString("unknown")))
+                .isInstanceOf(ConfigurationException.class)
                 .hasMessageContaining("Application load search string is not defined for unknown");
     }
 
@@ -199,6 +192,32 @@ public class ConfigurationTest {
                 .hasMessageContaining("continuousIntegration port is not defined");
     }
 
+    @Test
+    public void read_geo_probe_name_from_config_file() {
+        Configuration configuration = new Configuration("build/resources/main/configuration.yaml");
+
+        Probe actual = configuration.getProbe("geo");
+
+        assertThat(actual).isEqualTo(new Probe("UgkGeoProbe"));
+    }
+
+    @Test
+    public void default_geo_probe_name_from_config_file() {
+        Configuration configuration = new Configuration("no file");
+
+        Probe actual = configuration.getProbe("urk");
+
+        assertThat(actual).isEqualTo(new Probe("default-probe-name"));
+    }
+
+    @Test
+    public void missing_geo_probe_name_from_config_file() {
+        Configuration configuration = new Configuration("build/resources/test/missing-nodes-configuration.yaml");
+
+        assertThatThrownBy(() -> configuration.getProbe("geo"))
+                .isInstanceOf(ConfigurationException.class)
+                .hasMessageContaining("applications application is not defined for geo");
+
+    }
 
 }
-

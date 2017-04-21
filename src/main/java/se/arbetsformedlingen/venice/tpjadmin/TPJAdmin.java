@@ -8,6 +8,7 @@ import se.arbetsformedlingen.venice.configuration.Configuration;
 import se.arbetsformedlingen.venice.model.Application;
 import se.arbetsformedlingen.venice.model.ApplicationServer;
 import se.arbetsformedlingen.venice.model.Environment;
+import se.arbetsformedlingen.venice.model.Probe;
 
 import java.io.IOException;
 import java.util.*;
@@ -36,11 +37,7 @@ public class TPJAdmin {
         this.configuration = configuration;
     }
 
-    public List<ApplicationServer> getApplicationServers() {
-        return applicationServers;
-    }
-
-    public List<ApplicationServer> prepareServers() {
+    public List<ApplicationServer> prepareApplicationServers() {
         Executor executor = Executor.newInstance();
 
         System.out.println("Fetching servers");
@@ -69,7 +66,8 @@ public class TPJAdmin {
 
         for (String key : applications.keySet()) {
             String applicationName = applications.get(key);
-            Application application = new Application(applicationName);
+            Probe probe = configuration.getProbe(applicationName);
+            Application application = new Application(applicationName, probe);
             apps.add(application);
         }
 
@@ -92,11 +90,11 @@ public class TPJAdmin {
                 .asString();
 
         String appName = applications.get(app);
-        Application application = new Application(appName);
+        Probe probe = configuration.getProbe(appName);
+        Application application = new Application(appName, probe);
 
         String envName = environments.get(env);
         Environment environment = new Environment(envName);
-
 
         return TPJAdminResponseParser.parse(application, environment, json);
     }

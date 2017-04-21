@@ -70,8 +70,8 @@ public class Venice {
 
     private static void scheduleProbeChecks(Configuration configuration) {
         TPJAdmin tpjAdmin = new TPJAdmin(configuration);
-        ProbeController.setServers(tpjAdmin.getApplicationServers());
-        List<ApplicationServer> applicationServers = tpjAdmin.prepareServers();
+        List<ApplicationServer> applicationServers = tpjAdmin.prepareApplicationServers();
+        ProbeController.setServers(applicationServers);
 
         Scheduler scheduler = new ProbeCheckScheduler(applicationServers);
         scheduler.startChecking(30, TimeUnit.SECONDS);

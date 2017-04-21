@@ -2,7 +2,7 @@ applications:
   - application:
     name: urk
     tpjName: urk
-    probe: UgkForetagProbe
+    probe: default-probe-name
     serverLoadString: se.arbetsformedlingen.urk*
 
 updateFrequenzy:

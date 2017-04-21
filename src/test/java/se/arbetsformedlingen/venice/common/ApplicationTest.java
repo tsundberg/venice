@@ -2,30 +2,49 @@ package se.arbetsformedlingen.venice.common;
 
 import org.junit.Test;
 import se.arbetsformedlingen.venice.model.Application;
+import se.arbetsformedlingen.venice.model.Probe;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 public class ApplicationTest {
 
     @Test
-    public void get_gfr_probename() {
-        String expected = "UgkForetagProbe";
+    public void get_gfr_probe_name() {
+        Probe probe = new Probe("UgkForetagProbe");
+        Application app = new Application("gfr", probe);
 
-        Application app = new Application("gfr");
+        Probe actual = app.getProbe();
 
-        String actual = app.getProbeName();
-
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual).isEqualTo(new Probe("UgkForetagProbe"));
     }
 
     @Test
-    public void get_agselect_probename() {
-        String expected = "MarknadsanalysProbe";
+    public void get_agselect_probe_name() {
+        Probe probe = new Probe("MarknadsanalysProbe");
+        Application app = new Application("agselect", probe);
 
-        Application app = new Application("agselect");
+        Probe actual = app.getProbe();
 
-        String actual = app.getProbeName();
+        assertThat(actual).isEqualTo(new Probe("MarknadsanalysProbe"));
+    }
 
-        assertThat(actual).isEqualTo(expected);
+    @Test
+    public void get_geo_probe_name() {
+        Probe probe = new Probe("UgkGeoProbe");
+        Application app = new Application("geo", probe);
+
+        Probe actual = app.getProbe();
+
+        assertThat(actual).isEqualTo(new Probe("UgkGeoProbe"));
+    }
+
+    @Test
+    public void get_cpr_probe_name() {
+        Probe probe = new Probe("CprProbe");
+        Application app = new Application("cpr", probe);
+
+        Probe actual = app.getProbe();
+
+        assertThat(actual).isEqualTo(new Probe("CprProbe"));
     }
 }

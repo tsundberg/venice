@@ -30,11 +30,11 @@ public class CheckProbe implements java.util.function.Supplier<ProbeResponse> {
     }
 
     String getUri() {
-        String probeName = applicationServer.getProbeName();
+        Probe probe = applicationServer.getProbe();
         Host host = applicationServer.getHost();
         Port port = applicationServer.getPort();
 
-        return "http://" + host + ":" + port + "/jolokia/read/af-probe:probe=" + probeName + "/";
+        return "http://" + host + ":" + port + "/jolokia/read/af-probe:probe=" + probe + "/";
     }
 
     private Executor getAuthenticatedExecutor() {

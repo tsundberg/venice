@@ -1,3 +1,7 @@
+applications:
+  - application:
+    name: unknown
+
 continuousIntegration:
   bapa: really not important
 

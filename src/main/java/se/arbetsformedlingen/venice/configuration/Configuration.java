@@ -2,6 +2,7 @@ package se.arbetsformedlingen.venice.configuration;
 
 import org.yaml.snakeyaml.Yaml;
 import se.arbetsformedlingen.venice.model.Application;
+import se.arbetsformedlingen.venice.model.Probe;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,15 +19,15 @@ public class Configuration {
         load(configFile);
     }
 
-    public String getApplicationLoadSearchString(Application application) {
-        Map app = getApplicationConfiguration(application);
+    public String getApplicationLoadSearchString(String applicationName) {
+        Map app = getApplication(applicationName);
         String serverLoadString = (String) app.get("serverLoadString");
 
         if (serverLoadString != null) {
             return serverLoadString;
         }
 
-        throw new ConfigurationException("Application load search string is not defined for " + application);
+        throw new ConfigurationException("Application load search string is not defined for " + applicationName);
     }
 
     public String getTpjAdminHost() {
@@ -109,19 +110,30 @@ public class Configuration {
         throw new ConfigurationException("continuousIntegration is not defined");
     }
 
-    private Map getApplicationConfiguration(Application application) {
+    public Probe getProbe(String applicationName) {
+        Map applicationConfig = getApplication(applicationName);
+
+        String name = (String) applicationConfig.get("probe");
+
+        if (name != null) {
+            return new Probe(name);
+        }
+
+        throw new ConfigurationException("probe is not defined for " + applicationName);
+    }
+
+    private Map getApplication(String wantedApplication) {
         List applications = (List) configurations.get("applications");
-        for (Object appObject : applications) {
-            Map app = (Map) appObject;
 
-            String appName = (String) app.get("name");
-            Application candidate = new Application(appName);
-
-            if (application.equals(candidate)) {
-                return app;
+        for (Object c: applications) {
+            Map candidate = (Map) c;
+            String name = (String) candidate.get("name");
+            if (name != null && name.equals(wantedApplication)) {
+                return candidate;
             }
         }
-        return new HashMap();
+
+        throw new ConfigurationException("applications application is not defined for " + wantedApplication);
     }
 
     private void load(String configFile) {
@@ -143,5 +155,4 @@ public class Configuration {
             return getClass().getResourceAsStream("/configuration.yaml");
         }
     }
-
 }

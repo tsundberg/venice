@@ -1,32 +1,22 @@
 package se.arbetsformedlingen.venice.model;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class Application {
     private String name;
-    private static Map<String, String> probeNames;
+    private Probe probe;
 
     public Application(String name) {
         this.name = name;
-
-        addProbes();
     }
 
-    private void addProbes() {
-        if (probeNames == null) {
-            probeNames = new HashMap<>();
-
-            probeNames.put("gfr", "UgkForetagProbe");
-            probeNames.put("geo", "UgkGeoProbe");
-            probeNames.put("cpr", "CprProbe");
-            probeNames.put("agselect", "MarknadsanalysProbe");
-        }
+    public Application(String name, Probe probe) {
+        this.name = name;
+        this.probe = probe;
     }
 
-    public String getProbeName() {
-        return probeNames.get(name);
+    public Probe getProbe() {
+        return probe;
     }
 
     public String getName() {

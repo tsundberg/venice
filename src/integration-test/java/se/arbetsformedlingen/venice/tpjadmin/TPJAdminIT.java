@@ -19,7 +19,7 @@ public class TPJAdminIT {
         Configuration configuration = new Configuration("build/resources/main/configuration.yaml");
         TPJAdmin tpjAdmin = new TPJAdmin(configuration);
 
-        List<ApplicationServer> actual = tpjAdmin.getApplicationServers();
+        List<ApplicationServer> actual = tpjAdmin.prepareApplicationServers();
 
         assertThat(actual).contains(expected);
     }

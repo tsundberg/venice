@@ -33,8 +33,8 @@ public class ApplicationServer implements Comparable<ApplicationServer> {
         return port;
     }
 
-    public String getProbeName() {
-        return application.getProbeName();
+    public Probe getProbe() {
+        return application.getProbe();
     }
 
     @Override
