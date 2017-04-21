@@ -5,11 +5,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class WebserviceLoad {
-    private Application application;
     private List<WebserviceValue> series = new ArrayList<>();
 
-    public WebserviceLoad(Application application, WebserviceValue... timeValues) {
-        this.application = application;
+    public WebserviceLoad(WebserviceValue... timeValues) {
         Collections.addAll(series, timeValues);
         Collections.sort(series);
     }

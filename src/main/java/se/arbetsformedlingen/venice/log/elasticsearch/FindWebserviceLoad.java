@@ -60,7 +60,7 @@ public class FindWebserviceLoad implements Supplier<LogResponse> {
 
         WebserviceValue[] values = getHostValues(callsPerWebService);
         LogType logType = new LogType("webservice-load");
-        WebserviceLoad webserviceLoad = new WebserviceLoad(application, values);
+        WebserviceLoad webserviceLoad = new WebserviceLoad(values);
 
         return new LogResponse(application, logType, webserviceLoad);
     }

@@ -98,7 +98,7 @@ public class JsonResponseBuilderTest {
         Application application = new Application("gfr");
         LogType logType = new LogType("webservice-load");
 
-        WebserviceLoad series = new WebserviceLoad(application,
+        WebserviceLoad series = new WebserviceLoad(
                 new WebserviceValue(new Webservice("WS2"), 2302L),
                 new WebserviceValue(new Webservice("WS3"), 54333L),
                 new WebserviceValue(new Webservice("WS4"), 231432L),
