@@ -19,6 +19,7 @@ public class TPJAdmin {
     private static Map<String, String> applications = new HashMap<>();
 
     static {
+        // todo config
         environments.put("T2", "t2");
         environments.put("T1", "t1");
         environments.put("I1", "i1");

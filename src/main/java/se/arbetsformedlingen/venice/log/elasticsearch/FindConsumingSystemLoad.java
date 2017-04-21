@@ -34,6 +34,7 @@ public class FindConsumingSystemLoad implements Supplier<LogResponse> {
         this.client = client;
         this.application = application;
 
+        // todo config
         queryStrings.put(new Application("gfr"), "*.service.GFRServiceEndpointBase");
         queryStrings.put(new Application("geo"), "se.arbetsformedlingen.geo*");
         queryStrings.put(new Application("cpr"), "se.arbetsformedlingen.cpr*");

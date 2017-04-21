@@ -30,6 +30,7 @@ public class FindWebserviceLoad implements Supplier<LogResponse> {
         this.application = application;
         this.client = client;
 
+        // todo config
         queryStrings.put(new Application("gfr"), "se.arbetsformedlingen.foretag.gfrws*");
         queryStrings.put(new Application("geo"), "se.arbetsformedlingen.geo*");
         queryStrings.put(new Application("cpr"), "se.arbetsformedlingen.cpr*");

@@ -28,6 +28,8 @@ public class CheckBuild implements java.util.function.Supplier<List<BuildRespons
         try {
             String host = configuration.getCiServerHost();
             Integer port = configuration.getCiServerPort();
+
+            // todo config
             String projectUri = "http://" + host + ":" + port + "/job/Masterdata/api/json";
             result = executor.execute(Request.Get(projectUri))
                     .returnContent()
