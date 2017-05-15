@@ -34,8 +34,8 @@ updateFrequenzy:
     timeUnit: SECONDS
 
 continuousIntegration:
-  host: l7700759.wpa.ams.se
-  port: 8180
+  host: l7700676.ws.ams.se
+  port: 8080
 
 tpjadmin:
   host: l7700759.wpa.ams.se
