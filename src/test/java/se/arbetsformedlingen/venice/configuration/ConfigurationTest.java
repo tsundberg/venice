@@ -144,7 +144,7 @@ public class ConfigurationTest {
 
         String actual = configuration.getCiServerHost();
 
-        assertThat(actual).isEqualTo("l7700759.wpa.ams.se");
+        assertThat(actual).isEqualTo("l7700676.ws.ams.se");
     }
 
     @Test
@@ -171,7 +171,7 @@ public class ConfigurationTest {
 
         Integer actual = configuration.getCiServerPort();
 
-        assertThat(actual).isEqualTo(8180);
+        assertThat(actual).isEqualTo(8080);
     }
 
     @Test
