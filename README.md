@@ -4,7 +4,15 @@ Monitoring of selected applications
 
 ## Configuration
 
-The is done in `/etc/venice/configuration.yaml` 
+Three environment variable has to be set
+
+    PISAID
+    PROBE_USER
+    PROBE_PASSWORD
+
+They are used for authentication and you should kow the values they should be set to. If you don't, ask Thomas.
+
+The system is configured in `/etc/venice/configuration.yaml` 
 
 If the configuration file is missing, a default configuration is located on the class path.
 
