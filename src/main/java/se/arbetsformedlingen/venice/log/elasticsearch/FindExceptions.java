@@ -2,7 +2,6 @@ package se.arbetsformedlingen.venice.log.elasticsearch;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHit;
@@ -14,6 +13,7 @@ import se.arbetsformedlingen.venice.model.LogType;
 import se.arbetsformedlingen.venice.model.TimeSeriesValue;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -118,17 +118,35 @@ public class FindExceptions implements Supplier<LogResponse> {
         Map<String, Object> source = hit.getSource();
         String timeStamp = (String) source.get("@timestamp");
 
-        LocalDateTime localDateTime = ElasticSearchClient.getDate(timeStamp);
+        LocalDateTime eventTime = ElasticSearchClient.getDate(timeStamp);
 
-        int hour = localDateTime.getHour();
-        Integer hits = exceptionPerHour.get(hour);
+        LocalDateTime yesterday = yesterday();
 
-        if (hits == null) {
-            hits = 1;
-        } else {
-            hits = hits + 1;
+        if (eventTime.isAfter(yesterday)) {
+            int hour = eventTime.getHour();
+            Integer hits = exceptionPerHour.get(hour);
+
+            if (hits == null) {
+                hits = 1;
+            } else {
+                hits = hits + 1;
+            }
+            exceptionPerHour.put(hour, hits);
         }
-        exceptionPerHour.put(hour, hits);
+    }
+
+    LocalDateTime yesterday() {
+        LocalDateTime yesterday = LocalDateTime.now().minus(1, ChronoUnit.DAYS);
+        yesterday = yesterday.plusHours(1);
+
+        int year =  yesterday.getYear();
+        int month =  yesterday.getMonth().getValue();
+        int day =  yesterday.getDayOfMonth();
+        int hour =  yesterday.getHour();
+
+        yesterday = LocalDateTime.of(year, month, day, hour, 0);
+
+        return yesterday;
     }
 
 }

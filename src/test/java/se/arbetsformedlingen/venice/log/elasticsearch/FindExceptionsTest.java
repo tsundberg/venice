@@ -3,6 +3,7 @@ package se.arbetsformedlingen.venice.log.elasticsearch;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.Before;
+import se.arbetsformedlingen.venice.log.LogResponse;
 import se.arbetsformedlingen.venice.model.Application;
 
 import java.time.LocalDateTime;
@@ -19,6 +20,15 @@ public class FindExceptionsTest {
     public void get_client() {
         Settings settings = ElasticSearchClient.getSettings();
         client = ElasticSearchClient.getClient(settings);
+    }
+
+    @Test
+    public void get_yesterday_hour() {
+        FindExceptions findExceptions = new FindExceptions(client, new Application("geo"));
+
+        LocalDateTime actual = findExceptions.yesterday();
+
+        assertThat(actual.getSecond()).isEqualTo(0);
     }
 
     @Test
