@@ -43,7 +43,7 @@ public class TimeSeriesValue implements Comparable<TimeSeriesValue> {
         return time + ":" + value;
     }
 
-    private LocalDateTime normalized(LocalDateTime time) {
+    public static LocalDateTime normalized(LocalDateTime time) {
         int year = time.getYear();
         int month = time.getMonth().getValue();
         int day = time.getDayOfMonth();

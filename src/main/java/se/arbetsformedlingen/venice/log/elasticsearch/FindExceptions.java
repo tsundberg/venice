@@ -68,6 +68,8 @@ public class FindExceptions implements Supplier<LogResponse> {
     private LogResponse collectExceptions(SearchResponse response, Client client) {
         Map<String, Integer> exceptionPerHour = new HashMap<>();
 
+        initiate(exceptionPerHour);
+
         long totalHits = response.getHits().getTotalHits();
         int page = 0;
         for (SearchHit hit : response.getHits().getHits()) {
@@ -105,6 +107,13 @@ public class FindExceptions implements Supplier<LogResponse> {
         return new LogResponse(application, logType, exceptionsPerTime);
     }
 
+    private void initiate(Map<String, Integer> exceptionPerHour) {
+        for (int hour = 0; hour < 24; hour++) {
+            String key = TimeSeriesValue.normalized(LocalDateTime.now().minusHours(hour)).toString();
+            exceptionPerHour.put(key, 0);
+        }
+    }
+
     private void addOneException(SearchHit hit, Map<String, Integer> exceptionPerHour) {
         // this might a too complicated solution. ES should be able to group the data per hour. This is the way it probably is implemented in other searches. Check if that is the case when you see this comment.
         Map<String, Object> source = hit.getSource();
@@ -113,7 +122,7 @@ public class FindExceptions implements Supplier<LogResponse> {
         LocalDateTime eventTime = ElasticSearchClient.getDate(timeStamp);
 
         if (eventTime.isAfter(yesterday())) {
-            String key = eventTime.toString();
+            String key = TimeSeriesValue.normalized(eventTime).toString();
             Integer hits = exceptionPerHour.get(key);
 
             if (hits == null) {

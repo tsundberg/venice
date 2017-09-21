@@ -26,7 +26,10 @@ public class FindExceptionsTest {
     @Test
     @Ignore
     public void find_exceptions() {
-        FindExceptions findExceptions = new FindExceptions(client, new Application("geo"));
-        findExceptions.get();
+        FindExceptions findExceptions = new FindExceptions(client, new Application("gfr"));
+        LogResponse foo = findExceptions.get();
+
+        System.out.println();
+
     }
 }
