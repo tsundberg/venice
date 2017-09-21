@@ -2,7 +2,7 @@ import java.text.SimpleDateFormat
 
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '1.2.3'
+    id 'com.github.johnrengelman.shadow' version '2.0.1'
 }
 
 version = '1.0-SNAPSHOT'
@@ -37,7 +37,7 @@ dependencies {
     compile 'org.codeartisans:org.json:20161124'
     compile 'org.elasticsearch:elasticsearch:2.2.2'
     compile 'org.yaml:snakeyaml:1.18'
-    
+
     testCompile 'org.assertj:assertj-core:3.6.2'
     testCompile 'com.google.code.gson:gson:2.8.0'
     testCompile 'junit:junit:4.12'
@@ -50,14 +50,15 @@ test {
 }
 
 task integrationTest(type: Test) {
-    testClassesDir = sourceSets.integrationTest.output.classesDir
+    testClassesDirs = sourceSets.integrationTest.output
     classpath = sourceSets.integrationTest.runtimeClasspath
 }
 
 integrationTest.mustRunAfter test
 
 tasks.withType(Test) {
-    reports.html.destination = file("${reporting.baseDir}/${name}")
+    // reports.html.destination = file("${reporting.baseDir}/${name}")
+    reports.html.setDestination(file("${reporting.baseDir}/${name}"))
 }
 
 shadowJar {
