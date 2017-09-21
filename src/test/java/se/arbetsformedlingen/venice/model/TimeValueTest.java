@@ -1,23 +1,21 @@
 package se.arbetsformedlingen.venice.model;
 
+import org.junit.Ignore;
 import org.junit.Test;
+
+import java.time.LocalDateTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TimeValueTest {
 
     @Test
-    public void accept_hours_the_last_24_hours() {
-        for (int i = 0; i < 24; i++) {
-            TimeSeriesValue timeSeriesValue = new TimeSeriesValue(i, 4711);
-        }
-    }
+    public void normalize_event_date_to_specific_hour() {
+        LocalDateTime eventTime = LocalDateTime.parse("2017-09-21T10:32:00");
+        TimeSeriesValue timeSeriesValue = new TimeSeriesValue(eventTime, 4711);
 
-    @Test(expected = IllegalArgumentException.class)
-    public void do_accept_hours_outside_the_last_24_hours() {
-        TimeSeriesValue timeSeriesValue = new TimeSeriesValue(24, 4711);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void do_accept_hours_before_now() {
-        TimeSeriesValue timeSeriesValue = new TimeSeriesValue(-1, 4711);
+        assertThat(timeSeriesValue.getTime().getHour()).isEqualTo(10);
+        assertThat(timeSeriesValue.getTime().getMinute()).isEqualTo(0);
+        assertThat(timeSeriesValue.getValue()).isEqualTo(4711);
     }
 }

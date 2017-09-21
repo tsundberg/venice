@@ -2,7 +2,6 @@ package se.arbetsformedlingen.venice.log.elasticsearch;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
@@ -14,6 +13,7 @@ import org.elasticsearch.search.aggregations.bucket.significant.SignificantTerms
 import se.arbetsformedlingen.venice.log.LogResponse;
 import se.arbetsformedlingen.venice.model.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+import static se.arbetsformedlingen.venice.log.elasticsearch.DateUtil.yesterday;
 
 public class FindConsumingSystemLoad implements Supplier<LogResponse> {
     private Application application;
@@ -81,11 +82,14 @@ public class FindConsumingSystemLoad implements Supplier<LogResponse> {
         for (Histogram.Bucket bucket : lastDaysValue) {
             Aggregations aggregations = bucket.getAggregations();
             SignificantTerms callsPerWebService = aggregations.get("calls per webservice");
+            String keyAsString = bucket.getKeyAsString();
+            LocalDateTime eventTime = getLocalDateTime(keyAsString);
 
-            Integer hour = getHour(bucket.getKeyAsString());
-            List<ConsumingSystemValue> values = getConsumingsystemsValues(callsPerWebService, hour);
+            if (eventTime.isAfter(yesterday())) {
+                List<ConsumingSystemValue> values = getConsumingsystemsValues(callsPerWebService, eventTime);
 
-            consumingSystemValues.addAll(values);
+                consumingSystemValues.addAll(values);
+            }
         }
 
         LogType logType = new LogType("consuming-system");
@@ -113,11 +117,16 @@ public class FindConsumingSystemLoad implements Supplier<LogResponse> {
 
         List<? extends Histogram.Bucket> lastDaysValue = getLastDaysValues(webbApp.getBuckets());
         for (Histogram.Bucket bucket : lastDaysValue) {
-            Integer hour = getHour(bucket.getKeyAsString());
-            Long load = bucket.getDocCount();
-            ConsumingSystemValue consumingSystemValue = new ConsumingSystemValue(new ConsumingSystem(""), hour, load);
+            String keyAsString = bucket.getKeyAsString();
+            LocalDateTime eventTime = getLocalDateTime(keyAsString);
 
-            consumingSystemValues.add(consumingSystemValue);
+            if (eventTime.isAfter(yesterday())) {
+                Long load = bucket.getDocCount();
+                TimeSeriesValue value = new TimeSeriesValue(eventTime, load);
+                ConsumingSystemValue consumingSystemValue = new ConsumingSystemValue(new ConsumingSystem(""), value);
+
+                consumingSystemValues.add(consumingSystemValue);
+            }
         }
 
         LogType logType = new LogType("consuming-system");
@@ -126,14 +135,14 @@ public class FindConsumingSystemLoad implements Supplier<LogResponse> {
         return new LogResponse(application, logType, consumingSystemLoad);
     }
 
-    private List<ConsumingSystemValue> getConsumingsystemsValues(SignificantTerms callsPerHost, Integer time) {
+    private List<ConsumingSystemValue> getConsumingsystemsValues(SignificantTerms callsPerHost, LocalDateTime time) {
         List<ConsumingSystemValue> consumingSystems = new LinkedList<>();
         for (SignificantTerms.Bucket bucket : callsPerHost.getBuckets()) {
             String consumingSystemName = bucket.getKeyAsString();
             Long load = bucket.getSubsetDf();
             ConsumingSystem consumingSystem = new ConsumingSystem(consumingSystemName);
 
-            consumingSystems.add(new ConsumingSystemValue(consumingSystem, time, load));
+            consumingSystems.add(new ConsumingSystemValue(consumingSystem, new TimeSeriesValue(time, load)));
         }
 
         return consumingSystems;
@@ -143,15 +152,17 @@ public class FindConsumingSystemLoad implements Supplier<LogResponse> {
         int size = buckets.size();
         int start = size - 24;
 
-        while(start < 0) {
+        while (start < 0) {
             start++;
         }
 
         return buckets.subList(start, size);
     }
 
-    Integer getHour(String key) {
-        String hourString = key.substring(11, 13);
-        return (Integer.parseInt(hourString) + 1) % 24;
+    LocalDateTime getLocalDateTime(String key) {
+        String parsableString = key.substring(0, 22);
+        LocalDateTime zulu = LocalDateTime.parse(parsableString);
+
+        return zulu.plusHours(1);
     }
 }

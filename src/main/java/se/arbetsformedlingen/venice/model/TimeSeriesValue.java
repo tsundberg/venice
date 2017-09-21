@@ -1,29 +1,22 @@
 package se.arbetsformedlingen.venice.model;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
-/**
- * A limited time series, it will not allow times outside the last 24 hours.
- * I.e. 0 -- 23
- */
 public class TimeSeriesValue implements Comparable<TimeSeriesValue> {
-    private Integer time;
-    private int value;
+    private LocalDateTime time;
+    private long value;
 
-    public TimeSeriesValue(int time, int value) {
-        if (time < 0 || time > 23) {
-            throw new IllegalArgumentException("Time values are only allowed the last 24 hours, i.e. 0 -- 23");
-        }
-
-        this.time = time;
+    public TimeSeriesValue(LocalDateTime time, long value) {
+        this.time = normalized(time);
         this.value = value;
     }
 
-    public int getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 
-    public int getValue() {
+    public long getValue() {
         return value;
     }
 
@@ -48,5 +41,14 @@ public class TimeSeriesValue implements Comparable<TimeSeriesValue> {
     @Override
     public String toString() {
         return time + ":" + value;
+    }
+
+    private LocalDateTime normalized(LocalDateTime time) {
+        int year = time.getYear();
+        int month = time.getMonth().getValue();
+        int day = time.getDayOfMonth();
+        int hour = time.getHour();
+
+        return LocalDateTime.of(year, month, day, hour, 0);
     }
 }

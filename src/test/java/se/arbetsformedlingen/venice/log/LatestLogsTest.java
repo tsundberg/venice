@@ -7,6 +7,7 @@ import se.arbetsformedlingen.venice.model.ExceptionsPerTime;
 import se.arbetsformedlingen.venice.model.LogType;
 import se.arbetsformedlingen.venice.model.TimeSeriesValue;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,9 +28,9 @@ public class LatestLogsTest {
         LogType logType = new LogType("exception");
 
         List<TimeSeriesValue> timeSeriesValues = new LinkedList<>();
-        timeSeriesValues.add(new TimeSeriesValue(10, 17));
-        timeSeriesValues.add(new TimeSeriesValue(11, 42));
-        timeSeriesValues.add(new TimeSeriesValue(9, 4711));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T10:50"), 17));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T11:17"), 42));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T09:42"), 4711));
 
         ExceptionsPerTime exceptionsPerTime = new ExceptionsPerTime(application, timeSeriesValues);
         LogResponse logEntry = new LogResponse(application, logType, exceptionsPerTime);

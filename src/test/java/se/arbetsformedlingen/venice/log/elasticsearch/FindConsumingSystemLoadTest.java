@@ -13,6 +13,7 @@ import se.arbetsformedlingen.venice.log.LogResponse;
 import se.arbetsformedlingen.venice.model.Application;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,21 +43,13 @@ public class FindConsumingSystemLoadTest {
     }
 
     @Test
-    public void extract_hour() {
+    public void parse_zulu_time_and_translate_to_local_time() {
         FindConsumingSystemLoad findWebserviceLoad = new FindConsumingSystemLoad(null, new Application("cpr"));
 
-        Integer actual = findWebserviceLoad.getHour("2017-03-13T22:00:00.000Z");
+        LocalDateTime actual = findWebserviceLoad.getLocalDateTime("2017-03-13T23:00:00.000Z");
 
-        assertThat(actual).isEqualTo(23);
-    }
-
-    @Test
-    public void extract_hour_past_midnight() {
-        FindConsumingSystemLoad findWebserviceLoad = new FindConsumingSystemLoad(null, new Application("cpr"));
-
-        Integer actual = findWebserviceLoad.getHour("2017-03-13T23:00:00.000Z");
-
-        assertThat(actual).isEqualTo(0);
+        assertThat(actual.getDayOfMonth()).isEqualTo(14);
+        assertThat(actual.getHour()).isEqualTo(00);
     }
 
     @Test

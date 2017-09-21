@@ -10,6 +10,7 @@ import se.arbetsformedlingen.venice.model.TimeSeriesValue;
 import spark.Request;
 import spark.RequestStub;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,30 +46,30 @@ public class LogControllerTest {
         LogType logType = new LogType("exception");
 
         List<TimeSeriesValue> timeSeriesValues = new LinkedList<>();
-        timeSeriesValues.add(new TimeSeriesValue(22, 3));
-        timeSeriesValues.add(new TimeSeriesValue(1, 7));
-        timeSeriesValues.add(new TimeSeriesValue(13, 41));
-        timeSeriesValues.add(new TimeSeriesValue(2, 3));
-        timeSeriesValues.add(new TimeSeriesValue(8, 17));
-        timeSeriesValues.add(new TimeSeriesValue(4, 43));
-        timeSeriesValues.add(new TimeSeriesValue(3, 17));
-        timeSeriesValues.add(new TimeSeriesValue(5, 42));
-        timeSeriesValues.add(new TimeSeriesValue(0, 4));
-        timeSeriesValues.add(new TimeSeriesValue(19, 33));
-        timeSeriesValues.add(new TimeSeriesValue(6, 28));
-        timeSeriesValues.add(new TimeSeriesValue(7, 1));
-        timeSeriesValues.add(new TimeSeriesValue(9, 18));
-        timeSeriesValues.add(new TimeSeriesValue(11, 11));
-        timeSeriesValues.add(new TimeSeriesValue(12, 13));
-        timeSeriesValues.add(new TimeSeriesValue(14, 25));
-        timeSeriesValues.add(new TimeSeriesValue(15, 15));
-        timeSeriesValues.add(new TimeSeriesValue(16, 22));
-        timeSeriesValues.add(new TimeSeriesValue(10, 32));
-        timeSeriesValues.add(new TimeSeriesValue(18, 22));
-        timeSeriesValues.add(new TimeSeriesValue(17, 3));
-        timeSeriesValues.add(new TimeSeriesValue(21, 6));
-        timeSeriesValues.add(new TimeSeriesValue(20, 12));
-        timeSeriesValues.add(new TimeSeriesValue(23, 4));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T22:17"), 3));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T01:17"), 7));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T13:17"), 41));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T02:17"), 3));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T08:17"), 17));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T04:17"), 43));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T03:17"), 17));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T05:17"), 42));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T00:17"), 4));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T19:17"), 33));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T06:17"), 28));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T07:17"), 1));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T09:17"), 18));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T11:17"), 11));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T12:17"), 13));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T14:17"), 25));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T15:17"), 15));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T16:17"), 22));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T10:17"), 32));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T18:17"), 22));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T17:17"), 3));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T21:17"), 6));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T20:17"), 12));
+        timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse("2017-09-21T23:17"), 4));
 
         ExceptionsPerTime exceptionsPerTime = new ExceptionsPerTime(application, timeSeriesValues);
 

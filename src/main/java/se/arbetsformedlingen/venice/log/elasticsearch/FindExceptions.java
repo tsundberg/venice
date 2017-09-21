@@ -13,7 +13,6 @@ import se.arbetsformedlingen.venice.model.LogType;
 import se.arbetsformedlingen.venice.model.TimeSeriesValue;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,6 +21,7 @@ import java.util.function.Supplier;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+import static se.arbetsformedlingen.venice.log.elasticsearch.DateUtil.yesterday;
 
 public class FindExceptions implements Supplier<LogResponse> {
     private Application application;
@@ -66,9 +66,7 @@ public class FindExceptions implements Supplier<LogResponse> {
     }
 
     private LogResponse collectExceptions(SearchResponse response, Client client) {
-        Map<Integer, Integer> exceptionPerHour = new HashMap<>();
-
-        initiate(exceptionPerHour);
+        Map<String, Integer> exceptionPerHour = new HashMap<>();
 
         long totalHits = response.getHits().getTotalHits();
         int page = 0;
@@ -97,9 +95,9 @@ public class FindExceptions implements Supplier<LogResponse> {
         LogType logType = new LogType("exception");
         List<TimeSeriesValue> timeSeriesValues = new LinkedList<>();
 
-        for (Integer key : exceptionPerHour.keySet()) {
+        for (String key : exceptionPerHour.keySet()) {
             Integer value = exceptionPerHour.get(key);
-            timeSeriesValues.add(new TimeSeriesValue(key, value));
+            timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse(key), value));
         }
 
         ExceptionsPerTime exceptionsPerTime = new ExceptionsPerTime(application, timeSeriesValues);
@@ -107,46 +105,24 @@ public class FindExceptions implements Supplier<LogResponse> {
         return new LogResponse(application, logType, exceptionsPerTime);
     }
 
-    private void initiate(Map<Integer, Integer> exceptionPerHour) {
-        for (int key = 0; key < 24; key++) {
-            exceptionPerHour.put(key, 0);
-        }
-    }
-
-    private void addOneException(SearchHit hit, Map<Integer, Integer> exceptionPerHour) {
+    private void addOneException(SearchHit hit, Map<String, Integer> exceptionPerHour) {
         // this might a too complicated solution. ES should be able to group the data per hour. This is the way it probably is implemented in other searches. Check if that is the case when you see this comment.
         Map<String, Object> source = hit.getSource();
         String timeStamp = (String) source.get("@timestamp");
 
         LocalDateTime eventTime = ElasticSearchClient.getDate(timeStamp);
 
-        LocalDateTime yesterday = yesterday();
-
-        if (eventTime.isAfter(yesterday)) {
-            int hour = eventTime.getHour();
-            Integer hits = exceptionPerHour.get(hour);
+        if (eventTime.isAfter(yesterday())) {
+            String key = eventTime.toString();
+            Integer hits = exceptionPerHour.get(key);
 
             if (hits == null) {
                 hits = 1;
             } else {
                 hits = hits + 1;
             }
-            exceptionPerHour.put(hour, hits);
+
+            exceptionPerHour.put(key, hits);
         }
     }
-
-    LocalDateTime yesterday() {
-        LocalDateTime yesterday = LocalDateTime.now().minus(1, ChronoUnit.DAYS);
-        yesterday = yesterday.plusHours(1);
-
-        int year =  yesterday.getYear();
-        int month =  yesterday.getMonth().getValue();
-        int day =  yesterday.getDayOfMonth();
-        int hour =  yesterday.getHour();
-
-        yesterday = LocalDateTime.of(year, month, day, hour, 0);
-
-        return yesterday;
-    }
-
 }

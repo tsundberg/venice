@@ -1,35 +1,31 @@
 package se.arbetsformedlingen.venice.model;
 
+import java.time.LocalDateTime;
+
 public class ConsumingSystemValue implements Comparable<ConsumingSystemValue> {
     private ConsumingSystem consumingSystem;
-    private Integer time;
-    private Long calls;
+    private TimeSeriesValue value;
 
-    public ConsumingSystemValue(ConsumingSystem consumingSystem, Integer time, Long calls) {
-        if (time < 0 || time > 23) {
-            throw new IllegalArgumentException("Time values are only allowed the last 24 hours, i.e. 0 -- 23");
-        }
-
+    public ConsumingSystemValue(ConsumingSystem consumingSystem, TimeSeriesValue value) {
         this.consumingSystem = consumingSystem;
-        this.time = time;
-        this.calls = calls;
+        this.value = value;
     }
 
     public ConsumingSystem getConsumingSystem() {
         return consumingSystem;
     }
 
-    public Integer getTime() {
-        return time;
+    public LocalDateTime getTime() {
+        return value.getTime();
     }
 
     public Long getCalls() {
-        return calls;
+        return value.getValue();
     }
 
     @Override
     public int compareTo(ConsumingSystemValue o) {
-        int cmp = time.compareTo(o.time);
+        int cmp = value.compareTo(o.value);
         if (cmp != 0) {
             return cmp;
         }
