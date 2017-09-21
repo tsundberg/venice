@@ -86,7 +86,7 @@ var createEnvironmentComponent = function(data) {
     return obj;
 }
 
-var createChart = function(container) {
+var createChart = function(name, container) {
 
     var margin = {
         top: 20,
@@ -112,24 +112,10 @@ var createChart = function(container) {
         .attr("class", "load-area")
         .attr("transform", "translate(" + mainChartLeft + ", " + margin.right + ")");
 
-    var hourToDate = function(hour) {
-        var currentHour = new Date().getHours();
-        if (hour > currentHour) {
-            var d = new Date(new Date().getTime() - 86400*1000);
-            d.setHours(hour);
-            d.setMinutes(0);
-            d.setSeconds(0);
-            return d;
-        } else {
-            var d = new Date();
-            d.setHours(hour);
-            d.setMinutes(0);
-            d.setSeconds(0);
-            return d;
-        }
-    };
+    var hourToDate = d3.timeParse("%Y-%m-%dT%H:%M");
 
     var obj = {};
+    obj.name = name;
     obj.update = function() {
         this.width = container.offsetWidth;
         this.height = container.offsetHeight;
@@ -264,8 +250,6 @@ var createChart = function(container) {
             d.total = d3.sum(d.values, function(d2) { return d2.calls; });
         });
 
-        console.log(timeNested);
-
         var timeRange = d3.extent(data, function(d) { return hourToDate(d.time); });
         var currentMax = d3.max(timeNested, function(d) { return d.total; });
 
@@ -306,20 +290,18 @@ var createChart = function(container) {
             .data(timeNested);
 
         loadBarSel.selectAll("rect.load-bar")
-            .data(function(d) { return d.values; })
-            .selectAll("rect.load-bar")
-                .data(function(d) { return d.values; })
-                .transition()
-                .duration(500)
-                .attr("height", function(d) { return d.height; })
-                .attr("y", function(d) { return this.usableHeight - d.y - d.height; }.bind(this));
+            .data(function(d) { return d.values; }, function(d) { return d.system; })
+            .transition()
+            .duration(500)
+            .attr("height", function(d) { return d.height; })
+            .attr("y", function(d) { return this.usableHeight - d.y - d.height; }.bind(this));
 
         loadBarSel.enter()
             .append("g")
             .attr("class", "load-group")
-            .attr("transform", function(d) { return "translate(" + xScale(hourToDate(+d.key)) + ", 0)"; })
+            .attr("transform", function(d) { return "translate(" + xScale(hourToDate(d.key)) + ", 0)"; })
             .selectAll("rect.load-bar")
-                .data(function(d) { return d.values; })
+                .data(function(d) { return d.values; }, function(d) { return d.system; })
                 .enter()
                 .append("rect")
                 .attr("class", "load-bar")
@@ -331,11 +313,9 @@ var createChart = function(container) {
                     .text(function(d) { return d.system; });
 
         loadBarSel.selectAll("rect.load-bar")
-            .data(function(d) { return d.values; })
-            .selectAll("rect.load-bar")
-                .data(function(d) { return d.values; })
-                .exit()
-                .remove();
+            .data(function(d) { return d.values; }, function(d) { return d.system; })
+            .exit()
+            .remove();
 
         chartArea.select("path.exception-line").raise();
     }
@@ -369,7 +349,7 @@ var createApplicationComponent = function(appName) {
     var chartHolder = $(document.createElement("DIV"));
     chartHolder.addClass("chart-holder");
 
-    var chart = createChart(chartHolder[0]);
+    var chart = createChart(appName, chartHolder[0]);
 
     container.append(chartHolder);
 
@@ -479,7 +459,7 @@ var createMonitorComponent = function(appContainer) {
             this.updateExceptions();
         }.bind(this), 1000);
 
-        setTimeout(this.monitor.bind(this), 30000);
+        setTimeout(this.monitor.bind(this), 10000);
     };
     return obj;
 };
