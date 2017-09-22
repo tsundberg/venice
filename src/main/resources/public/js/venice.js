@@ -92,7 +92,7 @@ var createChart = function(name, container) {
         top: 20,
         bottom: 30,
         left: 20,
-        right: 30
+        right: 60
     };
 
     var loadWidth = 20;
@@ -110,7 +110,7 @@ var createChart = function(name, container) {
 
     var chartArea = svg.append("g")
         .attr("class", "load-area")
-        .attr("transform", "translate(" + mainChartLeft + ", " + margin.right + ")");
+        .attr("transform", "translate(" + mainChartLeft + ", " + margin.left + ")");
 
     var hourToDate = d3.timeParse("%Y-%m-%dT%H:%M");
 
@@ -124,6 +124,7 @@ var createChart = function(name, container) {
         this.usableHeight = this.height - margin.top - margin.bottom;
 
         this.chartAreaWidth = this.width - mainChartLeft - margin.right;
+        this.barWidth = 0.7*this.chartAreaWidth/24;
 
         svg.attr("width", this.width)
            .attr("height", this.height);
@@ -209,7 +210,7 @@ var createChart = function(name, container) {
         if (!this.exceptionAxis) {
             this.exceptionAxis = chartArea.append("g")
                 .attr("class", "y-axis-right")
-                .attr("transform", "translate(" + this.chartAreaWidth + ", 0)")
+                .attr("transform", "translate(" + (this.chartAreaWidth + this.barWidth) + ", 0)")
                 .call(d3.axisRight(exceptionScale));
         } else {
             this.exceptionAxis.transition()
@@ -257,11 +258,15 @@ var createChart = function(name, container) {
             currentMax = 10;
         }
 
-        var barWidth = 0.7*this.chartAreaWidth/24;
+        var now = new Date();
+        now.setMinutes(0);
+        now.setSeconds(0);
+
+        var aDayAgo = new Date(now.getTime() - 86400*1000);
 
         var xScale = d3.scaleTime()
-            .domain(timeRange)
-            .range([0, this.chartAreaWidth - barWidth]);
+            .domain([aDayAgo, now])
+            .range([0, this.chartAreaWidth]);
 
         var callsScale = d3.scaleLinear()
             .domain([currentMax, 0])
@@ -305,8 +310,9 @@ var createChart = function(name, container) {
                 .enter()
                 .append("rect")
                 .attr("class", "load-bar")
-                .attr("width", barWidth)
+                .attr("width", this.barWidth)
                 .attr("height", function(d) { return d.height; })
+                .attr("x", -this.barWidth/2)
                 .attr("y", function(d) { return this.usableHeight - d.y - d.height; }.bind(this))
                 .style("fill", function(d) { return consumerColors(d.system); })
                     .append("title")
