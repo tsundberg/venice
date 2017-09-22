@@ -119,9 +119,13 @@ public class FindExceptions implements Supplier<LogResponse> {
         Map<String, Object> source = hit.getSource();
         String timeStamp = (String) source.get("@timestamp");
 
+        addEvent(exceptionPerHour, timeStamp);
+    }
+
+    void addEvent(Map<String, Integer> exceptionPerHour, String timeStamp) {
         LocalDateTime eventTime = DateUtil.getCetDateTimeFromUtc(timeStamp);
 
-        if (eventTime.isAfter(yesterday(eventTime))) {
+        if (eventTime.isAfter(yesterday())) {
             String key = TimeSeriesValue.normalized(eventTime).toString();
             Integer hits = exceptionPerHour.get(key);
 

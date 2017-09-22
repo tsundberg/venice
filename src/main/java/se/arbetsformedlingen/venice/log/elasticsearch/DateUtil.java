@@ -6,8 +6,8 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
 class DateUtil {
-    static LocalDateTime yesterday(LocalDateTime now) {
-        return now.minus(1, ChronoUnit.DAYS);
+    static LocalDateTime yesterday() {
+        return LocalDateTime.now().minus(1, ChronoUnit.DAYS);
     }
 
     static LocalDateTime getCetDateTimeFromUtc(String key) {

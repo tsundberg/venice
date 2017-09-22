@@ -86,7 +86,7 @@ public class FindConsumingSystemLoad implements Supplier<LogResponse> {
             String keyAsString = bucket.getKeyAsString();
             LocalDateTime eventTime = getCetDateTimeFromUtc(keyAsString);
 
-            if (eventTime.isAfter(yesterday(eventTime))) {
+            if (eventTime.isAfter(yesterday())) {
                 List<ConsumingSystemValue> values = getConsumingsystemsValues(callsPerWebService, eventTime);
 
                 consumingSystemValues.addAll(values);
@@ -121,7 +121,7 @@ public class FindConsumingSystemLoad implements Supplier<LogResponse> {
             String keyAsString = bucket.getKeyAsString();
             LocalDateTime eventTime = getCetDateTimeFromUtc(keyAsString);
 
-            if (eventTime.isAfter(yesterday(eventTime))) {
+            if (eventTime.isAfter(yesterday())) {
                 Long load = bucket.getDocCount();
                 TimeSeriesValue value = new TimeSeriesValue(eventTime, load);
                 ConsumingSystemValue consumingSystemValue = new ConsumingSystemValue(new ConsumingSystem(""), value);

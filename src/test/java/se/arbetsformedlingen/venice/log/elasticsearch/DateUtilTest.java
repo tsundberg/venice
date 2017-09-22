@@ -12,9 +12,9 @@ public class DateUtilTest {
     @Test
     public void get_yesterday_hour() {
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime actual = yesterday(now);
+        LocalDateTime actual = yesterday();
 
-        assertThat(actual).isEqualTo(now.minusDays(1));
+        assertThat(actual).isEqualToIgnoringMinutes(now.minusDays(1));
     }
 
     @Test
