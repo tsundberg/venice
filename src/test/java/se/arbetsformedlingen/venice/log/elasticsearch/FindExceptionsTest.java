@@ -6,11 +6,6 @@ import org.junit.Before;
 import se.arbetsformedlingen.venice.log.LogResponse;
 import se.arbetsformedlingen.venice.model.Application;
 
-import java.time.LocalDateTime;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static se.arbetsformedlingen.venice.log.elasticsearch.DateUtil.yesterday;
-
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 

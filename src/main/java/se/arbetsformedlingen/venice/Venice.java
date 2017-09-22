@@ -65,7 +65,7 @@ public class Venice {
 
     private static void scheduleLogChecks(Configuration configuration) {
         Scheduler scheduler = new LogcheckScheduler(configuration);
-        scheduler.startChecking(5, TimeUnit.MINUTES);
+        scheduler.startChecking(1, TimeUnit.MINUTES);
     }
 
     private static void scheduleProbeChecks(Configuration configuration) {

@@ -1,20 +1,22 @@
 package se.arbetsformedlingen.venice.log.elasticsearch;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
-public class DateUtil {
-    static LocalDateTime yesterday() {
-        LocalDateTime yesterday = LocalDateTime.now().minus(1, ChronoUnit.DAYS);
-        yesterday = yesterday.plusHours(1);
-
-        int year = yesterday.getYear();
-        int month = yesterday.getMonth().getValue();
-        int day = yesterday.getDayOfMonth();
-        int hour = yesterday.getHour();
-
-        yesterday = LocalDateTime.of(year, month, day, hour, 0);
-
-        return yesterday;
+class DateUtil {
+    static LocalDateTime yesterday(LocalDateTime now) {
+        return now.minus(1, ChronoUnit.DAYS);
     }
+
+    static LocalDateTime getCetDateTimeFromUtc(String key) {
+        String parsableString = key.substring(0, 22);
+        LocalDateTime zulu = LocalDateTime.parse(parsableString);
+
+        ZonedDateTime zuluZoned = ZonedDateTime.of(zulu, ZoneId.of("UTC"));
+
+        return zuluZoned.withZoneSameInstant(ZoneId.of("CET")).toLocalDateTime();
+    }
+
 }

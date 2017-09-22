@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+import static se.arbetsformedlingen.venice.log.elasticsearch.DateUtil.getCetDateTimeFromUtc;
 import static se.arbetsformedlingen.venice.log.elasticsearch.DateUtil.yesterday;
 
 public class FindConsumingSystemLoad implements Supplier<LogResponse> {
@@ -83,9 +84,9 @@ public class FindConsumingSystemLoad implements Supplier<LogResponse> {
             Aggregations aggregations = bucket.getAggregations();
             SignificantTerms callsPerWebService = aggregations.get("calls per webservice");
             String keyAsString = bucket.getKeyAsString();
-            LocalDateTime eventTime = getLocalDateTime(keyAsString);
+            LocalDateTime eventTime = getCetDateTimeFromUtc(keyAsString);
 
-            if (eventTime.isAfter(yesterday())) {
+            if (eventTime.isAfter(yesterday(eventTime))) {
                 List<ConsumingSystemValue> values = getConsumingsystemsValues(callsPerWebService, eventTime);
 
                 consumingSystemValues.addAll(values);
@@ -118,9 +119,9 @@ public class FindConsumingSystemLoad implements Supplier<LogResponse> {
         List<? extends Histogram.Bucket> lastDaysValue = getLastDaysValues(webbApp.getBuckets());
         for (Histogram.Bucket bucket : lastDaysValue) {
             String keyAsString = bucket.getKeyAsString();
-            LocalDateTime eventTime = getLocalDateTime(keyAsString);
+            LocalDateTime eventTime = getCetDateTimeFromUtc(keyAsString);
 
-            if (eventTime.isAfter(yesterday())) {
+            if (eventTime.isAfter(yesterday(eventTime))) {
                 Long load = bucket.getDocCount();
                 TimeSeriesValue value = new TimeSeriesValue(eventTime, load);
                 ConsumingSystemValue consumingSystemValue = new ConsumingSystemValue(new ConsumingSystem(""), value);
@@ -157,12 +158,5 @@ public class FindConsumingSystemLoad implements Supplier<LogResponse> {
         }
 
         return buckets.subList(start, size);
-    }
-
-    LocalDateTime getLocalDateTime(String key) {
-        String parsableString = key.substring(0, 22);
-        LocalDateTime zulu = LocalDateTime.parse(parsableString);
-
-        return zulu.plusHours(1);
     }
 }

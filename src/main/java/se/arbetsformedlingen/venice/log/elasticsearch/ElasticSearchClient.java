@@ -17,32 +17,6 @@ public class ElasticSearchClient {
                 .addTransportAddress(new InetSocketTransportAddress(new InetSocketAddress("elk.arbetsformedlingen.se", 9300)));
     }
 
-    static LocalDateTime getDate(String timeStamp) {
-        String yearString = timeStamp.substring(0, 4);
-        int year = Integer.parseInt(yearString);
-
-        String monthString = timeStamp.substring(5, 7);
-        int month = Integer.parseInt(monthString);
-
-        String dayString = timeStamp.substring(8, 10);
-        int day = Integer.parseInt(dayString);
-
-        String hourString = timeStamp.substring(11, 13);
-        int hour = Integer.parseInt(hourString);
-
-        String minuteString = timeStamp.substring(14, 16);
-        int minute = Integer.parseInt(minuteString);
-
-        String secondString = timeStamp.substring(17, 19);
-        int second = Integer.parseInt(secondString);
-
-        return convertToCET(LocalDateTime.of(year, month, day, hour, minute, second));
-    }
-
-    private static LocalDateTime convertToCET(LocalDateTime localDateTime) {
-        return localDateTime.plusHours(1);
-    }
-
     public static Settings getSettings() {
         return Settings.settingsBuilder()
                 .put("cluster.name", "logsys_prod")
@@ -80,9 +54,11 @@ public class ElasticSearchClient {
     }
 
     private static String padWithLeadinZero(String tooShort) {
-        while (tooShort.length() < 2) {
-            tooShort = "0" + tooShort;
+        StringBuilder tooShortBuilder = new StringBuilder(tooShort);
+        while (tooShortBuilder.length() < 2) {
+            tooShortBuilder.insert(0, "0");
         }
+        tooShort = tooShortBuilder.toString();
         return tooShort;
     }
 }

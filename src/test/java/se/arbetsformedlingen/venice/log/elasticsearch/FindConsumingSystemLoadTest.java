@@ -13,7 +13,6 @@ import se.arbetsformedlingen.venice.log.LogResponse;
 import se.arbetsformedlingen.venice.model.Application;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,16 +39,6 @@ public class FindConsumingSystemLoadTest {
         logResponse = findWebserviceLoad.get();
 
         System.out.println();
-    }
-
-    @Test
-    public void parse_zulu_time_and_translate_to_local_time() {
-        FindConsumingSystemLoad findWebserviceLoad = new FindConsumingSystemLoad(null, new Application("cpr"));
-
-        LocalDateTime actual = findWebserviceLoad.getLocalDateTime("2017-03-13T23:00:00.000Z");
-
-        assertThat(actual.getDayOfMonth()).isEqualTo(14);
-        assertThat(actual.getHour()).isEqualTo(00);
     }
 
     @Test
