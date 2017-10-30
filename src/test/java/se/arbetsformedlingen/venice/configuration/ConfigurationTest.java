@@ -34,7 +34,7 @@ public class ConfigurationTest {
 
         String actual = configuration.getTpjAdminHost();
 
-        assertThat(actual).isEqualTo("default-host");
+        assertThat(actual).isEqualTo("l7700759.wpa.ams.se");
     }
 
     @Test
@@ -61,7 +61,7 @@ public class ConfigurationTest {
 
         Integer actual = configuration.getTpjAdminPort();
 
-        assertThat(actual).isEqualTo(9999);
+        assertThat(actual).isEqualTo(8180);
     }
 
     @Test
@@ -88,7 +88,7 @@ public class ConfigurationTest {
 
         String actual = configuration.getTpjAdminUri();
 
-        assertThat(actual).isEqualTo("default-uri");
+        assertThat(actual).isEqualTo("/tpjadmin/rest/properties/v0/wildfly/instances/");
     }
 
     @Test
@@ -115,9 +115,9 @@ public class ConfigurationTest {
     public void default_application_load_search_string_for_urk() {
         Configuration configuration = new Configuration("no file");
 
-        String actual = configuration.getApplicationLoadSearchString("urk");
+        String actual = configuration.getApplicationLoadSearchString("gfr");
 
-        assertThat(actual).isEqualTo("se.arbetsformedlingen.urk*");
+        assertThat(actual).isEqualTo("se.arbetsformedlingen.foretag*");
     }
 
     @Test
@@ -153,7 +153,7 @@ public class ConfigurationTest {
 
         String actual = configuration.getCiServerHost();
 
-        assertThat(actual).isEqualTo("default-ci-server");
+        assertThat(actual).isEqualTo("l7700676.ws.ams.se");
     }
 
     @Test
@@ -180,7 +180,7 @@ public class ConfigurationTest {
 
         Integer actual = configuration.getCiServerPort();
 
-        assertThat(actual).isEqualTo(8888);
+        assertThat(actual).isEqualTo(8080);
     }
 
     @Test
@@ -205,9 +205,9 @@ public class ConfigurationTest {
     public void default_geo_probe_name_from_config_file() {
         Configuration configuration = new Configuration("no file");
 
-        Probe actual = configuration.getProbe("urk");
+        Probe actual = configuration.getProbe("gfr");
 
-        assertThat(actual).isEqualTo(new Probe("default-probe-name"));
+        assertThat(actual).isEqualTo(new Probe("UgkForetagProbe"));
     }
 
     @Test
