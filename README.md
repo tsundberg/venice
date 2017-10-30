@@ -22,7 +22,7 @@ A sample configuration should be added here when it is available.
 
 ## Build
 
-    ./gradlew clean stage --daemon
+    ./gradlew clean stage
     
 ## Run
 
