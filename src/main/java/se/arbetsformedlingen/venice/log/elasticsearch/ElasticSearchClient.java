@@ -7,7 +7,6 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 
 import java.net.InetSocketAddress;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class ElasticSearchClient {
     public static Client getClient(Settings settings) {
