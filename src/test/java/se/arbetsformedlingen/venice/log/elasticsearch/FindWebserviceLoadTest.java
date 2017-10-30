@@ -14,8 +14,8 @@ public class FindWebserviceLoadTest {
 
     @Before
     public void get_client() {
-        Settings settings = ElasticSearchClient.getSettings();
-        client = ElasticSearchClient.getClient(settings);
+        Settings settings = FatElasticSearchClient.getSettings();
+        client = FatElasticSearchClient.getClient(settings);
     }
 
     @Test

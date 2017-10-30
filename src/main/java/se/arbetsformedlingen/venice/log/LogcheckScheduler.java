@@ -20,8 +20,8 @@ public class LogcheckScheduler implements Scheduler {
     private List<Checker> checkers = new LinkedList<>();
 
     public LogcheckScheduler(Configuration configuration) {
-        Settings settings = ElasticSearchClient.getSettings();
-        Client client = ElasticSearchClient.getClient(settings);
+        Settings settings = FatElasticSearchClient.getSettings();
+        Client client = FatElasticSearchClient.getClient(settings);
         checkers.add(new Checker(new FindExceptions(client, new Application("gfr"))));
         checkers.add(new Checker(new FindExceptions(client, new Application("geo"))));
         checkers.add(new Checker(new FindExceptions(client, new Application("cpr"))));

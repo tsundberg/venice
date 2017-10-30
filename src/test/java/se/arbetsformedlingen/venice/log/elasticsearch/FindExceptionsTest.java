@@ -19,8 +19,8 @@ public class FindExceptionsTest {
     @Test
     @Ignore
     public void find_exceptions() {
-        Settings settings = ElasticSearchClient.getSettings();
-        Client client = ElasticSearchClient.getClient(settings);
+        Settings settings = FatElasticSearchClient.getSettings();
+        Client client = FatElasticSearchClient.getClient(settings);
 
         FindExceptions findExceptions = new FindExceptions(client, new Application("gfr"));
         findExceptions.get();

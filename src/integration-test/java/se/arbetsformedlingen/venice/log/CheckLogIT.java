@@ -20,7 +20,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import se.arbetsformedlingen.venice.log.elasticsearch.ElasticSearchClient;
+import se.arbetsformedlingen.venice.log.elasticsearch.FatElasticSearchClient;
 
 import java.util.Map;
 
@@ -29,11 +29,11 @@ import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 public class CheckLogIT {
     private Client client;
-    private ElasticSearchClient elasticSearchClient;
+    private FatElasticSearchClient elasticSearchClient;
 
     @Before
     public void setUp() {
-        elasticSearchClient = new ElasticSearchClient();
+        elasticSearchClient = new FatElasticSearchClient();
 
         Settings settings = elasticSearchClient.getSettings();
         client = elasticSearchClient.getClient(settings);

@@ -55,7 +55,7 @@ public class FindExceptions implements Supplier<LogResponse> {
                 .must(exception);
 
         int pageSize = 5;
-        SearchResponse response = client.prepareSearch(ElasticSearchClient.today(), ElasticSearchClient.yesterday())
+        SearchResponse response = client.prepareSearch(FatElasticSearchClient.today(), FatElasticSearchClient.yesterday())
                 .setQuery(query)
                 .setSize(pageSize)
                 .setScroll(TimeValue.timeValueSeconds(30))

@@ -70,7 +70,7 @@ public class FindConsumingSystemLoad implements Supplier<LogResponse> {
                 .field("@timestamp")
                 .interval(DateHistogramInterval.HOUR);
 
-        SearchResponse response = client.prepareSearch(ElasticSearchClient.today(), ElasticSearchClient.yesterday())
+        SearchResponse response = client.prepareSearch(FatElasticSearchClient.today(), FatElasticSearchClient.yesterday())
                 .setQuery(jboss_app_app_class)
                 .addAggregation(histogram)
                 .execute()
@@ -106,7 +106,7 @@ public class FindConsumingSystemLoad implements Supplier<LogResponse> {
                 .field("@timestamp")
                 .interval(DateHistogramInterval.HOUR);
 
-        SearchResponse response = client.prepareSearch(ElasticSearchClient.today(), ElasticSearchClient.yesterday())
+        SearchResponse response = client.prepareSearch(FatElasticSearchClient.today(), FatElasticSearchClient.yesterday())
                 .setQuery(jboss_app_app_class)
                 .addAggregation(histogram)
                 .execute()

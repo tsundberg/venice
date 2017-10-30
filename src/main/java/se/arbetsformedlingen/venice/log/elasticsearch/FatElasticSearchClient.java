@@ -8,7 +8,8 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import java.net.InetSocketAddress;
 import java.time.LocalDate;
 
-public class ElasticSearchClient {
+@Deprecated
+public class FatElasticSearchClient {
     public static Client getClient(Settings settings) {
         return new TransportClient.Builder()
                 .settings(settings)

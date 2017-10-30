@@ -2,7 +2,6 @@ package se.arbetsformedlingen.venice.log.elasticsearch;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.significant.SignificantTerms;
@@ -51,7 +50,7 @@ public class FindWebserviceLoad implements Supplier<LogResponse> {
                 .significantTerms("calls per webservice")
                 .field(significantField);
 
-        SearchResponse response = client.prepareSearch(ElasticSearchClient.today(), ElasticSearchClient.yesterday())
+        SearchResponse response = client.prepareSearch(FatElasticSearchClient.today(), FatElasticSearchClient.yesterday())
                 .setQuery(jboss_app_app_class)
                 .addAggregation(significatTerms)
                 .execute()

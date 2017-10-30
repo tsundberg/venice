@@ -38,7 +38,7 @@ public class FindApplicationLoad implements Supplier<LogResponse> {
                 .significantTerms("calls per host")
                 .field("host");
 
-        SearchResponse response = client.prepareSearch(ElasticSearchClient.today(), ElasticSearchClient.yesterday())
+        SearchResponse response = client.prepareSearch(FatElasticSearchClient.today(), FatElasticSearchClient.yesterday())
                 .setQuery(jboss_app_app_class)
                 .addAggregation(significantTerms)
                 .execute()

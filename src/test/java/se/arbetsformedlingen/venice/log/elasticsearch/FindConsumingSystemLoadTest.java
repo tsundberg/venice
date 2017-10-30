@@ -23,8 +23,8 @@ public class FindConsumingSystemLoadTest {
     @Test
     @Ignore
     public void find_application_load() {
-        Settings settings = ElasticSearchClient.getSettings();
-        Client client = ElasticSearchClient.getClient(settings);
+        Settings settings = FatElasticSearchClient.getSettings();
+        Client client = FatElasticSearchClient.getClient(settings);
 
         FindConsumingSystemLoad findWebserviceLoad = new FindConsumingSystemLoad(client, new Application("cpr"));
         LogResponse logResponse = findWebserviceLoad.get();
