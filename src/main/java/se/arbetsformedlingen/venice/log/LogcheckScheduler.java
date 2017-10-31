@@ -27,10 +27,15 @@ public class LogcheckScheduler implements Scheduler {
         checkers.add(new Checker(new FindExceptions(client, new Application("cpr"))));
         checkers.add(new Checker(new FindExceptions(client, new Application("agselect"))));
 
-        checkers.add(new Checker(new FindApplicationLoad(client, new Application("gfr"), configuration)));
-        checkers.add(new Checker(new FindApplicationLoad(client, new Application("geo"), configuration)));
-        checkers.add(new Checker(new FindApplicationLoad(client, new Application("cpr"), configuration)));
-        checkers.add(new Checker(new FindApplicationLoad(client, new Application("agselect"), configuration)));
+        // todo read from configuration
+        String host = "elk.arbetsformedlingen.se";
+        String port = "9200";
+        ElasticSearchClient elasticSearchClient = new ElasticSearchClient(host, port);
+
+        checkers.add(new Checker(new FindApplicationLoad(elasticSearchClient, new Application("gfr"), configuration)));
+        checkers.add(new Checker(new FindApplicationLoad(elasticSearchClient, new Application("geo"), configuration)));
+        checkers.add(new Checker(new FindApplicationLoad(elasticSearchClient, new Application("cpr"), configuration)));
+        checkers.add(new Checker(new FindApplicationLoad(elasticSearchClient, new Application("agselect"), configuration)));
 
         checkers.add(new Checker(new FindWebserviceLoad(client, new Application("gfr"))));
         checkers.add(new Checker(new FindWebserviceLoad(client, new Application("geo"))));

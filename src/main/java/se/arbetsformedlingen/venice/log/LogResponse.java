@@ -19,25 +19,25 @@ public class LogResponse {
         this.logType = logType;
     }
 
-   public LogResponse(Application application, LogType logType, ExceptionsPerTime exceptionsPerTime) {
+    public LogResponse(Application application, LogType logType, ExceptionsPerTime exceptionsPerTime) {
         this.application = application;
         this.logType = logType;
         this.exceptionsPerTime = exceptionsPerTime;
     }
 
-  public  LogResponse(Application application, LogType logType, ApplicationLoad applicationLoad) {
+    public LogResponse(Application application, LogType logType, ApplicationLoad applicationLoad) {
         this.application = application;
         this.logType = logType;
         this.applicationLoad = applicationLoad;
     }
 
-   public LogResponse(Application application, LogType logType, WebserviceLoad webserviceLoad) {
+    public LogResponse(Application application, LogType logType, WebserviceLoad webserviceLoad) {
         this.application = application;
         this.logType = logType;
         this.webserviceLoad = webserviceLoad;
     }
 
-   public  LogResponse(Application application, LogType logType, ConsumingSystemLoad consumingSystemLoad) {
+    public LogResponse(Application application, LogType logType, ConsumingSystemLoad consumingSystemLoad) {
         this.application = application;
         this.logType = logType;
         this.consumingSystemLoad = consumingSystemLoad;
@@ -51,7 +51,7 @@ public class LogResponse {
         return logType.getType();
     }
 
-    LogType getLogType() {
+    public LogType getLogType() {
         return logType;
     }
 
@@ -59,7 +59,7 @@ public class LogResponse {
         return exceptionsPerTime.getTimeValues();
     }
 
-    List<HostValue> getApplicationLoadValues() {
+    public List<HostValue> getApplicationLoadValues() {
         return applicationLoad.getLoadValues();
     }
 
