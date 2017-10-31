@@ -3,4 +3,5 @@ classes
 out
 .gradle
 .idea
+*.iml
 *.swp
