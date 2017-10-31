@@ -1,5 +1,6 @@
 build
 classes
+out
 .gradle
 .idea
 *.swp
