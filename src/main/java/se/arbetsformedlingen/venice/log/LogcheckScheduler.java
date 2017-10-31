@@ -32,10 +32,10 @@ public class LogcheckScheduler implements Scheduler {
         String port = "9200";
         ElasticSearchClient elasticSearchClient = new ElasticSearchClient(host, port);
 
-        checkers.add(new Checker(new FindApplicationLoad(elasticSearchClient, new Application("gfr"), configuration)));
-        checkers.add(new Checker(new FindApplicationLoad(elasticSearchClient, new Application("geo"), configuration)));
-        checkers.add(new Checker(new FindApplicationLoad(elasticSearchClient, new Application("cpr"), configuration)));
-        checkers.add(new Checker(new FindApplicationLoad(elasticSearchClient, new Application("agselect"), configuration)));
+        checkers.add(new Checker(new FindHostLoad(elasticSearchClient, new Application("gfr"), configuration)));
+        checkers.add(new Checker(new FindHostLoad(elasticSearchClient, new Application("geo"), configuration)));
+        checkers.add(new Checker(new FindHostLoad(elasticSearchClient, new Application("cpr"), configuration)));
+        checkers.add(new Checker(new FindHostLoad(elasticSearchClient, new Application("agselect"), configuration)));
 
         checkers.add(new Checker(new FindWebserviceLoad(client, new Application("gfr"))));
         checkers.add(new Checker(new FindWebserviceLoad(client, new Application("geo"))));

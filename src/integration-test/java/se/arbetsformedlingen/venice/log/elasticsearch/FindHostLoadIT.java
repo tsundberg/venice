@@ -9,7 +9,7 @@ import se.arbetsformedlingen.venice.model.LogType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class FindApplicationLoadIT {
+public class FindHostLoadIT {
 
     @Test
     @Ignore
@@ -20,7 +20,7 @@ public class FindApplicationLoadIT {
         ElasticSearchClient client = new ElasticSearchClient(host, port);
         Application application = new Application("gfr");
         Configuration configuration = new Configuration("configuration.yaml");
-        FindApplicationLoad applicationLoad = new FindApplicationLoad(client, application, configuration);
+        FindHostLoad applicationLoad = new FindHostLoad(client, application, configuration);
 
         LogResponse logResponse = applicationLoad.get();
 

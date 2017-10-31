@@ -22,8 +22,10 @@ import java.util.function.Supplier;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
-// TODO: 2017-10-30 Rename to FindHostLoad 
-public class FindApplicationLoad implements Supplier<LogResponse> {
+/**
+ * Find the load for each host in production
+ */
+public class FindHostLoad implements Supplier<LogResponse> {
     private ElasticSearchClient client;
     private Application application;
     private Configuration configuration;
@@ -31,16 +33,16 @@ public class FindApplicationLoad implements Supplier<LogResponse> {
     private Client fatClient;
 
     @Deprecated
-    public FindApplicationLoad(Client fatClient, Application application, Configuration configuration) {
+    public FindHostLoad(Client fatClient, Application application, Configuration configuration) {
         this.fatClient = fatClient;
         this.application = application;
         this.configuration = configuration;
     }
 
-    FindApplicationLoad() {
+    FindHostLoad() {
     }
 
-    public FindApplicationLoad(ElasticSearchClient client, Application application, Configuration configuration) {
+    public FindHostLoad(ElasticSearchClient client, Application application, Configuration configuration) {
         this.client = client;
         this.application = application;
         this.configuration = configuration;

@@ -14,16 +14,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-public class FindApplicationLoadTest {
+public class FindHostLoadTest {
     @Test
     public void get_load_per_host() {
         ElasticSearchClient client = getClient();
         Application application = new Application("gfr");
         Configuration configuration = new Configuration("configuration.yaml");
 
-        FindApplicationLoad findApplicationLoad = new FindApplicationLoad(client, application, configuration);
+        FindHostLoad findHostLoad = new FindHostLoad(client, application, configuration);
 
-        LogResponse logResponse = findApplicationLoad.get();
+        LogResponse logResponse = findHostLoad.get();
 
         verify(client).getLogstashIndexes();
 
@@ -49,7 +49,7 @@ public class FindApplicationLoadTest {
     public void get_host_values() {
         String json = getSampleJson();
 
-        FindApplicationLoad applicationLoad = new FindApplicationLoad();
+        FindHostLoad applicationLoad = new FindHostLoad();
 
         HostValue[] values = applicationLoad.getHostValues(json);
 
