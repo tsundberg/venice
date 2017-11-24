@@ -25,6 +25,7 @@ public class FindWebserviceLoad implements Supplier<LogResponse> {
 
     private Client client;
 
+    @Deprecated
     public FindWebserviceLoad(Client client, Application application) {
         this.application = application;
         this.client = client;

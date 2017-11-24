@@ -30,6 +30,7 @@ public class FindExceptions implements Supplier<LogResponse> {
 
     private Client client;
 
+    @Deprecated
     public FindExceptions(Client client, Application application) {
         this.client = client;
         this.application = application;

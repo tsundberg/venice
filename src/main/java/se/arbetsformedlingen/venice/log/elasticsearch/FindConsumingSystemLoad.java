@@ -32,6 +32,7 @@ public class FindConsumingSystemLoad implements Supplier<LogResponse> {
 
     private Client client;
 
+    @Deprecated
     public FindConsumingSystemLoad(Client client, Application application) {
         this.client = client;
         this.application = application;
