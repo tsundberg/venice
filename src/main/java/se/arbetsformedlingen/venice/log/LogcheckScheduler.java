@@ -22,15 +22,16 @@ public class LogcheckScheduler implements Scheduler {
     public LogcheckScheduler(Configuration configuration) {
         Settings settings = FatElasticSearchClient.getSettings();
         Client client = FatElasticSearchClient.getClient(settings);
-        checkers.add(new Checker(new FindExceptions(client, new Application("gfr"))));
-        checkers.add(new Checker(new FindExceptions(client, new Application("geo"))));
-        checkers.add(new Checker(new FindExceptions(client, new Application("cpr"))));
-        checkers.add(new Checker(new FindExceptions(client, new Application("agselect"))));
 
         // todo read from configuration
         String host = "elk.arbetsformedlingen.se";
         String port = "9200";
         ElasticSearchClient elasticSearchClient = new ElasticSearchClient(host, port);
+
+        checkers.add(new Checker(new FindExceptions(elasticSearchClient, new Application("gfr"), configuration)));
+        checkers.add(new Checker(new FindExceptions(elasticSearchClient, new Application("geo"), configuration)));
+        checkers.add(new Checker(new FindExceptions(elasticSearchClient, new Application("cpr"), configuration)));
+        checkers.add(new Checker(new FindExceptions(elasticSearchClient, new Application("agselect"), configuration)));
 
         checkers.add(new Checker(new FindHostLoad(elasticSearchClient, new Application("gfr"), configuration)));
         checkers.add(new Checker(new FindHostLoad(elasticSearchClient, new Application("geo"), configuration)));

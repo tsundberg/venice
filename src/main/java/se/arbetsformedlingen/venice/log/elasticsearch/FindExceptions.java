@@ -1,17 +1,16 @@
 package se.arbetsformedlingen.venice.log.elasticsearch;
 
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.Client;
-import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import se.arbetsformedlingen.venice.configuration.Configuration;
 import se.arbetsformedlingen.venice.log.LogResponse;
 import se.arbetsformedlingen.venice.model.Application;
 import se.arbetsformedlingen.venice.model.ExceptionsPerTime;
 import se.arbetsformedlingen.venice.model.LogType;
 import se.arbetsformedlingen.venice.model.TimeSeriesValue;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -19,87 +18,44 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static se.arbetsformedlingen.venice.log.elasticsearch.DateUtil.yesterday;
 
+/**
+ * Find Exceptions for each system in production
+ */
 public class FindExceptions implements Supplier<LogResponse> {
+    private ElasticSearchClient client;
     private Application application;
+    private Configuration configuration;
 
-    private Map<Application, String> queryStrings = new HashMap<>();
-
-    private Client client;
-
-    @Deprecated
-    public FindExceptions(Client client, Application application) {
+    public FindExceptions(ElasticSearchClient client, Application application, Configuration configuration) {
         this.client = client;
         this.application = application;
-
-        // todo config
-        queryStrings.put(new Application("gfr"), "se.arbetsformedlingen.foretag*");
-        queryStrings.put(new Application("geo"), "se.arbetsformedlingen.geo*");
-        queryStrings.put(new Application("cpr"), "se.arbetsformedlingen.cpr*");
-        queryStrings.put(new Application("agselect"), "se.arbetsformedlingen.gfr.ma*");
+        this.configuration = configuration;
     }
 
     @Override
     public LogResponse get() {
-        String queryString = queryStrings.get(application);
-        QueryBuilder jboss_app_app_class = queryStringQuery(queryString)
-                .analyzeWildcard(true);
+        Map<String, Integer> exceptionsPerHour = new HashMap<>();
+        initiate(exceptionsPerHour);
 
-        QueryBuilder exception = queryStringQuery("Exception*")
-                .analyzeWildcard(true);
+        List<String> indexes = client.getLogstashIndexes();
 
-        QueryBuilder query = boolQuery()
-                .filter(jboss_app_app_class)
-                .must(exception);
+        for (int index = 0; index < 2; index++) {
+            String searchIndex = indexes.get(index);
+            String action = getAction(searchIndex);
 
-        int pageSize = 5;
-        SearchResponse response = client.prepareSearch(FatElasticSearchClient.today(), FatElasticSearchClient.yesterday())
-                .setQuery(query)
-                .setSize(pageSize)
-                .setScroll(TimeValue.timeValueSeconds(30))
-                .execute()
-                .actionGet();
+            String json = client.getJson(action);
+            JSONObject jsonObject = new JSONObject(json);
 
-        return collectExceptions(response, client);
-    }
-
-    private LogResponse collectExceptions(SearchResponse response, Client client) {
-        Map<String, Integer> exceptionPerHour = new HashMap<>();
-
-        initiate(exceptionPerHour);
-
-        long totalHits = response.getHits().getTotalHits();
-        int page = 0;
-        for (SearchHit hit : response.getHits().getHits()) {
-            addOneException(hit, exceptionPerHour);
-            page++;
-        }
-
-        String scrollId = response.getScrollId();
-
-        while (page < totalHits) {
-            SearchResponse res = client.searchScroll(
-                    client.prepareSearchScroll(scrollId)
-                            .setScroll(TimeValue.timeValueSeconds(30))
-                            .request()
-            )
-                    .actionGet();
-
-            SearchHits hits = res.getHits();
-            for (SearchHit hit : hits) {
-                addOneException(hit, exceptionPerHour);
-                page++;
-            }
+            collectExceptions(jsonObject, exceptionsPerHour);
         }
 
         LogType logType = new LogType("exception");
         List<TimeSeriesValue> timeSeriesValues = new LinkedList<>();
 
-        for (String key : exceptionPerHour.keySet()) {
-            Integer value = exceptionPerHour.get(key);
+        for (String key : exceptionsPerHour.keySet()) {
+            Integer value = exceptionsPerHour.get(key);
             timeSeriesValues.add(new TimeSeriesValue(LocalDateTime.parse(key), value));
         }
 
@@ -108,19 +64,59 @@ public class FindExceptions implements Supplier<LogResponse> {
         return new LogResponse(application, logType, exceptionsPerTime);
     }
 
+    private String getAction(String index) {
+        String applicationFilter = configuration.getApplicationLoadSearchString(application.getName());
+        String query = "{\n" +
+                "  \"query\": {\n" +
+                "    \"bool\": {\n" +
+                "      \"must\": {\n" +
+                "        \"wildcard\": {\n" +
+                "          \"jboss_app_ex\": \"*" + applicationFilter + "\"\n" +
+                "        }\n" +
+                "      },\n" +
+                "      \"filter\": {\n" +
+                "        \"term\": {\n" +
+                "          \"level\": \"ERROR\"\n" +
+                "        }\n" +
+                "      }\n" +
+                "    }\n" +
+                "  }\n" +
+                "}";
+
+        String queryArgument = "?source=" + urlEncode(query);
+
+        return "/" + index + "/_search" + queryArgument;
+    }
+
+    private void collectExceptions(JSONObject json, Map<String, Integer> exceptionsPerHour) {
+        JSONObject hits = json.getJSONObject("hits");
+        JSONArray hitList = hits.getJSONArray("hits");
+
+        for (int index = 0; index < hitList.length(); index++) {
+            JSONObject exception = hitList.getJSONObject(index);
+
+            JSONObject logEntry = exception.getJSONObject("_source");
+
+            String timeStamp = logEntry.getString("@timestamp");
+
+            addEvent(exceptionsPerHour, timeStamp);
+        }
+    }
+
+    private String urlEncode(String query) {
+        // todo extract to common utility
+        try {
+            return URLEncoder.encode(query, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private void initiate(Map<String, Integer> exceptionPerHour) {
         for (int hour = 0; hour < 24; hour++) {
             String key = TimeSeriesValue.normalized(LocalDateTime.now().minusHours(hour)).toString();
             exceptionPerHour.put(key, 0);
         }
-    }
-
-    private void addOneException(SearchHit hit, Map<String, Integer> exceptionPerHour) {
-        // this might a too complicated solution. ES should be able to group the data per hour. This is the way it probably is implemented in other searches. Check if that is the case when you see this comment.
-        Map<String, Object> source = hit.getSource();
-        String timeStamp = (String) source.get("@timestamp");
-
-        addEvent(exceptionPerHour, timeStamp);
     }
 
     void addEvent(Map<String, Integer> exceptionPerHour, String timeStamp) {

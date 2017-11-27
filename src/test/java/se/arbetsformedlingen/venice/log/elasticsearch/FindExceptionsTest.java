@@ -1,8 +1,5 @@
 package se.arbetsformedlingen.venice.log.elasticsearch;
 
-import org.elasticsearch.client.Client;
-import org.elasticsearch.common.settings.Settings;
-import org.junit.Ignore;
 import org.junit.Test;
 import se.arbetsformedlingen.venice.model.Application;
 
@@ -17,18 +14,8 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 public class FindExceptionsTest {
 
     @Test
-    @Ignore
-    public void find_exceptions() {
-        Settings settings = FatElasticSearchClient.getSettings();
-        Client client = FatElasticSearchClient.getClient(settings);
-
-        FindExceptions findExceptions = new FindExceptions(client, new Application("gfr"));
-        findExceptions.get();
-    }
-
-    @Test
     public void add_new_excpetions_exception() {
-        FindExceptions findExceptions = new FindExceptions(null, new Application("gfr"));
+        FindExceptions findExceptions = new FindExceptions(null, new Application("gfr"), null);
 
         Map<String, Integer> exceptionPerHour = new HashMap<>();
         LocalDateTime now = LocalDateTime.now();
@@ -42,7 +29,7 @@ public class FindExceptionsTest {
 
     @Test
     public void dont_add_old_excpetions_exception() {
-        FindExceptions findExceptions = new FindExceptions(null, new Application("gfr"));
+        FindExceptions findExceptions = new FindExceptions(null, new Application("gfr"), null);
 
         Map<String, Integer> exceptionPerHour = new HashMap<>();
         LocalDateTime now = LocalDateTime.now().minusDays(2);
