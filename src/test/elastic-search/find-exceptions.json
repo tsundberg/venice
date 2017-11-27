@@ -1,0 +1,16 @@
+{
+  "query": {
+    "bool": {
+      "must": {
+        "wildcard": {
+          "jboss_app_ex": "*se.arbetsformedlingen.foretag*"
+        }
+      },
+      "filter": {
+        "term": {
+          "level": "ERROR"
+        }
+      }
+    }
+  }
+}
