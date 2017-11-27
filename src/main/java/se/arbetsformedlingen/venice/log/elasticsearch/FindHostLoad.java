@@ -104,6 +104,7 @@ public class FindHostLoad implements Supplier<LogResponse> {
     }
 
     private String urlEncode(String query) {
+        // todo extract to common utility
         try {
             return URLEncoder.encode(query, "UTF-8");
         } catch (UnsupportedEncodingException e) {
