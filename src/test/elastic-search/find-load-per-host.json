@@ -1,0 +1,5 @@
+{
+  "size": 0,
+  "query": {"wildcard": {"jboss_app_app_class": "se.arbetsformedlingen.foretag*"}},
+  "aggs": {"hosts": {"terms": {"field": "host"}}}
+}
