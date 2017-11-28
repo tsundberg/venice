@@ -5,4 +5,4 @@ This is the way most of Elastic Search documentation uses.
 
 One way to test your json query is to use curl and connect to an elastic search host.
 
-    curl -s --data '@find-exceptions.json' -XGET 'http://elk.arbetsformedlingen.se:9200/logstash-2017.11.27/_search' > result.json
+    curl -s --data '@find-exceptions.json' -XGET 'http://elk.arbetsformedlingen.se:9200/logstash-2017.11.27/_search' | jq '.' > result.json

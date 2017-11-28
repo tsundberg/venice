@@ -1,0 +1,3 @@
+{
+  "query": {"match": {"jboss_app_app_class": "se.arbetsformedlingen.geo.CallingSystem"}}
+}

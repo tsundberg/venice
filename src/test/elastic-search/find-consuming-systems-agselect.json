@@ -1,0 +1,4 @@
+{
+  "query": {"wildcard": {"jboss_app_app_class": "se.arbetsformedlingen.gfr.ma*"}}
+}
+
