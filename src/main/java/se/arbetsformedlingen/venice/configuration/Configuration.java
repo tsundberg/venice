@@ -19,17 +19,6 @@ public class Configuration {
         load(configFile);
     }
 
-    public String getApplicationLoadSearchString(String applicationName) {
-        Map app = getApplication(applicationName);
-        String serverLoadString = (String) app.get("serverLoadString");
-
-        if (serverLoadString != null) {
-            return serverLoadString;
-        }
-
-        throw new ConfigurationException("Application load search string is not defined for " + applicationName);
-    }
-
     public String getTpjAdminHost() {
         Map tpjAdmin = getTpjAdmin();
 

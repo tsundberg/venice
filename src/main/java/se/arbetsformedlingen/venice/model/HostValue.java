@@ -4,9 +4,9 @@ import java.util.Objects;
 
 public class HostValue implements Comparable<HostValue> {
     private Host host;
-    private Long load;
+    private long load;
 
-    public HostValue(Host host, Long load) {
+    public HostValue(Host host, long load) {
         this.host = host;
         this.load = load;
     }
@@ -15,7 +15,7 @@ public class HostValue implements Comparable<HostValue> {
         return host;
     }
 
-    public Long getLoad() {
+    public long getLoad() {
         return load;
     }
 
@@ -25,7 +25,7 @@ public class HostValue implements Comparable<HostValue> {
         if (o == null || getClass() != o.getClass()) return false;
         HostValue hostValue = (HostValue) o;
         return Objects.equals(host, hostValue.host) &&
-                Objects.equals(load, hostValue.load);
+                load == hostValue.load;
     }
 
     @Override

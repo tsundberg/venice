@@ -2,10 +2,13 @@ import java.text.SimpleDateFormat
 
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '2.0.1'
 }
 
 version = '1.0-SNAPSHOT'
+
+project.ext {
+    depsDir = "build/deps"
+}
 
 compileJava {
     sourceCompatibility = 1.8
@@ -35,7 +38,6 @@ dependencies {
     compile 'org.apache.httpcomponents:httpclient:4.5.3'
     compile 'org.apache.httpcomponents:fluent-hc:4.5.3'
     compile 'org.codeartisans:org.json:20161124'
-    compile 'org.elasticsearch:elasticsearch:2.2.2'
     compile 'org.yaml:snakeyaml:1.18'
 
     testCompile 'org.assertj:assertj-core:3.6.2'
@@ -43,6 +45,30 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-core:2.7.5"
 }
+
+
+task initProject {
+    doLast {
+        // Copy all runtime dependencies to build/deps for use
+        // with server.sh and devmode.sh
+        File depsDirFile = new File(depsDir)
+        if (!depsDirFile.exists()) {
+            depsDirFile.mkdir();
+        }
+
+        copy {
+            from {
+                configurations.runtime.filter {
+                    !new File(depsDirFile, it.getName()).exists() ||
+                    new File(depsDirFile, it.getName()).lastModified() < it.lastModified()
+                }
+            }
+            into project.depsDir
+        }
+    }
+}
+
+compileJava.dependsOn initProject
 
 test {
     testLogging.showStandardStreams = true
@@ -58,21 +84,6 @@ integrationTest.mustRunAfter test
 
 tasks.withType(Test) {
     reports.html.setDestination(file("${reporting.baseDir}/${name}"))
-}
-
-shadowJar {
-    it.dependsOn build
-    mergeServiceFiles()
-    exclude 'META-INF/*.DSA'
-    exclude 'META-INF/*.RSA'
-    manifest {
-        attributes 'Main-Class': 'se.arbetsformedlingen.venice.Venice',
-                'Build-Date': new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date())
-    }
-}
-
-task stage() {
-    it.dependsOn check, integrationTest, shadowJar
 }
 
 repositories {

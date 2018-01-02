@@ -1,13 +1,12 @@
 package se.arbetsformedlingen.venice.log;
 
-import org.elasticsearch.client.Client;
-import org.elasticsearch.common.settings.Settings;
 import se.arbetsformedlingen.venice.common.Scheduler;
 import se.arbetsformedlingen.venice.configuration.Configuration;
-import se.arbetsformedlingen.venice.log.elasticsearch.*;
-import se.arbetsformedlingen.venice.model.Application;
+import se.arbetsformedlingen.venice.model.*;
 
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
@@ -20,32 +19,20 @@ public class LogcheckScheduler implements Scheduler {
     private List<Checker> checkers = new LinkedList<>();
 
     public LogcheckScheduler(Configuration configuration) {
-        Settings settings = FatElasticSearchClient.getSettings();
-        Client client = FatElasticSearchClient.getClient(settings);
+        String[] hosts = new String[] {
+            "l7700746.wpa.ams.se",
+            "l7700747.wpa.ams.se",
+            "l7700770.wpa.ams.se"
+        };
 
-        // todo read from configuration
-        String host = "elk.arbetsformedlingen.se";
-        String port = "9200";
-        ElasticSearchClient elasticSearchClient = new ElasticSearchClient(host, port);
+        String gfrFormat = "http://${host}:${port}/service/foretag/${version}/debug/servicelog";
+        String[] gfrVersions = new String[] { "3.0", "4.0", "5.0", "6.0" };
 
-        checkers.add(new Checker(new FindExceptions(elasticSearchClient, new Application("gfr"), configuration)));
-        checkers.add(new Checker(new FindExceptions(elasticSearchClient, new Application("geo"), configuration)));
-        checkers.add(new Checker(new FindExceptions(elasticSearchClient, new Application("cpr"), configuration)));
-        checkers.add(new Checker(new FindExceptions(elasticSearchClient, new Application("agselect"), configuration)));
+        String geoFormat = "http://${host}:${port}/geo/debug/resourcelog";
+        String[] geoVersions = new String[] { "v1" };
 
-        checkers.add(new Checker(new FindHostLoad(elasticSearchClient, new Application("gfr"), configuration)));
-        checkers.add(new Checker(new FindHostLoad(elasticSearchClient, new Application("geo"), configuration)));
-        checkers.add(new Checker(new FindHostLoad(elasticSearchClient, new Application("cpr"), configuration)));
-        checkers.add(new Checker(new FindHostLoad(elasticSearchClient, new Application("agselect"), configuration)));
-
-        checkers.add(new Checker(new FindWebserviceLoad(client, new Application("gfr"))));
-        checkers.add(new Checker(new FindWebserviceLoad(client, new Application("geo"))));
-        checkers.add(new Checker(new FindWebserviceLoad(client, new Application("cpr"))));
-
-        checkers.add(new Checker(new FindConsumingSystemLoad(client, new Application("gfr"))));
-        checkers.add(new Checker(new FindConsumingSystemLoad(client, new Application("geo"))));
-        checkers.add(new Checker(new FindConsumingSystemLoad(client, new Application("cpr"))));
-        checkers.add(new Checker(new FindConsumingSystemLoad(client, new Application("agselect"))));
+        checkers.add(new Checker(new Application("gfr"), gfrFormat, hosts, 8580, gfrVersions));
+        checkers.add(new Checker(new Application("geo"), geoFormat, hosts, 8180, geoVersions));
     }
 
     @Override
@@ -58,16 +45,40 @@ public class LogcheckScheduler implements Scheduler {
     }
 
     private class Checker implements Runnable {
-        private Supplier<LogResponse> findExceptions;
+        private Application app;
+        private String format;
+        private String[] hosts;
+        private int port;
+        private String[] versions;
 
-        private Checker(Supplier<LogResponse> findExceptions) {
-            this.findExceptions = findExceptions;
+        private Checker(Application app, String format, String[] hosts, int port, String[] versions) {
+            this.app = app;
+            this.format = format;
+            this.hosts = hosts;
+            this.port = port;
+            this.versions = versions;
         }
 
         @Override
         public void run() {
-            CompletableFuture.supplyAsync(findExceptions)
-                    .thenAccept(result -> latestLogs.addLog(result));
+            MonitorClient client = new MonitorClient(format, hosts, port, versions);
+
+            try {
+                MonitorResult result = client.fetch();
+
+                List<ConsumingSystemValue> values = result.getConsumingSystemLoad();
+
+                List<HostValue> hostValues = result.getHostLoad();
+
+                ConsumingSystemLoad load = new ConsumingSystemLoad(app, values);
+                ApplicationLoad hostLoad = new ApplicationLoad(hostValues.toArray(new HostValue[hostValues.size()]));
+
+                latestLogs.addLog(new LogResponse(app, new LogType("consuming-system"), load));
+                latestLogs.addLog(new LogResponse(app, new LogType("application-load"), hostLoad));
+            } catch (java.io.IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
         }
     }
 }

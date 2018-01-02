@@ -3,30 +3,38 @@ applications:
     name: gfr
     tpjName: foretag
     probe: UgkForetagProbe
-    serverLoadString: se.arbetsformedlingen.foretag*
+    monitors:
+      - monitor:
+        path: /service/foretag/3.0/debug/servicelog
+      - monitor:
+        path: /service/foretag/4.0/debug/servicelog
+      - monitor:
+        path: /service/foretag/5.0/debug/servicelog
+      - monitor:
+        path: /service/foretag/6.0/debug/servicelog
 
   - application:
     name: geo
     probe: UgkGeoProbe
-    serverLoadString: se.arbetsformedlingen.geo*
+    monitors:
+      - monitor:
+        path: /geo/debug/resourcelog
 
   - application:
     name: cpr
     probe: CprProbe
-    serverLoadString: se.arbetsformedlingen.cpr*
 
   - application:
     name: agselect
     probe: MarknadsanalysProbe
-    serverLoadString: se.arbetsformedlingen.gfr.ma*
 
 updateFrequenzy:
   jenkins:
     period: 30
     timeUnit: SECONDS
 
-  elasticSearch:
-    period: 5
+  monitor:
+    period: 1
     timeUnit: MINUTES
 
   probe:

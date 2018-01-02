@@ -101,35 +101,6 @@ public class ConfigurationTest {
     }
 
     @Test
-    public void get_application_load_search_string_for_gfr() {
-        Configuration configuration = new Configuration("build/resources/main/configuration.yaml");
-
-        String expected = "se.arbetsformedlingen.foretag*";
-
-        String actual = configuration.getApplicationLoadSearchString("gfr");
-
-        assertThat(actual).isEqualTo(expected);
-    }
-
-    @Test
-    public void default_application_load_search_string_for_urk() {
-        Configuration configuration = new Configuration("no file");
-
-        String actual = configuration.getApplicationLoadSearchString("gfr");
-
-        assertThat(actual).isEqualTo("se.arbetsformedlingen.foretag*");
-    }
-
-    @Test
-    public void missing_application_load_search_string_for_unknown_application() {
-        Configuration configuration = new Configuration("build/resources/test/missing-nodes-configuration.yaml");
-
-        assertThat(catchThrowable(() -> configuration.getApplicationLoadSearchString("unknown")))
-                .isInstanceOf(ConfigurationException.class)
-                .hasMessageContaining("Application load search string is not defined for unknown");
-    }
-
-    @Test
     public void missing_continuous_integration_from_config_file() {
         Configuration configuration = new Configuration("build/resources/test/empty-configuration.yaml");
 
