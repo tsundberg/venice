@@ -33,6 +33,17 @@ public class LogcheckScheduler implements Scheduler {
 
         checkers.add(new Checker(new Application("gfr"), gfrFormat, hosts, 8580, gfrVersions));
         checkers.add(new Checker(new Application("geo"), geoFormat, hosts, 8180, geoVersions));
+
+        String[] cprHosts = new String[] {
+            "l7700767.wpa.ams.se",
+            "l7700775.wpa.ams.se",
+            "l7700772.wpa.ams.se"
+        };
+
+        String cprFormat = "http://${host}:${port}/PlatsService/ws/debug/servicelog";
+        String[] cprVersions = new String[] { "v1 "};
+
+        checkers.add(new Checker(new Application("cpr"), cprFormat, cprHosts, 8580, cprVersions));
     }
 
     @Override
