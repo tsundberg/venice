@@ -44,6 +44,17 @@ public class LogcheckScheduler implements Scheduler {
         String[] cprVersions = new String[] { "v1 "};
 
         checkers.add(new Checker(new Application("cpr"), cprFormat, cprHosts, 8580, cprVersions));
+
+        String[] agselectHosts = new String[] {
+            "l7700843.wpa.ams.se",
+            "l7700842.wpa.ams.se",
+            "l7700841.wpa.ams.se"
+        };
+
+        String agselectFormat = "http://${host}:${port}/marknadsanalys/web/debug/pathlog";
+        String[] agselectVersions = new String[] { "v1 "};
+
+        checkers.add(new Checker(new Application("agselect"), agselectFormat, agselectHosts, 8280, agselectVersions));
     }
 
     @Override

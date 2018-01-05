@@ -59,7 +59,7 @@ public class MonitorClient
             JSONObject obj = arr.getJSONObject(i);
 
             String service = obj.getString("service");
-            String method = obj.getString("method");
+            String method = obj.has("method") ? obj.getString("method") : "";
             String applicationId = obj.getString("applicationId");
             int count = obj.getInt("count");
             double avg = obj.getDouble("avg");
