@@ -98,8 +98,7 @@ public class LogcheckScheduler implements Scheduler {
                 latestLogs.addLog(new LogResponse(app, new LogType("consuming-system"), load));
                 latestLogs.addLog(new LogResponse(app, new LogType("application-load"), hostLoad));
             } catch (java.io.IOException e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
+                System.err.println("Failed to load data for " + app.getName() + ": " + e.getMessage());
             }
         }
     }
